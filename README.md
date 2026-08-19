@@ -11,7 +11,7 @@ No app store, no account, no backend. One self-contained HTML file that installs
 ## Features
 
 - **Streak tracking** — counts only your scheduled training days; rest days never break the chain. Current streak, longest streak, and a month calendar at a glance.
-- **Per-exercise logging** — record weight × reps for each set. Weights pre-fill from your last session so you just tap and adjust.
+- **Per-exercise logging** — one row per exercise: type the weight and the reps. A single number applies to every set; tap the `,` key when a set differs (`60, 60, 55`). Last session's numbers show as placeholders.
 - **Progress charts** — a line graph of your best set over time for every exercise, with latest / personal-best / gain-since-start.
 - **Personal records** — PR badges surface as you beat them.
 - **Weekly split** — a structured program with strength, hypertrophy, and recovery days baked in.

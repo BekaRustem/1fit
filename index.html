@@ -51,20 +51,27 @@
   .ex{padding:12px 0;border-top:1px solid var(--line)}
   .ex:first-child{border-top:0}
   .exhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+  .exmeta{display:flex;align-items:center;gap:7px;flex:0 0 auto}
   .exname{font-weight:700;font-size:15px}
   .scheme{color:var(--muted);font-size:12px;white-space:nowrap}
   .last{color:var(--accent2);font-size:12px;margin-top:1px}
   .pr{color:var(--warn);font-size:11px;font-weight:700}
   .sets{display:flex;flex-direction:column;gap:7px}
-  .setrow{display:grid;grid-template-columns:26px 1fr 1fr;gap:8px;align-items:center}
-  .setrow.time{grid-template-columns:26px 1fr}
-  .setno{color:var(--muted);font-size:13px;text-align:center}
+  .setrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}
+  .setrow.time{grid-template-columns:1fr}
   .field{position:relative}
   .field input{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);
-    border-radius:11px;padding:11px 38px 11px 12px;font-size:16px;font-weight:600;outline:none}
+    border-radius:11px;padding:11px 40px 11px 12px;font-size:16px;font-weight:600;outline:none}
   .field input:focus{border-color:var(--accent)}
-  .field .u{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none}
+  .field.wide input{padding-right:74px}
+  .field .u{position:absolute;right:42px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none}
+  .field .sep{position:absolute;right:4px;top:4px;bottom:4px;width:30px;padding:0;background:var(--card);
+    border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:16px;font-weight:700;
+    line-height:1;display:grid;place-items:center}
+  .field .sep:active{background:var(--accent);border-color:var(--accent);color:#04110b}
   .filled input{border-color:rgba(52,211,153,.4)}
+  .hint{color:var(--muted);font-size:12px;line-height:1.45}
+  .hint b{color:var(--txt)}
   .btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;color:#04110b;
     background:var(--accent)}
   .btn:active{filter:brightness(.95)}
@@ -184,6 +191,7 @@ Object.keys(PROGRAM).forEach(k=>{PROG_BY_ID[PROGRAM[k].id]=PROGRAM[k];WEEKDAY_OF
 
 /* ---------- State ---------- */
 const KEY='gymtracker.v1';
+const BKEY='gymtracker.v1.bak';   // last-good snapshot; only read if the primary record is unreadable
 let data = load();
 let cur = todayStr();   // selected date on Today tab
 let tab = 'today';
@@ -191,16 +199,27 @@ let progSel = null;
 let progUnit = null;    // display unit on Progress tab
 
 function load(){
-  let d=null;
+  let d=null,restored=false;
   try{d=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+  if(!d||!d.sessions){                            // primary missing/corrupt → fall back before writing anything
+    let b=null;try{b=JSON.parse(localStorage.getItem(BKEY));}catch(e){}
+    if(b&&b.sessions&&Object.keys(b.sessions).length){d=b;restored=true;}
+  }
   if(!d||!d.sessions)d={meta:{startDate:null},sessions:{}};
   if(!d.settings)d.settings={unit:'kg'};
   if(!d.settings.exUnit)d.settings.exUnit={};   // per-exercise unit preference
   if(!d.overrides)d.overrides={};               // per-date workout swap: {date: dayId}
   if(!d.shifts)d.shifts=[];                      // schedule shifts: [{from, days}] append-only
+  if(restored){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}  // repair the primary record now
   return d;
 }
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function save(){
+  const j=JSON.stringify(data);
+  try{
+    localStorage.setItem(KEY,j);
+    if(data.sessions&&Object.keys(data.sessions).length)localStorage.setItem(BKEY,j);
+  }catch(e){}
+}
 
 /* ---------- Units ---------- */
 const LB=2.20462262;
@@ -274,6 +293,47 @@ function bestVal(ex,sets){ // canonical progression value (load → kg)
     if(x!=null&&x!==''&&!isNaN(x)) v=Math.max(v??-1e9, +x);
   });
   return v;
+}
+
+/* ---------- Set lists (one compact row per exercise) ----------
+   Storage shape is unchanged: sets[exId] stays an array of {w,r,u} / {t} cells.
+   These two functions only translate that array to/from a typed list like "60, 60, 55". */
+function parseList(str){
+  if(str==null)return [];
+  const s=String(str).replace(/[^0-9.,\s]/g,' ').trim();
+  if(s==='')return [];
+  const out=(s.indexOf(',')>=0?s.split(','):s.split(/\s+/)).map(t=>t.trim());
+  while(out.length&&out[out.length-1]==='')out.pop();   // trailing separator while typing
+  return out;
+}
+function setCells(arr,key,ex){
+  // Sibling-field values kept verbatim — same collapse rule as setsToList, but no unit
+  // round-trip, so editing one field can never nudge the other's stored numbers.
+  if(!arr||!arr.length)return [];
+  const out=arr.map(c=>{
+    if(!c)return null;
+    const x=c[key];
+    if(x==null||x===''||isNaN(+x))return null;
+    return key==='w'?{w:+x,u:c.u||'kg'}:(key==='r'?{r:+x}:{t:+x});
+  });
+  while(out.length&&out[out.length-1]==null)out.pop();
+  if(!out.length)return [];
+  const same=v=>v&&out[0]&&v.w===out[0].w&&v.u===out[0].u&&v.r===out[0].r&&v.t===out[0].t;
+  if(out.length===ex.sets&&out.every(same))return [out[0]];
+  return out;
+}
+function setsToList(arr,key,ex,u){
+  if(!arr||!arr.length)return '';
+  const vals=arr.map(c=>{
+    if(!c)return '';
+    if(key==='w'){const w=c.w;return (w==null||w===''||isNaN(+w))?'':fmtN(fromKg(toKg(w,c.u||'kg'),u));}
+    const x=c[key];return (x==null||x===''||isNaN(+x))?'':String(x);
+  });
+  while(vals.length&&vals[vals.length-1]==='')vals.pop();
+  if(!vals.length)return '';
+  // collapse to one number only when it re-expands to exactly the same thing
+  if(vals.length===ex.sets&&vals.every(v=>v===vals[0]))return vals[0];
+  return vals.join(', ');
 }
 
 /* ---------- Streak ---------- */
@@ -357,40 +417,41 @@ function renderToday(){
   h+=`<div class="row between" style="margin-bottom:10px">
       <h2 class="title" style="margin:0">${p.name}</h2>
       <span class="focus ${p.focus==='Hypertrophy'?'hyp':''}">${p.focus}</span></div>`;
+  h+=`<div class="hint" style="margin:-2px 0 10px">Weight · reps, one row each. One number = every set;
+      tap <b>,</b> when a set differs (e.g. <b>60, 60, 55</b>).</div>`;
   h+=`<div class="card">`;
   p.ex.forEach(ex=>{
-    const sets = (s&&s.sets[ex.id]) || Array.from({length:ex.sets},()=>({}));
+    const sets = (s&&s.sets[ex.id]) || null;
     const ls=lastSets(ex.id,cur);
     const pr=allTimeBest(ex);
     const eu=exUnit(ex.id);
+    const bits=[];
+    if(ls)bits.push(`Last: ${setLabel(ex,ls.sets,eu)}`);
+    if(pr!=null)bits.push(`<span class="pr">PR ${prLabel(ex,pr,eu)}</span>`);
     h+=`<div class="ex"><div class="exhead">
-        <div><div class="exname">${ex.name}</div>
-          ${ls?`<div class="last">Last: ${setLabel(ex,ls.sets,eu)}</div>`:''}</div>
-        <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+        <div style="min-width:0"><div class="exname">${ex.name}</div>
+          ${bits.length?`<div class="last">${bits.join(' · ')}</div>`:''}</div>
+        <div class="exmeta">
           <div class="scheme">${ex.sets}×${ex.m==='time'?ex.target+'s':ex.target}${ex.note||''}</div>
-          ${ex.m!=='time'?segUnitEx(ex.id,eu):''}
-          ${pr!=null?`<div class="pr">PR ${prLabel(ex,pr,eu)}</div>`:''}</div>
+          ${ex.m!=='time'?segUnitEx(ex.id,eu):''}</div>
       </div><div class="sets">`;
-    for(let i=0;i<ex.sets;i++){
-      const v=sets[i]||{};
-      const lastW = ls&&ls.sets[i] ? ls.sets[i] : null;
-      if(ex.m==='time'){
-        const ph=lastW&&lastW.t!=null?lastW.t:ex.target;
-        h+=`<div class="setrow time"><div class="setno">${i+1}</div>
-          <div class="field ${v.t!=null&&v.t!==''?'filled':''}"><input inputmode="numeric" placeholder="${ph}" value="${v.t??''}"
-            oninput="setVal('${ex.id}',${i},'t',this.value)"><span class="u">sec</span></div></div>`;
-      } else {
-        const lu=eu;
-        const wfilled=v.w!=null&&v.w!=='', rfilled=v.r!=null&&v.r!=='';
-        const dispW = !wfilled ? '' : ((v.u||'kg')===lu ? v.w : fmtN(fromKg(toKg(v.w,v.u||'kg'),lu)));
-        const phW = (lastW&&lastW.w!=null&&lastW.w!=='') ? fmtN(fromKg(toKg(lastW.w,lastW.u||'kg'),lu)) : '';
-        const phR = ex.target;
-        h+=`<div class="setrow"><div class="setno">${i+1}</div>
-          <div class="field ${wfilled?'filled':''}"><input inputmode="decimal" placeholder="${phW===''?lu:phW}" value="${dispW}"
-            oninput="setVal('${ex.id}',${i},'w',this.value)"><span class="u">${lu}</span></div>
-          <div class="field ${rfilled?'filled':''}"><input inputmode="numeric" placeholder="${phR}" value="${v.r??''}"
-            oninput="setVal('${ex.id}',${i},'r',this.value)"><span class="u">reps</span></div></div>`;
-      }
+    const lsets = ls?ls.sets:null;
+    const sep = `<button class="sep" onmousedown="event.preventDefault()" onclick="addSep(this)">,</button>`;
+    if(ex.m==='time'){
+      const tv=setsToList(sets,'t',ex,eu);
+      const phT=setsToList(lsets,'t',ex,eu)||String(ex.target);
+      h+=`<div class="setrow time">
+        <div class="field wide ${tv!==''?'filled':''}"><input inputmode="decimal" placeholder="${phT}" value="${tv}"
+          oninput="setCompact('${ex.id}','t',this.value)"><span class="u">sec</span>${sep}</div></div>`;
+    } else {
+      const wv=setsToList(sets,'w',ex,eu), rv=setsToList(sets,'r',ex,eu);
+      const phW=setsToList(lsets,'w',ex,eu)||eu;
+      const phR=setsToList(lsets,'r',ex,eu)||String(ex.target);
+      h+=`<div class="setrow">
+        <div class="field ${wv!==''?'filled':''}"><input inputmode="decimal" placeholder="${phW}" value="${wv}"
+          oninput="setCompact('${ex.id}','w',this.value)">${sep}</div>
+        <div class="field ${rv!==''?'filled':''}"><input inputmode="decimal" placeholder="${phR}" value="${rv}"
+          oninput="setCompact('${ex.id}','r',this.value)">${sep}</div></div>`;
     }
     h+=`</div></div>`;
   });
@@ -444,15 +505,42 @@ function onSwap(id){
     setOverride(cur,id);
   }
 }
-function setVal(exId,i,k,val){
+function setCompact(exId,kind,val){
+  const ex=(prog(cur).ex||[]).find(e=>e.id===exId); if(!ex)return;
   const s=ensureSession(cur);
-  if(!s.sets[exId])s.sets[exId]=Array.from({length:(prog(cur).ex.find(e=>e.id===exId).sets)},()=>({}));
-  if(!s.sets[exId][i])s.sets[exId][i]={};
-  const cell=s.sets[exId][i];
-  cell[k]= val===''?'':(isNaN(+val)?val:+val);
-  if(k==='w') cell.u=exUnit(exId);   // tag weight with this exercise's chosen unit
+  const u=exUnit(exId);
+  const prev=s.sets[exId]||[];
+  const other=kind==='w'?'r':(kind==='r'?'w':null);
+  const mine=parseList(val);
+  const theirs=other?setCells(prev,other,ex):[];                 // sibling values, untouched
+  let n=Math.max(mine.length,theirs.length);
+  if(n<=1)n=ex.sets;                                             // single value → the planned set count
+  const pick=(l,i)=>l.length===0?null:(l.length===1?l[0]:(l[i]!==undefined?l[i]:null));
+  const out=[];
+  for(let i=0;i<n;i++){
+    const c={};
+    const raw=pick(mine,i);
+    if(raw!==null&&raw!==''&&isFinite(+raw)){
+      c[kind]=+raw;
+      if(kind==='w')c.u=u;                                       // tag weight with this exercise's unit
+    }
+    const sib=pick(theirs,i);
+    if(sib)Object.assign(c,sib);
+    out.push(c);
+  }
+  if(out.some(c=>c.w!=null||c.r!=null||c.t!=null))s.sets[exId]=out;
+  else delete s.sets[exId];
   save();
   document.getElementById('streakHdr').textContent=currentStreak();
+}
+function addSep(btn){                                            // "," key: keeps the numeric pad up
+  const inp=btn.parentNode.querySelector('input'); if(!inp)return;
+  const v=inp.value.replace(/[,\s]+$/,'');
+  if(v==='')return;
+  inp.value=v+', ';
+  inp.focus();
+  try{inp.setSelectionRange(inp.value.length,inp.value.length)}catch(e){}
+  inp.dispatchEvent(new Event('input',{bubbles:true}));
 }
 function toggleComplete(){
   const s=ensureSession(cur);
@@ -595,7 +683,7 @@ function importData(inp){
   r.onload=()=>{try{const d=JSON.parse(r.result);if(d.sessions){if(!d.overrides)d.overrides={};if(!d.shifts)d.shifts=[];data=d;save();render();alert('Backup restored ✓')}else alert('Not a valid backup')}catch(e){alert('Could not read file')}};
   r.readAsText(f);
 }
-function resetData(){if(confirm('Erase all logged workouts and streaks? This cannot be undone.')){data={meta:{startDate:null},sessions:{},settings:{unit:'kg',exUnit:{}},overrides:{},shifts:[]};save();cur=todayStr();render()}}
+function resetData(){if(confirm('Erase all logged workouts and streaks? This cannot be undone.')){data={meta:{startDate:null},sessions:{},settings:{unit:'kg',exUnit:{}},overrides:{},shifts:[]};try{localStorage.removeItem(BKEY)}catch(e){}save();cur=todayStr();render()}}
 
 /* ---------- Nav ---------- */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;if(tab==='today')cur=todayStr();window.scrollTo(0,0);render()});
