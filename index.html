@@ -192,6 +192,7 @@
       font-weight: 800;
     }
 
+    /* Common Card Styles */
     .exercise-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -201,15 +202,10 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.3);
     }
 
-    .exercise-card.cardio-priority {
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      background: linear-gradient(180deg, #16243d 0%, #131b2e 100%);
-    }
-
     .ex-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 12px;
     }
 
@@ -220,15 +216,15 @@
     }
 
     .ex-num {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
       background: rgba(56, 189, 248, 0.15);
       border: 1px solid rgba(56, 189, 248, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--primary-light);
     }
@@ -246,8 +242,8 @@
       color: var(--primary-light);
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.2);
-      padding: 4px 8px;
-      border-radius: 8px;
+      padding: 4px 10px;
+      border-radius: 10px;
       white-space: nowrap;
     }
 
@@ -258,11 +254,23 @@
       margin-bottom: 12px;
     }
 
+    .ex-tip-box {
+      background: rgba(16, 185, 129, 0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px 10px 10px 4px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #a7f3d0;
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    /* Sets Block */
     .sets-block {
       background: rgba(10, 14, 23, 0.6);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 6px 10px;
+      padding: 6px 12px;
       margin-bottom: 12px;
     }
 
@@ -270,7 +278,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 0;
+      padding: 9px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     }
 
@@ -282,7 +290,7 @@
       font-size: 12px;
       font-weight: 700;
       color: var(--text-muted);
-      width: 55px;
+      line-height: 1.2;
     }
 
     .weight-input {
@@ -291,7 +299,7 @@
       color: #fff;
       font-size: 13px;
       font-weight: 700;
-      width: 70px;
+      width: 65px;
       text-align: center;
       padding: 6px;
       border-radius: 8px;
@@ -302,7 +310,7 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--primary-light);
-      width: 80px;
+      min-width: 65px;
       text-align: center;
     }
 
@@ -315,7 +323,7 @@
       padding: 8px 14px;
       border-radius: 10px;
       cursor: pointer;
-      min-width: 90px;
+      min-width: 95px;
       text-align: center;
       transition: all 0.15s;
     }
@@ -347,11 +355,71 @@
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 8px;
       cursor: pointer;
     }
 
+    /* CARDIO SPECIFIC VISUALS */
+    .cardio-visual-box {
+      width: 100%;
+      height: 170px;
+      background: #091122;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cardio-badge-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .cardio-pulse-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 4px 10px;
+      border-radius: 14px;
+    }
+
+    @keyframes walkStrideF {
+      0% { transform: rotate(0deg); }
+      50% { transform: rotate(20deg); }
+      100% { transform: rotate(0deg); }
+    }
+    @keyframes walkStrideB {
+      0% { transform: rotate(0deg); }
+      50% { transform: rotate(-20deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .cardio-stage-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /* Floating Rest Timer Dock */
     .rest-dock {
       position: fixed;
       bottom: calc(76px + var(--safe-bottom));
@@ -481,12 +549,12 @@
       <div class="logo-badge">⚡</div>
       <div class="logo-text">
         <h1>ПРО ТРЕНЕР</h1>
-        <p>12 НЕДЕЛЬ МАССЫ + КАРДИО НА СКЛОНЕ</p>
+        <p>КУРС 12 НЕДЕЛЬ (МАССА + СЖИГАНИЕ ЖИРА)</p>
       </div>
     </div>
     <div class="user-pill">
       <div class="user-dot"></div>
-      <span id="user-badge-text">Программа Pro</span>
+      <span id="user-badge-text">174 см • 92 кг</span>
     </div>
   </header>
 
@@ -534,11 +602,11 @@
     <div class="section-label"><span>Журнал тренировок</span></div>
     <div id="workout-log-feed">
       <div class="library-item">
-        <div><div class="lib-title">Неделя 1-4 • День 1 (Кардио + Плечи/Трапеции)</div><div class="lib-cat">Разминка 40 мин + 19 подходов</div></div>
+        <div><div class="lib-title">Неделя 1-4 • День 1 (Ходьба в гору 40м + Плечи)</div><div class="lib-cat">Разминка 40 мин + 19 подходов</div></div>
         <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
       </div>
       <div class="library-item">
-        <div><div class="lib-title">Неделя 1-4 • День 2 (Кардио + Ноги/Руки)</div><div class="lib-cat">Разминка 40 мин + 22 подхода</div></div>
+        <div><div class="lib-title">Неделя 1-4 • День 2 (Ходьба в гору 40м + Ноги/Руки)</div><div class="lib-cat">Разминка 40 мин + 22 подхода</div></div>
         <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
       </div>
     </div>
@@ -574,18 +642,24 @@
   </div>
 
   <script>
-    /* ==================== 1. БАЗА УПРАЖНЕНИЙ ==================== */
+    /* 1. БАЗА ВСЕХ УПРАЖНЕНИЙ */
     const DB = [
-      // КАРДИО НА СКЛОНЕ
-      { 
-        id: 'incline_walk_40', 
-        name: '40 минут быстрой ходьбы в гору (на склоне)', 
-        cat: 'cardio', 
-        target: 'Разминка / Жиросжигание / Пульс 115-130', 
-        sets: 1, 
-        repsDef: '40 мин', 
-        isCardio: true,
-        tip: 'Уклон дорожки 6–8%, темп 4.8–5.2 км/ч. Не держитесь за поручни, держите корпус ровно и активно двигайте руками.' 
+      // 40 МИНУТ КАРДИО НА СКЛОНЕ (ПОЛНЫЙ БЛОК ИЗ СКРИНШОТА)
+      {
+        id: 'incline_walk_40',
+        name: '40 минут быстрой ходьбы в гору',
+        cat: 'cardio',
+        target: 'Zone 2 Fat Burn',
+        isCardioBox: true,
+        desc: '<strong>Почему ходьба, а не бег:</strong> при весе 92 кг бег создает свыше 300 кг ударной нагрузки на каждый шаг. Быстрая ходьба в гору сжигает столько же калорий без вреда для суставов.',
+        tip: '💡 <strong>ПРАВИЛО:</strong> Не держитесь за поручни! Двигайте руками вдоль корпуса — это увеличивает расход калорий на 25%.',
+        stages: [
+          { num: '1.', name: 'Разгон', param: 'Уклон 2% • 4.5 км/ч', time: '5 мин' },
+          { num: '2.', name: 'Темп', param: 'Уклон 4% • 5.0 км/ч', time: '10 мин' },
+          { num: '3.', name: 'Жир', param: 'Уклон 6% • 5.2 км/ч', time: '15 мин' },
+          { num: '4.', name: 'Гора', param: 'Уклон 7% • 5.0 км/ч', time: '5 мин' },
+          { num: '5.', name: 'Заминка', param: 'Уклон 1% • 4.0 км/ч', time: '5 мин' }
+        ]
       },
 
       // Плечи / Трапеции
@@ -649,7 +723,7 @@
       { id: 'fitball_crunch', name: 'Скручивания на фитболе', cat: 'abs', target: 'Пресс', sets: 3, repsDef: 'Max', tip: 'Большая амплитуда растяжения пресса на мяче.' }
     ];
 
-    /* ==================== 2. ПРОГРАММЫ (КРОСС НА СКЛОНЕ ПЕРВЫМ ПУНКТОМ) ==================== */
+    /* 2. ПРОГРАММЫ (ХОДЬБА В ГОРУ СТРОГО №1 В КАЖДОМ ДНЕ) */
     const PROGRAMS = {
       phase1: {
         title: 'Недели 1–4',
@@ -686,7 +760,7 @@
       }
     };
 
-    /* ==================== 3. ЛОГИКА ==================== */
+    /* 3. РАБОТА С ИНТЕРФЕЙСОМ */
     let state = {
       goal: 'phase1',
       dayIdx: 0
@@ -729,20 +803,81 @@
         const ex = DB.find(e => e.id === exId);
         if (!ex) return;
 
-        let setsRows = '';
+        const card = document.createElement('div');
+        card.className = 'exercise-card';
 
-        if (ex.isCardio) {
-          // Специальная карточка для 40-минутного кардио
-          setsRows = `
-            <div class="set-row">
-              <span class="set-label">Сессия</span>
-              <div><input type="text" class="weight-input" style="width: 80px;" value="Уклон 7%"></div>
-              <span class="reps-label">40 минут</span>
-              <button class="btn-set" onclick="checkSet(this, '${ex.name}')">Начать</button>
+        // ОСОБАЯ КАРТОЧКА ДЛЯ КАРДИО НА СКЛОНЕ (КАК НА СКРИНШОТЕ)
+        if (ex.isCardioBox) {
+          let stagesHtml = '';
+          ex.stages.forEach(st => {
+            stagesHtml += `
+              <div class="set-row">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span class="set-label">${st.num}<br>${st.name}</span>
+                  <span class="cardio-stage-title" style="margin-left: 6px;">${st.param}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="reps-label">${st.time}</span>
+                  <button class="btn-set" onclick="checkSet(this, '${st.name}')">Выполнить</button>
+                </div>
+              </div>
+            `;
+          });
+
+          card.innerHTML = `
+            <div class="ex-header">
+              <div class="ex-title-wrap">
+                <span style="font-size: 20px;">🚶</span>
+                <div class="ex-name">${ex.name}</div>
+              </div>
+              <div class="ex-target-badge">${ex.target}</div>
+            </div>
+
+            <!-- SVG Visual Box from Screenshot -->
+            <div class="cardio-visual-box">
+              <div class="cardio-badge-tag">АНИМАЦИЯ ТЕХНИКИ</div>
+              <div class="cardio-pulse-badge">❤️ ПУЛЬС: 115–130 УД/МИН</div>
+              <svg viewBox="0 0 260 140" style="width: 100%; height: 100%;">
+                <!-- Incline Track Deck -->
+                <line x1="45" y1="125" x2="215" y2="85" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
+                <line x1="215" y1="85" x2="228" y2="40" stroke="#64748b" stroke-width="4"/>
+                
+                <!-- Walking Human Figure -->
+                <circle cx="155" cy="40" r="8" fill="#ffffff"/> <!-- Head -->
+                <line x1="155" y1="48" x2="152" y2="78" stroke="#ffffff" stroke-width="4"/> <!-- Body -->
+                <line x1="155" y1="56" x2="168" y2="72" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/> <!-- Arm -->
+                
+                <!-- Walking Legs with stride animation -->
+                <g style="transform-origin: 152px 78px; animation: walkStrideF 1.2s ease-in-out infinite;">
+                  <line x1="152" y1="78" x2="148" y2="104" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+                </g>
+                <g style="transform-origin: 152px 78px; animation: walkStrideB 1.2s ease-in-out infinite;">
+                  <line x1="152" y1="78" x2="160" y2="100" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+                </g>
+              </svg>
+            </div>
+
+            <div class="ex-desc">${ex.desc}</div>
+            <div class="ex-tip-box">${ex.tip}</div>
+
+            <div class="sets-block">
+              ${stagesHtml}
+            </div>
+
+            <div class="ex-footer">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Таймер этапа:</span>
+              <div class="timer-buttons">
+                <button class="btn-timer-chip" onclick="startRest(300, 'Этап 5 мин')">5 мин</button>
+                <button class="btn-timer-chip" onclick="startRest(600, 'Этап 10 мин')">10 мин</button>
+                <button class="btn-timer-chip" onclick="startRest(900, 'Этап 15 мин')">15 мин</button>
+              </div>
             </div>
           `;
         } else {
+          // ОБЫЧНАЯ КАРТОЧКА СИЛОВОГО УПРАЖНЕНИЯ
+          let setsRows = '';
           const numSets = ex.sets || 3;
+
           for (let s = 1; s <= numSets; s++) {
             let repValue = ex.repsDef;
             if (Array.isArray(ex.repsDef)) {
@@ -758,29 +893,27 @@
               </div>
             `;
           }
+
+          card.innerHTML = `
+            <div class="ex-header">
+              <div class="ex-title-wrap">
+                <div class="ex-num">${idx + 1}</div>
+                <div class="ex-name">${ex.name}</div>
+              </div>
+              <div class="ex-target-badge">${ex.target}</div>
+            </div>
+            <div class="ex-desc">${ex.tip}</div>
+            <div class="sets-block">${setsRows}</div>
+            <div class="ex-footer">
+              <div class="timer-buttons">
+                <button class="btn-timer-chip" onclick="startRest(60, '${ex.name}')">60с</button>
+                <button class="btn-timer-chip" onclick="startRest(90, '${ex.name}')">90с</button>
+                <button class="btn-timer-chip" onclick="startRest(120, '${ex.name}')">120с</button>
+              </div>
+            </div>
+          `;
         }
 
-        const isCardioFirst = (idx === 0 && ex.isCardio);
-        const card = document.createElement('div');
-        card.className = `exercise-card ${isCardioFirst ? 'cardio-priority' : ''}`;
-        card.innerHTML = `
-          <div class="ex-header">
-            <div class="ex-title-wrap">
-              <div class="ex-num">${idx + 1}</div>
-              <div class="ex-name">${ex.name}</div>
-            </div>
-            <div class="ex-target-badge">${isCardioFirst ? '⭐ ПЕРЕД ТРЕНИРОВКОЙ' : ex.target}</div>
-          </div>
-          <div class="ex-desc">${ex.tip}</div>
-          <div class="sets-block">${setsRows}</div>
-          <div class="ex-footer">
-            <div class="timer-buttons">
-              <button class="btn-timer-chip" onclick="startRest(60, '${ex.name}')">60с</button>
-              <button class="btn-timer-chip" onclick="startRest(90, '${ex.name}')">90с</button>
-              <button class="btn-timer-chip" onclick="startRest(120, '${ex.name}')">120с</button>
-            </div>
-          </div>
-        `;
         container.appendChild(card);
       });
     }
@@ -789,9 +922,10 @@
       btn.classList.toggle('done');
       const isDone = btn.classList.contains('done');
       btn.textContent = isDone ? '✓ Готово' : 'Выполнить';
-      if (isDone) startRest(75, exName);
+      if (isDone) startRest(60, exName);
     }
 
+    /* Floating Rest Timer Logic */
     let restTimerId = null;
     let restSeconds = 60;
 
@@ -803,12 +937,12 @@
       const title = document.getElementById('dock-ex-title');
 
       dock.classList.add('active');
-      digits.textContent = `${restSeconds}с`;
-      title.textContent = `Отдых: ${exTitle || ''}`;
+      digits.textContent = formatSec(restSeconds);
+      title.textContent = `Таймер: ${exTitle || ''}`;
 
       restTimerId = setInterval(() => {
         restSeconds--;
-        digits.textContent = `${restSeconds}с`;
+        digits.textContent = formatSec(restSeconds);
         if (restSeconds <= 0) {
           clearInterval(restTimerId);
           digits.textContent = 'В БОЙ!';
@@ -817,9 +951,18 @@
       }, 1000);
     }
 
+    function formatSec(s) {
+      if (s >= 60) {
+        const m = Math.floor(s / 60);
+        const rem = s % 60;
+        return `${m}м ${rem < 10 ? '0' : ''}${rem}с`;
+      }
+      return `${s}с`;
+    }
+
     function adjustRest(delta) {
       restSeconds = Math.max(5, restSeconds + delta);
-      document.getElementById('dock-timer-digits').textContent = `${restSeconds}с`;
+      document.getElementById('dock-timer-digits').textContent = formatSec(restSeconds);
     }
 
     function closeRestTimer() {
@@ -838,7 +981,7 @@
         item.innerHTML = `
           <div>
             <div class="lib-title">${ex.name}</div>
-            <div class="lib-cat">${ex.target} • Подходов: ${ex.sets} (${Array.isArray(ex.repsDef) ? ex.repsDef.join('/') : ex.repsDef})</div>
+            <div class="lib-cat">${ex.target}</div>
           </div>
         `;
         list.appendChild(item);
