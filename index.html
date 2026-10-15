@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#0a0e17">
-  <title>Фитнес Тренер Pro — Набор массы</title>
+  <title>Фитнес Тренер Pro — Масса + Кардио на склоне</title>
   <style>
     :root {
       --bg: #0a0e17;
@@ -201,6 +201,11 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.3);
     }
 
+    .exercise-card.cardio-priority {
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: linear-gradient(180deg, #16243d 0%, #131b2e 100%);
+    }
+
     .ex-header {
       display: flex;
       justify-content: space-between;
@@ -277,7 +282,7 @@
       font-size: 12px;
       font-weight: 700;
       color: var(--text-muted);
-      width: 52px;
+      width: 55px;
     }
 
     .weight-input {
@@ -297,7 +302,7 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--primary-light);
-      width: 70px;
+      width: 80px;
       text-align: center;
     }
 
@@ -476,12 +481,12 @@
       <div class="logo-badge">⚡</div>
       <div class="logo-text">
         <h1>ПРО ТРЕНЕР</h1>
-        <p>КУРС НАБОРА МАССЫ (12 НЕДЕЛЬ)</p>
+        <p>12 НЕДЕЛЬ МАССЫ + КАРДИО НА СКЛОНЕ</p>
       </div>
     </div>
     <div class="user-pill">
       <div class="user-dot"></div>
-      <span id="user-badge-text">Масса Pro</span>
+      <span id="user-badge-text">Программа Pro</span>
     </div>
   </header>
 
@@ -512,7 +517,7 @@
     <div id="exercises-container"></div>
   </div>
 
-  <!-- ==================== VIEW 2: 100+ LIBRARY ==================== -->
+  <!-- ==================== VIEW 2: LIBRARY ==================== -->
   <div id="view-library" class="container hidden">
     <div class="section-label">
       <span>База упражнений</span>
@@ -529,11 +534,11 @@
     <div class="section-label"><span>Журнал тренировок</span></div>
     <div id="workout-log-feed">
       <div class="library-item">
-        <div><div class="lib-title">Неделя 1-4 • День 1 (Плечи/Трапеции)</div><div class="lib-cat">19 подходов выполнено</div></div>
+        <div><div class="lib-title">Неделя 1-4 • День 1 (Кардио + Плечи/Трапеции)</div><div class="lib-cat">Разминка 40 мин + 19 подходов</div></div>
         <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
       </div>
       <div class="library-item">
-        <div><div class="lib-title">Неделя 1-4 • День 2 (Ноги, Руки)</div><div class="lib-cat">22 подхода выполнено</div></div>
+        <div><div class="lib-title">Неделя 1-4 • День 2 (Кардио + Ноги/Руки)</div><div class="lib-cat">Разминка 40 мин + 22 подхода</div></div>
         <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
       </div>
     </div>
@@ -569,8 +574,20 @@
   </div>
 
   <script>
-    /* 1. БАЗА УПРАЖНЕНИЙ ИЗ PDF-ДОКУМЕНТА */
+    /* ==================== 1. БАЗА УПРАЖНЕНИЙ ==================== */
     const DB = [
+      // КАРДИО НА СКЛОНЕ
+      { 
+        id: 'incline_walk_40', 
+        name: '40 минут быстрой ходьбы в гору (на склоне)', 
+        cat: 'cardio', 
+        target: 'Разминка / Жиросжигание / Пульс 115-130', 
+        sets: 1, 
+        repsDef: '40 мин', 
+        isCardio: true,
+        tip: 'Уклон дорожки 6–8%, темп 4.8–5.2 км/ч. Не держитесь за поручни, держите корпус ровно и активно двигайте руками.' 
+      },
+
       // Плечи / Трапеции
       { id: 'db_seated_press', name: 'Жим гантелей сидя', cat: 'shoulders', target: 'Дельты (Плечи)', sets: 4, repsDef: '6-8', tip: 'Спина плотно прижата к спинке, мощный выжим вверх.' },
       { id: 'upright_row', name: 'Тяга штанги к подбородку', cat: 'shoulders', target: 'Дельты и Трапеции', sets: 3, repsDef: '10-12', tip: 'Тяните локтями вверх, гриф скользит вдоль корпуса.' },
@@ -632,44 +649,44 @@
       { id: 'fitball_crunch', name: 'Скручивания на фитболе', cat: 'abs', target: 'Пресс', sets: 3, repsDef: 'Max', tip: 'Большая амплитуда растяжения пресса на мяче.' }
     ];
 
-    /* 2. РАСПИСАНИЕ С ПЕРИОДАМИ ИЗ PDF */
+    /* ==================== 2. ПРОГРАММЫ (КРОСС НА СКЛОНЕ ПЕРВЫМ ПУНКТОМ) ==================== */
     const PROGRAMS = {
       phase1: {
         title: 'Недели 1–4',
         days: [
-          { title: 'День 1: Плечи/Трапеции', exercises: ['db_seated_press', 'upright_row', 'bent_lateral_raise', 'arnold_press', 'lateral_raise_100', 'shrugs_barbell_heavy'] },
-          { title: 'День 2: Ноги/Руки', exercises: ['barbell_squats', 'romanian_deadlift', 'barbell_curl', 'close_grip_bench_incline_rev', 'scott_curl', 'french_press_db', 'hammer_curl', 'tricep_pushdown'] },
-          { title: 'День 3: Трапеции/Плечи', exercises: ['shrugs_barbell', 'shrugs_smith_behind', 'upright_row', 'calf_raises', 'bent_lateral_100', 'military_press'] },
-          { title: 'День 4: Грудные/Спина', exercises: ['incline_barbell_press', 'bent_over_row', 'flat_db_press', 'lat_pulldown', 'decline_barbell_press', 'seated_cable_row'] }
+          { title: 'День 1: Плечи/Трапеции', exercises: ['incline_walk_40', 'db_seated_press', 'upright_row', 'bent_lateral_raise', 'arnold_press', 'lateral_raise_100', 'shrugs_barbell_heavy'] },
+          { title: 'День 2: Ноги/Руки', exercises: ['incline_walk_40', 'barbell_squats', 'romanian_deadlift', 'barbell_curl', 'close_grip_bench_incline_rev', 'scott_curl', 'french_press_db', 'hammer_curl', 'tricep_pushdown'] },
+          { title: 'День 3: Трапеции/Плечи', exercises: ['incline_walk_40', 'shrugs_barbell', 'shrugs_smith_behind', 'upright_row', 'calf_raises', 'bent_lateral_100', 'military_press'] },
+          { title: 'День 4: Грудные/Спина', exercises: ['incline_walk_40', 'incline_barbell_press', 'bent_over_row', 'flat_db_press', 'lat_pulldown', 'decline_barbell_press', 'seated_cable_row'] }
         ]
       },
       phase2: {
         title: 'Недели 5–8',
         days: [
-          { title: 'День 1: Грудные/Бицепсы', exercises: ['incline_barbell_press', 'incline_db_press', 'crossover_incline', 'bench_press_100', 'barbell_curl_5x5'] },
-          { title: 'День 2: Бедра', exercises: ['barbell_squats', 'romanian_deadlift', 'leg_press', 'leg_curl_elevated', 'leg_curl_100'] },
-          { title: 'День 3: Бицепс/Грудные', exercises: ['barbell_curl', 'barbell_curl_reverse', 'hammer_curl', 'machine_arm_curl', 'scott_curl_100', 'incline_db_press'] },
-          { title: 'День 4: Спина/Трицепс', exercises: ['bent_over_row', 'pullups_weighted', 'lat_pulldown', 'french_press', 'tricep_pushdown'] }
+          { title: 'День 1: Грудные/Бицепсы', exercises: ['incline_walk_40', 'incline_barbell_press', 'incline_db_press', 'crossover_incline', 'bench_press_100', 'barbell_curl_5x5'] },
+          { title: 'День 2: Бедра', exercises: ['incline_walk_40', 'barbell_squats', 'romanian_deadlift', 'leg_press', 'leg_curl_elevated', 'leg_curl_100'] },
+          { title: 'День 3: Бицепс/Грудные', exercises: ['incline_walk_40', 'barbell_curl', 'barbell_curl_reverse', 'hammer_curl', 'machine_arm_curl', 'scott_curl_100', 'incline_db_press'] },
+          { title: 'День 4: Спина/Трицепс', exercises: ['incline_walk_40', 'bent_over_row', 'pullups_weighted', 'lat_pulldown', 'french_press', 'tricep_pushdown'] }
         ]
       },
       phase3: {
         title: 'Недели 9–12',
         days: [
-          { title: 'День 1: Бедра', exercises: ['barbell_squats', 'leg_press', 'leg_extension', 'romanian_deadlift_5'] },
-          { title: 'День 2: Плечи/Спина', exercises: ['upright_row', 'bent_lateral_raise', 'cable_lateral_raise', 'bent_over_row', 'lat_pulldown', 'shrugs_smith_behind'] },
-          { title: 'День 3: Бицепсы/Трицепсы', exercises: ['scott_curl', 'alternate_db_curl', 'barbell_curl_reverse', 'close_grip_bench', 'french_press', 'tricep_pushdown'] },
-          { title: 'День 4: Грудные/Плечи', exercises: ['decline_db_press', 'dips', 'crossover_standing', 'db_seated_press', 'standing_lateral_raise', 'front_raise'] }
+          { title: 'День 1: Бедра', exercises: ['incline_walk_40', 'barbell_squats', 'leg_press', 'leg_extension', 'romanian_deadlift_5'] },
+          { title: 'День 2: Плечи/Спина', exercises: ['incline_walk_40', 'upright_row', 'bent_lateral_raise', 'cable_lateral_raise', 'bent_over_row', 'lat_pulldown', 'shrugs_smith_behind'] },
+          { title: 'День 3: Бицепсы/Трицепсы', exercises: ['incline_walk_40', 'scott_curl', 'alternate_db_curl', 'barbell_curl_reverse', 'close_grip_bench', 'french_press', 'tricep_pushdown'] },
+          { title: 'День 4: Грудные/Плечи', exercises: ['incline_walk_40', 'decline_db_press', 'dips', 'crossover_standing', 'db_seated_press', 'standing_lateral_raise', 'front_raise'] }
         ]
       },
       abs_program: {
-        title: 'Пресс (в конце каждой тренировки)',
+        title: 'Пресс (в конце любой тренировки)',
         days: [
           { title: 'Блок пресса из PDF', exercises: ['cable_crunch', 'hanging_leg_raise', 'fitball_crunch'] }
         ]
       }
     };
 
-    /* 3. РАБОЧАЯ ЛОГИКА ИНТЕРФЕЙСА */
+    /* ==================== 3. ЛОГИКА ==================== */
     let state = {
       goal: 'phase1',
       dayIdx: 0
@@ -713,33 +730,46 @@
         if (!ex) return;
 
         let setsRows = '';
-        const numSets = ex.sets || 3;
 
-        for (let s = 1; s <= numSets; s++) {
-          let repValue = ex.repsDef;
-          if (Array.isArray(ex.repsDef)) {
-            repValue = ex.repsDef[s - 1] || ex.repsDef[ex.repsDef.length - 1];
-          }
-
-          setsRows += `
+        if (ex.isCardio) {
+          // Специальная карточка для 40-минутного кардио
+          setsRows = `
             <div class="set-row">
-              <span class="set-label">Сет ${s}</span>
-              <div><input type="number" class="weight-input" placeholder="кг" value="40"> кг</div>
-              <span class="reps-label">${repValue} повт</span>
-              <button class="btn-set" onclick="checkSet(this, '${ex.name}')">Выполнить</button>
+              <span class="set-label">Сессия</span>
+              <div><input type="text" class="weight-input" style="width: 80px;" value="Уклон 7%"></div>
+              <span class="reps-label">40 минут</span>
+              <button class="btn-set" onclick="checkSet(this, '${ex.name}')">Начать</button>
             </div>
           `;
+        } else {
+          const numSets = ex.sets || 3;
+          for (let s = 1; s <= numSets; s++) {
+            let repValue = ex.repsDef;
+            if (Array.isArray(ex.repsDef)) {
+              repValue = ex.repsDef[s - 1] || ex.repsDef[ex.repsDef.length - 1];
+            }
+
+            setsRows += `
+              <div class="set-row">
+                <span class="set-label">Сет ${s}</span>
+                <div><input type="number" class="weight-input" placeholder="кг" value="40"> кг</div>
+                <span class="reps-label">${repValue} повт</span>
+                <button class="btn-set" onclick="checkSet(this, '${ex.name}')">Выполнить</button>
+              </div>
+            `;
+          }
         }
 
+        const isCardioFirst = (idx === 0 && ex.isCardio);
         const card = document.createElement('div');
-        card.className = 'exercise-card';
+        card.className = `exercise-card ${isCardioFirst ? 'cardio-priority' : ''}`;
         card.innerHTML = `
           <div class="ex-header">
             <div class="ex-title-wrap">
               <div class="ex-num">${idx + 1}</div>
               <div class="ex-name">${ex.name}</div>
             </div>
-            <div class="ex-target-badge">${ex.target}</div>
+            <div class="ex-target-badge">${isCardioFirst ? '⭐ ПЕРЕД ТРЕНИРОВКОЙ' : ex.target}</div>
           </div>
           <div class="ex-desc">${ex.tip}</div>
           <div class="sets-block">${setsRows}</div>
