@@ -3,30 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#070a13">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>1Fit Pro Coach</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0e17">
+  <title>Фитнес Тренер Pro — Набор массы</title>
   <style>
     :root {
-      --bg: #060911;
-      --surface: #0e1424;
-      --surface-elevated: #151d34;
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-border-glow: rgba(56, 189, 248, 0.25);
-      --primary: #38bdf8;
-      --primary-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      --bg: #0a0e17;
+      --card: #131b2e;
+      --card-active: #1a2540;
+      --primary: #0284c7;
+      --primary-light: #38bdf8;
       --accent: #10b981;
-      --accent-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
-      --accent-glow: rgba(16, 185, 129, 0.16);
-      --orange: #f97316;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      --danger: #ef4444;
       --text: #f8fafc;
-      --text-muted: #8899b5;
-      --text-subtle: #4c5d78;
-      --anim-bg: #090e1c;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
       --safe-bottom: env(safe-area-inset-bottom, 20px);
     }
 
@@ -34,7 +25,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
@@ -42,32 +33,17 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      padding-bottom: calc(90px + var(--safe-bottom));
-      overflow-x: hidden;
+      padding-bottom: calc(85px + var(--safe-bottom));
       min-height: 100vh;
+      user-select: none;
     }
 
-    /* Subtle background ambient blur */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -120px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 420px;
-      height: 280px;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(6, 9, 17, 0) 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* App Header */
     header {
-      background: rgba(11, 16, 30, 0.85);
+      background: rgba(19, 27, 46, 0.95);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--card-border);
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 50;
@@ -76,58 +52,55 @@
       align-items: center;
     }
 
-    .brand {
+    .header-logo {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .brand-icon {
-      width: 34px;
-      height: 34px;
+    .logo-badge {
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
-      background: var(--primary-gradient);
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
-      color: #060911;
       font-weight: 900;
-      font-size: 17px;
+      color: #0a0e17;
+      font-size: 18px;
     }
 
-    .brand-text h1 {
-      font-size: 15px;
+    .logo-text h1 {
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: -0.2px;
       color: #fff;
       line-height: 1.1;
     }
 
-    .brand-text p {
+    .logo-text p {
       font-size: 10px;
-      color: var(--primary);
+      color: var(--primary-light);
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
     }
 
     .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--border);
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
       color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .user-pill-dot {
-      width: 6px;
-      height: 6px;
+    .user-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 8px var(--accent);
@@ -137,185 +110,102 @@
       max-width: 520px;
       margin: 0 auto;
       padding: 16px;
-      position: relative;
-      z-index: 1;
     }
 
-    /* Dashboard Widgets Grid */
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .metric-card {
-      background: linear-gradient(180deg, rgba(21, 29, 52, 0.7) 0%, rgba(14, 20, 36, 0.7) 100%);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(10px);
-      border-radius: 18px;
-      padding: 12px 10px;
-      text-align: center;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .metric-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-    }
-
-    .metric-val {
-      font-size: 21px;
+    .section-label {
+      font-size: 13px;
       font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #fff;
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 3px;
-    }
-
-    .metric-val span {
-      font-size: 12px;
-      font-weight: 600;
       color: var(--text-muted);
-    }
-
-    .metric-lbl {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    .water-chip {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--primary);
-      border-radius: 12px;
-      padding: 3px 8px;
-      font-size: 10px;
-      font-weight: 700;
-      margin-top: 5px;
-      cursor: pointer;
-      display: inline-block;
-      transition: all 0.2s;
-    }
-
-    .water-chip:active {
-      transform: scale(0.92);
-      background: var(--primary);
-      color: #060911;
-    }
-
-    /* Active Mode Ribbon */
-    .session-banner {
-      background: linear-gradient(135deg, rgba(21, 29, 52, 0.9) 0%, rgba(14, 20, 36, 0.9) 100%);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 20px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.2);
     }
 
-    .session-info h3 {
-      font-size: 14px;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .session-info p {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .btn-finish {
-      background: var(--accent-gradient);
-      color: #060911;
-      border: none;
-      padding: 9px 15px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-      transition: all 0.2s;
-    }
-
-    .btn-finish:active {
-      transform: scale(0.94);
-    }
-
-    /* Program Sub-Tabs (Horizontal scrollable pill list) */
-    .tabs-wrapper {
-      position: relative;
-      margin-bottom: 18px;
-    }
-
-    .tabs {
+    .goal-scroll {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
       scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
     }
 
-    .tabs::-webkit-scrollbar {
+    .goal-scroll::-webkit-scrollbar {
       display: none;
     }
 
-    .tab-pill {
+    .goal-btn {
       flex: 0 0 auto;
-      padding: 9px 14px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      color: var(--text-muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px 14px;
+      color: #fff;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      transition: all 0.2s;
     }
 
-    .tab-pill.active {
-      background: var(--primary-gradient);
-      color: #060911;
-      border-color: transparent;
-      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+    .goal-btn.active {
+      background: var(--primary);
+      border-color: var(--primary-light);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
     }
 
-    /* Exercise Card */
-    .ex-card {
-      background: var(--surface);
-      border: 1px solid var(--card-border);
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+
+    .day-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .day-tab {
+      flex: 0 0 auto;
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .day-tab.active {
+      background: #fff;
+      color: #0a0e17;
+      border-color: #fff;
+      font-weight: 800;
+    }
+
+    .exercise-card {
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 22px;
       padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
     }
 
-    .ex-top {
+    .ex-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .ex-title-wrap {
@@ -325,16 +215,17 @@
     }
 
     .ex-num {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 12px;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--primary-light);
     }
 
     .ex-name {
@@ -344,76 +235,29 @@
       line-height: 1.25;
     }
 
-    .ex-badge {
+    .ex-target-badge {
       font-size: 11px;
-      color: var(--primary);
+      font-weight: 700;
+      color: var(--primary-light);
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.2);
-      padding: 3px 8px;
+      padding: 4px 8px;
       border-radius: 8px;
-      font-weight: 700;
       white-space: nowrap;
-    }
-
-    /* Animation Box */
-    .anim-box {
-      width: 100%;
-      height: 165px;
-      background: var(--anim-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      margin: 8px 0 12px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .anim-tag {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 9px;
-      color: var(--accent);
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .anim-svg {
-      width: 100%;
-      height: 100%;
     }
 
     .ex-desc {
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.45;
-      margin-bottom: 10px;
-    }
-
-    .coach-callout {
-      background: rgba(16, 185, 129, 0.08);
-      border-left: 3px solid var(--accent);
-      border-radius: 4px 12px 12px 4px;
-      padding: 8px 12px;
-      font-size: 12px;
-      color: #a7f3d0;
-      line-height: 1.4;
       margin-bottom: 12px;
     }
 
-    /* Sets Table Modern Design */
     .sets-block {
-      background: rgba(6, 9, 17, 0.5);
-      border: 1px solid var(--card-border);
+      background: rgba(10, 14, 23, 0.6);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 8px;
+      padding: 6px 10px;
       margin-bottom: 12px;
     }
 
@@ -421,7 +265,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 4px;
+      padding: 8px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     }
 
@@ -429,154 +273,142 @@
       border-bottom: none;
     }
 
-    .set-col-label {
+    .set-label {
       font-size: 12px;
       font-weight: 700;
       color: var(--text-muted);
-      width: 45px;
+      width: 52px;
     }
 
-    .weight-chip-input {
-      background: var(--surface-elevated);
-      border: 1px solid var(--card-border);
+    .weight-input {
+      background: var(--card-active);
+      border: 1px solid var(--border);
       color: #fff;
       font-size: 13px;
       font-weight: 700;
-      width: 65px;
+      width: 70px;
       text-align: center;
       padding: 6px;
       border-radius: 8px;
       outline: none;
-      transition: border-color 0.2s;
     }
 
-    .weight-chip-input:focus {
-      border-color: var(--primary);
-    }
-
-    .reps-tag {
+    .reps-label {
       font-size: 12px;
-      color: var(--text-muted);
       font-weight: 600;
-      width: 55px;
+      color: var(--primary-light);
+      width: 70px;
       text-align: center;
     }
 
-    .btn-set-check {
-      background: var(--surface-elevated);
-      border: 1px solid var(--card-border);
+    .btn-set {
+      background: var(--card-active);
+      border: 1px solid var(--border);
       color: #e2e8f0;
       font-size: 12px;
       font-weight: 700;
-      padding: 7px 14px;
+      padding: 8px 14px;
       border-radius: 10px;
       cursor: pointer;
       min-width: 90px;
-      transition: all 0.2s;
-      user-select: none;
+      text-align: center;
+      transition: all 0.15s;
     }
 
-    .btn-set-check:active {
-      transform: scale(0.95);
-    }
-
-    .btn-set-check.done {
-      background: var(--accent-gradient);
-      color: #060911;
+    .btn-set.done {
+      background: var(--accent);
+      color: #0a0e17;
       border-color: transparent;
-      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 2px 10px var(--accent-glow);
     }
 
-    /* Card Footer: Timer bar */
-    .card-footer {
+    .ex-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
       padding: 8px 12px;
       border-radius: 12px;
     }
 
-    .timer-caption {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .timer-pill-group {
+    .timer-buttons {
       display: flex;
       gap: 6px;
     }
 
-    .timer-quick-btn {
-      background: var(--surface-elevated);
-      border: 1px solid var(--card-border);
+    .btn-timer-chip {
+      background: var(--card-active);
+      border: 1px solid var(--border);
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      padding: 5px 10px;
+      padding: 6px 10px;
       border-radius: 8px;
       cursor: pointer;
-      transition: all 0.15s;
     }
 
-    .timer-quick-btn:active {
-      background: var(--primary);
-      color: #060911;
-      transform: scale(0.92);
-    }
-
-    /* Floating Timer Pill */
-    .floating-timer {
+    .rest-dock {
       position: fixed;
-      bottom: calc(82px + var(--safe-bottom));
-      left: 50%;
-      transform: translateX(-50%) scale(0.95);
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 30px;
-      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.5);
+      bottom: calc(76px + var(--safe-bottom));
+      left: 14px;
+      right: 14px;
+      max-width: 492px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #131b2e 0%, #0a0e17 100%);
+      border: 1px solid var(--primary-light);
+      border-radius: 20px;
+      padding: 12px 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.2);
+      z-index: 100;
       display: none;
       align-items: center;
-      gap: 12px;
-      z-index: 100;
-      font-weight: 800;
-      font-size: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      justify-content: space-between;
     }
 
-    .floating-timer.active {
+    .rest-dock.active {
       display: flex;
-      transform: translateX(-50%) scale(1);
     }
 
-    .timer-dismiss {
-      background: rgba(0, 0, 0, 0.25);
-      border: none;
-      color: #fff;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
+    .rest-timer-display {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--primary-light);
+      letter-spacing: -0.5px;
+    }
+
+    .rest-label {
+      font-size: 12px;
+      color: #e2e8f0;
+      font-weight: 700;
+    }
+
+    .rest-controls {
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 11px;
+      gap: 6px;
     }
 
-    /* Bottom Tab Bar (iOS style) */
-    .bottom-nav {
+    .btn-dock-action {
+      background: var(--card-active);
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .navbar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(11, 16, 30, 0.92);
+      background: rgba(19, 27, 46, 0.95);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      border-top: 1px solid var(--card-border);
-      padding: 8px 12px calc(8px + var(--safe-bottom));
+      border-top: 1px solid var(--border);
+      padding: 8px 10px calc(8px + var(--safe-bottom));
       display: flex;
       justify-content: space-around;
       z-index: 60;
@@ -585,7 +417,7 @@
     .nav-btn {
       background: transparent;
       border: none;
-      color: var(--text-subtle);
+      color: var(--text-muted);
       font-size: 10px;
       font-weight: 700;
       display: flex;
@@ -594,7 +426,6 @@
       gap: 4px;
       cursor: pointer;
       flex: 1;
-      transition: color 0.2s;
     }
 
     .nav-btn svg {
@@ -603,1781 +434,418 @@
       stroke: currentColor;
       fill: none;
       stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: transform 0.2s;
     }
 
     .nav-btn.active {
-      color: var(--primary);
+      color: var(--primary-light);
     }
 
-    .nav-btn.active svg {
-      transform: translateY(-2px);
-      stroke: var(--primary);
-    }
-
-    /* Calendar & Log Styling */
-    .cal-box {
-      background: var(--surface);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 16px;
-      margin-bottom: 18px;
-    }
-
-    .cal-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .cal-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .cal-arrow {
-      background: var(--surface-elevated);
-      border: 1px solid var(--card-border);
-      color: #fff;
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .cal-grid-layout {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      text-align: center;
-    }
-
-    .cal-head-day {
-      font-size: 11px;
-      color: var(--text-subtle);
-      font-weight: 800;
-      padding-bottom: 4px;
-    }
-
-    .cal-cell {
-      aspect-ratio: 1;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid transparent;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .cal-cell.today {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .cal-cell.done-day {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.4);
-      color: #a7f3d0;
-    }
-
-    .cal-dot-indicator {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--accent);
-      position: absolute;
-      bottom: 4px;
-    }
-
-    /* History Feed */
-    .history-card {
-      background: var(--surface);
-      border: 1px solid var(--card-border);
+    .library-item {
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 14px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .history-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .history-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-
-    .history-tag {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    /* Profile / Settings Tab */
-    .prof-card {
-      background: var(--surface);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-
-    .prof-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 13px;
-    }
-
-    .prof-row:last-child {
-      border-bottom: none;
-    }
-
-    .prof-row span:first-child {
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .prof-row span:last-child {
-      color: #fff;
-      font-weight: 800;
-    }
-
-    .input-box {
-      width: 100%;
-      background: var(--surface-elevated);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
       padding: 12px 14px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      margin-top: 8px;
-      outline: none;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .btn-main {
-      width: 100%;
-      background: var(--primary-gradient);
-      color: #060911;
-      border: none;
-      padding: 14px;
-      border-radius: 14px;
+    .lib-title {
+      font-size: 13px;
       font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 14px;
-      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
-      transition: transform 0.15s;
+      color: #fff;
     }
 
-    .btn-main:active {
-      transform: scale(0.97);
+    .lib-cat {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
 
     .hidden {
       display: none !important;
     }
-
-    /* ==============================================
-       SVG ANIMATION KEYFRAMES
-       ============================================== */
-    @keyframes legPressPlat { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-24px, 20px); } }
-    @keyframes legKnee { 0%, 100% { d: path("M 100,105 L 145,95 L 180,80"); } 50% { d: path("M 100,105 L 125,70 L 155,100"); } }
-    .anim-leg-plat { animation: legPressPlat 3s ease-in-out infinite; }
-    .anim-leg-knee { animation: legKnee 3s ease-in-out infinite; }
-
-    @keyframes latPull { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(30px); } }
-    @keyframes latArmMove { 0%, 100% { d: path("M 130,90 L 115,45 M 150,90 L 165,45"); } 50% { d: path("M 130,90 L 105,85 L 115,75 M 150,90 L 175,85 L 165,75"); } }
-    .anim-lat-bar { animation: latPull 2.8s ease-in-out infinite; }
-    .anim-lat-arms { animation: latArmMove 2.8s ease-in-out infinite; }
-
-    @keyframes dbPress { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(0, 22px); } }
-    .anim-db-press { animation: dbPress 2.6s ease-in-out infinite; }
-
-    @keyframes legCurlMove { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-65deg); } }
-    .anim-leg-curl { transform-origin: 135px 105px; animation: legCurlMove 2.6s ease-in-out infinite; }
-
-    @keyframes latRaiseL { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-38deg); } }
-    @keyframes latRaiseR { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(38deg); } }
-    .anim-lat-raise-l { transform-origin: 137px 60px; animation: latRaiseL 2.4s ease-in-out infinite; }
-    .anim-lat-raise-r { transform-origin: 143px 60px; animation: latRaiseR 2.4s ease-in-out infinite; }
-
-    @keyframes crunchMove { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-22deg); } }
-    .anim-crunch { transform-origin: 140px 135px; animation: crunchMove 2.5s ease-in-out infinite; }
-
-    @keyframes squatTorso { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(30px); } }
-    @keyframes squatLegMove { 0%, 100% { d: path("M 135,115 L 130,145 L 130,150 M 145,115 L 150,145 L 150,150"); } 50% { d: path("M 135,145 L 115,140 L 125,150 M 145,145 L 165,140 L 155,150"); } }
-    .anim-squat-torso { animation: squatTorso 3s ease-in-out infinite; }
-    .anim-squat-legs { animation: squatLegMove 3s ease-in-out infinite; }
-
-    @keyframes rowHandleMove { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-35px); } }
-    @keyframes rowArmMove { 0%, 100% { d: path("M 105,85 L 175,90"); } 50% { d: path("M 105,85 L 100,90 L 140,90"); } }
-    .anim-row-handle { animation: rowHandleMove 2.8s ease-in-out infinite; }
-    .anim-row-arms { animation: rowArmMove 2.8s ease-in-out infinite; }
-
-    @keyframes bicepCurl { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-85deg); } }
-    .anim-bicep { transform-origin: 142px 78px; animation: bicepCurl 2.4s ease-in-out infinite; }
-
-    @keyframes tricepPush { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(70deg); } }
-    .anim-tricep { transform-origin: 145px 78px; animation: tricepPush 2.4s ease-in-out infinite; }
-
-    @keyframes hyperTorso { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(45deg); } }
-    .anim-hyper { transform-origin: 140px 98px; animation: hyperTorso 3.2s ease-in-out infinite; }
-
-    @keyframes walkFront { 0%, 100% { d: path("M 135,95 L 115,125 L 110,135"); } 50% { d: path("M 135,95 L 155,120 L 160,135"); } }
-    @keyframes walkBack { 0%, 100% { d: path("M 140,95 L 160,120 L 165,135"); } 50% { d: path("M 140,95 L 120,125 L 115,135"); } }
-    .anim-walk-f { animation: walkFront 1.2s linear infinite; }
-    .anim-walk-b { animation: walkBack 1.2s linear infinite; }
-
-    @keyframes pushupBody { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(22px); } }
-    .anim-pushup { animation: pushupBody 2.6s ease-in-out infinite; }
-
-    @keyframes legExtMove { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(65deg); } }
-    .anim-leg-ext { transform-origin: 145px 105px; animation: legExtMove 2.6s ease-in-out infinite; }
-
-    @keyframes dbRowArm { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-24px); } }
-    .anim-db-row { animation: dbRowArm 2.5s ease-in-out infinite; }
-
-    @keyframes legRaiseMove { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-55deg); } }
-    .anim-leg-raise { transform-origin: 130px 125px; animation: legRaiseMove 2.8s ease-in-out infinite; }
-
-    @keyframes ellipFeet { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .anim-ellip { transform-origin: 140px 125px; animation: ellipFeet 1.8s linear infinite; }
-  
-    /* 1Fit Integration Styles */
-    .onefit-launch-btn {
-      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
-      color: #060911;
-      border: none;
-      padding: 5px 9px;
-      border-radius: 12px;
-      font-size: 10px;
-      font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.35);
-      margin-left: 6px;
-      transition: transform 0.15s;
-    }
-    .onefit-launch-btn:active {
-      transform: scale(0.92);
-    }
-    .onefit-card {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(14, 20, 36, 0.8) 100%);
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    .onefit-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .onefit-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #fef08a;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .bonus-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .bonus-tile {
-      background: rgba(6, 9, 17, 0.6);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 10px;
-      text-align: center;
-    }
-    .bonus-val {
-      font-size: 16px;
-      font-weight: 800;
-      color: #fef08a;
-    }
-    .bonus-btn {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      color: #fef08a;
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 10px;
-      font-weight: 700;
-      margin-top: 6px;
-      cursor: pointer;
-    }
-    .cal-sync-btn {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--primary);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-      margin-top: 10px;
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation Header -->
+  <!-- Top App Bar -->
   <header>
-    <div class="brand">
-      <div class="brand-icon">⚡</div>
-      <div class="brand-text">
-        <h1>1FIT PRO</h1>
-        <p>SMART COACH</p>
+    <div class="header-logo">
+      <div class="logo-badge">⚡</div>
+      <div class="logo-text">
+        <h1>ПРО ТРЕНЕР</h1>
+        <p>КУРС НАБОРА МАССЫ (12 НЕДЕЛЬ)</p>
       </div>
     </div>
     <div class="user-pill">
-      <div class="user-pill-dot"></div>
-      <span id="header-user-badge">174 см • 92 кг</span>
-      <button class="onefit-launch-btn" onclick="open1FitApp()" title="Открыть 1Fit">
-        <span>1FIT</span> ↗
-      </button>
+      <div class="user-dot"></div>
+      <span id="user-badge-text">Масса Pro</span>
     </div>
   </header>
 
-  <!-- ==============================================
-       VIEW 1: WORKOUT VIEW (MAIN)
-       ============================================== -->
-  <div id="view-workout" class="container app-view">
-    
-    <!-- Top 3 Metrics -->
-    <div class="metric-grid">
-      <div class="metric-card">
-        <div class="metric-val" id="stat-progress">0%</div>
-        <div class="metric-lbl">Прогресс дня</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-val" id="stat-water">0.0 <span>л</span></div>
-        <div class="metric-lbl">Вода в зале</div>
-        <div class="water-chip" onclick="addWater(0.25)">+250 мл</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-val" id="stat-streak">0 <span>тр.</span></div>
-        <div class="metric-lbl">Серия занятий</div>
-      </div>
+  <!-- ==================== VIEW 1: WORKOUT ==================== -->
+  <div id="view-workout" class="container">
+    <div class="section-label">
+      <span>Выберите период:</span>
     </div>
-
-    <!-- Active Session Ribbon -->
-    
-    <!-- 1Fit Smart Integration Banner -->
-    <div class="onefit-card">
-      <div class="onefit-card-header">
-        <div class="onefit-title">
-          <span>🎟️</span> 1Fit Абонемент
-        </div>
-        <button class="onefit-launch-btn" style="padding: 6px 12px; font-size: 11px;" onclick="open1FitApp()">
-          Открыть приложение 1Fit ↗
-        </button>
-      </div>
-      <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-        Зал сегодня: <strong style="color: #fff;" id="saved-gym-name">Фитнес-клуб (выбрать в профиле)</strong>
-      </div>
-      <div class="bonus-grid">
-        <div class="bonus-tile">
-          <div class="bonus-val" id="sauna-bonus-val">0 / 2</div>
-          <div class="metric-lbl">Сауна / Баня (в мес.)</div>
-          <button class="bonus-btn" onclick="useBonus('sauna')">+1 посещение</button>
-        </div>
-        <div class="bonus-tile">
-          <div class="bonus-val" id="pool-bonus-val">0 / 8</div>
-          <div class="metric-lbl">Бассейн 1Fit (в мес.)</div>
-          <button class="bonus-btn" onclick="useBonus('pool')">+1 визит</button>
-        </div>
-      </div>
-      <button class="cal-sync-btn" onclick="addToGoogleCalendar()">
-        📅 Добавить тренировку в Google Календарь
+    <div class="goal-scroll">
+      <button class="goal-btn active" onclick="switchGoal('phase1', this)">
+        <span>🏋️</span> Недели 1–4
+      </button>
+      <button class="goal-btn" onclick="switchGoal('phase2', this)">
+        <span>🔥</span> Недели 5–8
+      </button>
+      <button class="goal-btn" onclick="switchGoal('phase3', this)">
+        <span>💥</span> Недели 9–12
+      </button>
+      <button class="goal-btn" onclick="switchGoal('abs_program', this)">
+        <span>🍫</span> Пресс (в конце)
       </button>
     </div>
 
-    <div class="session-banner">
-      <div class="session-info">
-        <h3 id="active-plan-title">День А: Базовый каркас</h3>
-        <p>18 рабочих сетов • Отдых 60–90с</p>
-      </div>
-      <button class="btn-finish" onclick="completeWorkoutSession()">Завершить ✓</button>
-    </div>
+    <!-- Day Sub-Tabs -->
+    <div class="day-tabs" id="day-tabs-row"></div>
 
-    <!-- Horizontal Sub-Tabs -->
-    <div class="tabs-wrapper">
-      <div class="tabs">
-        <button class="tab-pill active" onclick="switchWorkoutDay('dayA', this)">День А (6 упр)</button>
-        <button class="tab-pill" onclick="switchWorkoutDay('dayB', this)">День B (6 упр)</button>
-        <button class="tab-pill" onclick="switchWorkoutDay('dayC', this)">День C (6 упр)</button>
-        <button class="tab-pill" onclick="switchWorkoutDay('cardio40', this)">🚶 Кардио 40м</button>
-        <button class="tab-pill" onclick="switchWorkoutDay('recovery', this)">🏊 Бассейн</button>
-      </div>
-    </div>
-
-    <!-- ==============================================
-         DAY A EXERCISES
-         ============================================== -->
-    <div id="sub-dayA" class="sub-tab-content">
-      
-      <!-- A1 -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-title-wrap">
-            <div class="ex-num">1</div>
-            <div class="ex-name">Жим ногами в тренажере</div>
-          </div>
-          <div class="ex-badge">Квадрицепс / Ягодицы</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="60" y1="130" x2="220" y2="130" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
-            <line x1="70" y1="130" x2="110" y2="80" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
-            <line x1="105" y1="125" x2="80" y2="125" stroke="#334155" stroke-width="5"/>
-            <line x1="150" y1="50" x2="220" y2="110" stroke="#1e293b" stroke-width="3" stroke-dasharray="4"/>
-            <g class="anim-leg-plat">
-              <rect x="180" y="70" width="10" height="35" rx="3" fill="#38bdf8" transform="rotate(-35 185 87)"/>
-              <line x1="183" y1="87" x2="220" y2="120" stroke="#64748b" stroke-width="4"/>
-            </g>
-            <circle cx="85" cy="65" r="8" fill="#f8fafc"/>
-            <line x1="90" y1="72" x2="105" y2="110" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <path class="anim-leg-knee" d="M 100,105 L 145,95 L 180,80" fill="none" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Стопы по центру платформы на ширине плеч. Опускайте на вдохе до угла 90° в коленях, мощно выжимайте пятками. Колени вверху не замыкать.</div>
-        <div class="coach-callout">💡 Снимает компрессию с поясницы и бережет суставы при весе 92 кг.</div>
-        
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div><input type="number" class="weight-chip-input" value="60"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div><input type="number" class="weight-chip-input" value="60"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div><input type="number" class="weight-chip-input" value="65"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-            <button class="timer-quick-btn" onclick="startTimer(90)">90с</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- A2 -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-title-wrap">
-            <div class="ex-num">2</div>
-            <div class="ex-name">Тяга верхнего блока к груди</div>
-          </div>
-          <div class="ex-badge">Спина / Осанка</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="140" y1="20" x2="140" y2="140" stroke="#1e293b" stroke-width="4"/>
-            <line x1="110" y1="140" x2="170" y2="140" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
-            <rect x="125" y="105" width="30" height="6" rx="2" fill="#334155"/>
-            <g class="anim-lat-bar">
-              <line x1="140" y1="20" x2="140" y2="45" stroke="#94a3b8" stroke-width="2"/>
-              <path d="M 100,47 Q 140,43 180,47" stroke="#38bdf8" stroke-width="5" fill="none" stroke-linecap="round"/>
-            </g>
-            <circle cx="140" cy="70" r="8" fill="#f8fafc"/>
-            <line x1="140" y1="78" x2="140" y2="110" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <path d="M 140,110 L 155,115 L 155,140" fill="none" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
-            <path class="anim-lat-arms" d="M 130,90 L 115,45 M 150,90 L 165,45" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Хват чуть шире плеч. Сведите лопатки и подтягивайте перекладину к ключицам, направляя локти строго вниз.</div>
-        <div class="coach-callout">💡 Фокусируйтесь на сведении лопаток, не сутультесь.</div>
-        
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div><input type="number" class="weight-chip-input" value="35"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div><input type="number" class="weight-chip-input" value="35"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div><input type="number" class="weight-chip-input" value="40"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-            <button class="timer-quick-btn" onclick="startTimer(90)">90с</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- A3 -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-title-wrap">
-            <div class="ex-num">3</div>
-            <div class="ex-name">Жим гантелей на скамье 30°</div>
-          </div>
-          <div class="ex-badge">Грудь / Плечи</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="80" y1="135" x2="200" y2="135" stroke="#1e293b" stroke-width="4"/>
-            <line x1="105" y1="135" x2="125" y2="90" stroke="#334155" stroke-width="7" stroke-linecap="round"/>
-            <line x1="125" y1="90" x2="165" y2="55" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
-            <line x1="125" y1="92" x2="155" y2="65" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="163" cy="55" r="7" fill="#f8fafc"/>
-            <g class="anim-db-press">
-              <line x1="140" y1="75" x2="145" y2="45" stroke="#f8fafc" stroke-width="3" stroke-linecap="round"/>
-              <rect x="135" y="40" width="20" height="7" rx="2" fill="#cbd5e1"/>
-              <circle cx="135" cy="43" r="5" fill="#38bdf8"/>
-              <circle cx="155" cy="43" r="5" fill="#38bdf8"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Угол наклона 30°. Лопатки прижаты. Жмите гантели вверх по плавной дуге, опуская к верхней трети груди.</div>
-        <div class="coach-callout">💡 Безопаснее для плечевых манжет, чем горизонтальный жим.</div>
-
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div><input type="number" class="weight-chip-input" value="12"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div><input type="number" class="weight-chip-input" value="12"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div><input type="number" class="weight-chip-input" value="14"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-            <button class="timer-quick-btn" onclick="startTimer(90)">90с</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- A4 -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">4. Сгибание ног в тренажере</div>
-          <div class="ex-badge">Бицепс бедра</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="60" y1="130" x2="220" y2="130" stroke="#1e293b" stroke-width="4"/>
-            <rect x="85" y="105" width="45" height="8" rx="2" fill="#334155"/>
-            <line x1="85" y1="105" x2="70" y2="65" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="75" cy="55" r="7" fill="#f8fafc"/>
-            <line x1="75" y1="62" x2="88" y2="105" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="88" y1="105" x2="135" y2="105" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <g class="anim-leg-curl">
-              <line x1="135" y1="105" x2="135" y2="140" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-              <circle cx="138" cy="135" r="6" fill="#cbd5e1"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Отрегулируйте валик на уровень ахилловых сухожилий. Сгибайте ноги под себя, прожимая заднюю поверхность бедра.</div>
-        <div class="coach-callout">💡 Балансирует силу квадрицепса и защищает коленные связки.</div>
-
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div><input type="number" class="weight-chip-input" value="25"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div><input type="number" class="weight-chip-input" value="30"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div><input type="number" class="weight-chip-input" value="30"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-            <button class="timer-quick-btn" onclick="startTimer(90)">90с</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- A5 -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">5. Махи гантелями через стороны</div>
-          <div class="ex-badge">Плечи / V-форма</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="80" y1="150" x2="200" y2="150" stroke="#1e293b" stroke-width="3"/>
-            <circle cx="140" cy="45" r="7" fill="#f8fafc"/>
-            <line x1="140" y1="52" x2="140" y2="105" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="140" y1="105" x2="130" y2="150" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
-            <line x1="140" y1="105" x2="150" y2="150" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
-            <g class="anim-lat-raise-l">
-              <path d="M 137,60 L 105,75 L 90,85" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
-              <rect x="82" y="80" width="10" height="10" rx="2" fill="#cbd5e1"/>
-            </g>
-            <g class="anim-lat-raise-r">
-              <path d="M 143,60 L 175,75 L 190,85" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
-              <rect x="188" y="80" width="10" height="10" rx="2" fill="#cbd5e1"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Стоя ровно, чуть согните локти. Поднимайте гантели через стороны до параллели с полом.</div>
-        <div class="coach-callout">💡 Не гонитесь за весом (4–6 кг). Создает красивую линию плеч.</div>
-
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div><input type="number" class="weight-chip-input" value="5"> x2 кг</div>
-            <span class="reps-tag">12–15 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div><input type="number" class="weight-chip-input" value="5"> x2 кг</div>
-            <span class="reps-tag">12–15 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div><input type="number" class="weight-chip-input" value="6"> x2 кг</div>
-            <span class="reps-tag">12–15 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(45)">45с</button>
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- A6 -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">6. Скручивания на пресс на коврике</div>
-          <div class="ex-badge">Пресс / Кор</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="50" y1="135" x2="230" y2="135" stroke="#1e293b" stroke-width="3"/>
-            <path d="M 140,135 L 165,100 L 180,135" fill="none" stroke="#334155" stroke-width="5" stroke-linecap="round"/>
-            <g class="anim-crunch">
-              <circle cx="85" cy="115" r="7" fill="#f8fafc"/>
-              <line x1="88" y1="120" x2="140" y2="135" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-              <line x1="90" y1="118" x2="105" y2="105" stroke="#f8fafc" stroke-width="3" stroke-linecap="round"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">На выдохе скругляйте грудную клетку к тазу, отрывая только лопатки. Поясница строго прижата.</div>
-        <div class="coach-callout">💡 Не тяните шею руками — подбородок направлен вверх.</div>
-
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div>—</div>
-            <span class="reps-tag">12–15 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div>—</div>
-            <span class="reps-tag">12–15 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div>—</div>
-            <span class="reps-tag">15 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(45)">45с</button>
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ==============================================
-         DAY B EXERCISES
-         ============================================== -->
-    <div id="sub-dayB" class="sub-tab-content hidden">
-      <!-- B1: Goblet Squat -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">1. Кубковый присед с гантелью</div>
-          <div class="ex-badge">Ноги / Баланс</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="80" y1="150" x2="200" y2="150" stroke="#1e293b" stroke-width="3"/>
-            <g class="anim-squat-torso">
-              <circle cx="140" cy="55" r="8" fill="#f8fafc"/>
-              <line x1="140" y1="63" x2="140" y2="115" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-              <rect x="135" y="75" width="10" height="18" rx="2" fill="#cbd5e1"/>
-              <path d="M 135,75 L 128,85 L 138,88 M 145,75 L 152,85 L 142,88" fill="none" stroke="#f8fafc" stroke-width="3"/>
-            </g>
-            <path class="anim-squat-legs" d="M 135,115 L 130,145 L 130,150 M 145,115 L 150,145 L 150,150" fill="none" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Гантель вертикально у груди. Приседайте до параллели, колени сонаправлены со стопами.</div>
-        <div class="coach-callout">💡 Удерживает спину идеально прямой без риска для поясницы.</div>
-
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div><input type="number" class="weight-chip-input" value="12"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div><input type="number" class="weight-chip-input" value="14"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div><input type="number" class="weight-chip-input" value="16"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-            <button class="timer-quick-btn" onclick="startTimer(90)">90с</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- B2: Cable Row -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">2. Горизонтальная тяга блока к поясу</div>
-          <div class="ex-badge">Спина</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="60" y1="130" x2="220" y2="130" stroke="#1e293b" stroke-width="4"/>
-            <rect x="80" y="115" width="40" height="6" rx="2" fill="#334155"/>
-            <line x1="175" y1="100" x2="175" y2="130" stroke="#64748b" stroke-width="4"/>
-            <circle cx="100" cy="65" r="8" fill="#f8fafc"/>
-            <line x1="100" y1="73" x2="105" y2="115" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <path d="M 105,115 L 140,118 L 175,108" fill="none" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
-            <g class="anim-row-handle">
-              <line x1="175" y1="90" x2="135" y2="90" stroke="#38bdf8" stroke-width="2"/>
-              <rect x="133" y="84" width="4" height="12" rx="1" fill="#cbd5e1"/>
-            </g>
-            <path class="anim-row-arms" d="M 105,85 L 175,90" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Прямая спина. Тяните рукоять к низу живота, сводя лопатки. Корпусом не раскачивайтесь.</div>
-        <div class="coach-callout">💡 Задержитесь в пиковой точке на 1 секунду.</div>
-
-        <div class="sets-block">
-          <div class="set-row">
-            <span class="set-col-label">Сет 1</span>
-            <div><input type="number" class="weight-chip-input" value="30"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 2</span>
-            <div><input type="number" class="weight-chip-input" value="35"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-          <div class="set-row">
-            <span class="set-col-label">Сет 3</span>
-            <div><input type="number" class="weight-chip-input" value="35"> кг</div>
-            <span class="reps-tag">10–12 повт</span>
-            <button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(60)">60с</button>
-            <button class="timer-quick-btn" onclick="startTimer(90)">90с</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- B3: Bicep -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">3. Подъем гантелей на бицепс</div>
-          <div class="ex-badge">Руки / Бицепс</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="80" y1="150" x2="200" y2="150" stroke="#1e293b" stroke-width="3"/>
-            <circle cx="140" cy="48" r="7" fill="#f8fafc"/>
-            <line x1="140" y1="55" x2="140" y2="105" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="140" y1="105" x2="132" y2="150" stroke="#334155" stroke-width="4"/>
-            <line x1="140" y1="105" x2="148" y2="150" stroke="#334155" stroke-width="4"/>
-            <line x1="140" y1="62" x2="142" y2="78" stroke="#f8fafc" stroke-width="4"/>
-            <g class="anim-bicep">
-              <line x1="142" y1="78" x2="142" y2="105" stroke="#f8fafc" stroke-width="4"/>
-              <rect x="136" y="102" width="12" height="6" rx="2" fill="#cbd5e1"/>
-              <circle cx="136" cy="105" r="4" fill="#38bdf8"/>
-              <circle cx="148" cy="105" r="4" fill="#38bdf8"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Локти прижаты к ребрам. Поднимайте гантели, разворачивая кисти кверху.</div>
-        <div class="coach-callout">💡 Не помогайте себе поясницей.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div><input type="number" class="weight-chip-input" value="8"> x2 кг</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div><input type="number" class="weight-chip-input" value="9"> x2 кг</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div><input type="number" class="weight-chip-input" value="10"> x2 кг</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(45)">45с</button><button class="timer-quick-btn" onclick="startTimer(60)">60с</button></div>
-        </div>
-      </div>
-
-      <!-- B4: Tricep -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">4. Разгибание на трицепс у блока</div>
-          <div class="ex-badge">Руки / Трицепс</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="170" y1="20" x2="170" y2="140" stroke="#1e293b" stroke-width="4"/>
-            <line x1="170" y1="20" x2="145" y2="55" stroke="#94a3b8" stroke-width="2"/>
-            <circle cx="125" cy="52" r="7" fill="#f8fafc"/>
-            <line x1="125" y1="59" x2="132" y2="108" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="132" y1="108" x2="125" y2="150" stroke="#334155" stroke-width="4"/>
-            <line x1="132" y1="108" x2="140" y2="150" stroke="#334155" stroke-width="4"/>
-            <line x1="130" y1="68" x2="145" y2="78" stroke="#f8fafc" stroke-width="4"/>
-            <g class="anim-tricep">
-              <line x1="145" y1="78" x2="155" y2="60" stroke="#f8fafc" stroke-width="4"/>
-              <circle cx="155" cy="60" r="4" fill="#38bdf8"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Фиксируйте локти у ребер и мощно разгибайте руки вниз.</div>
-        <div class="coach-callout">💡 Разводите рукоять внизу чуть в стороны.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div><input type="number" class="weight-chip-input" value="15"> кг</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div><input type="number" class="weight-chip-input" value="17.5"> кг</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div><input type="number" class="weight-chip-input" value="20"> кг</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(45)">45с</button><button class="timer-quick-btn" onclick="startTimer(60)">60с</button></div>
-        </div>
-      </div>
-
-      <!-- B5: Hyperextension -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">5. Гиперэкстензия</div>
-          <div class="ex-badge">Поясница / Ягодицы</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="70" y1="140" x2="210" y2="140" stroke="#1e293b" stroke-width="4"/>
-            <line x1="170" y1="140" x2="135" y2="100" stroke="#334155" stroke-width="6"/>
-            <rect x="125" y="90" width="22" height="10" rx="3" fill="#475569" transform="rotate(-30 136 95)"/>
-            <circle cx="175" cy="130" r="5" fill="#475569"/>
-            <line x1="175" y1="130" x2="140" y2="98" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <g class="anim-hyper">
-              <line x1="140" y1="98" x2="100" y2="70" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-              <circle cx="95" cy="65" r="7" fill="#f8fafc"/>
-              <line x1="120" y1="85" x2="110" y2="78" stroke="#cbd5e1" stroke-width="3"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Поднимайтесь до одной прямой линии с ногами. Не переразгибайтесь назад!</div>
-        <div class="coach-callout">💡 Формирует стальной корсет вокруг позвоночника.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div>—</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div>—</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div>—</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(45)">45с</button><button class="timer-quick-btn" onclick="startTimer(60)">60с</button></div>
-        </div>
-      </div>
-
-      <!-- B6: Incline Walk -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">6. Ходьба под уклоном (Zone 2)</div>
-          <div class="ex-badge">Жиросжигание / 20м</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="70" y1="145" x2="195" y2="120" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="195" y1="120" x2="210" y2="80" stroke="#334155" stroke-width="4"/>
-            <circle cx="140" cy="55" r="7" fill="#f8fafc"/>
-            <line x1="140" y1="62" x2="135" y2="98" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <line x1="138" y1="75" x2="155" y2="90" stroke="#f8fafc" stroke-width="3" stroke-linecap="round"/>
-            <path class="anim-walk-f" d="M 135,95 L 115,125 L 110,135" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
-            <path class="anim-walk-b" d="M 140,95 L 160,120 L 165,135" fill="none" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Уклон 6–8%, скорость 5.0 км/ч. Не держитесь за поручни руками.</div>
-        <div class="coach-callout">💡 Сжигает остатки жира после силовой части.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Блок 1</span><div>5.0 км/ч</div><span class="reps-tag">10 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Блок 2</span><div>5.2 км/ч</div><span class="reps-tag">10 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ==============================================
-         DAY C EXERCISES
-         ============================================== -->
-    <div id="sub-dayC" class="sub-tab-content hidden">
-      <!-- C1 -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">1. Отжимания от наклонной скамьи</div>
-          <div class="ex-badge">Грудь / Трицепс</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <rect x="70" y="95" width="40" height="15" rx="3" fill="#334155"/>
-            <line x1="75" y1="110" x2="75" y2="140" stroke="#1e293b" stroke-width="4"/>
-            <line x1="105" y1="110" x2="105" y2="140" stroke="#1e293b" stroke-width="4"/>
-            <g class="anim-pushup">
-              <circle cx="100" cy="75" r="7" fill="#f8fafc"/>
-              <line x1="105" y1="80" x2="185" y2="120" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-              <line x1="105" y1="85" x2="95" y2="98" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
-            </g>
-            <circle cx="185" cy="122" r="4" fill="#64748b"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Касайтесь грудью края скамьи и выжимайте корпус вверх.</div>
-        <div class="coach-callout">💡 Снижает нагрузку на локтевые и плечевые суставы.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div>—</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div>—</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div>—</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(60)">60с</button><button class="timer-quick-btn" onclick="startTimer(90)">90с</button></div>
-        </div>
-      </div>
-
-      <!-- C2: DB Row -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">2. Тяга гантели к поясу в упоре</div>
-          <div class="ex-badge">Спина</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <rect x="70" y="105" width="80" height="10" rx="2" fill="#334155"/>
-            <line x1="80" y1="115" x2="80" y2="145" stroke="#1e293b" stroke-width="4"/>
-            <line x1="140" y1="115" x2="140" y2="145" stroke="#1e293b" stroke-width="4"/>
-            <circle cx="170" cy="70" r="7" fill="#f8fafc"/>
-            <line x1="165" y1="75" x2="115" y2="82" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="115" y1="82" x2="105" y2="105" stroke="#475569" stroke-width="4"/>
-            <line x1="165" y1="78" x2="165" y2="105" stroke="#475569" stroke-width="4"/>
-            <line x1="125" y1="82" x2="135" y2="145" stroke="#475569" stroke-width="4"/>
-            <g class="anim-db-row">
-              <line x1="145" y1="80" x2="145" y2="115" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
-              <rect x="138" y="112" width="14" height="8" rx="2" fill="#cbd5e1"/>
-              <circle cx="138" cy="116" r="4" fill="#38bdf8"/>
-              <circle cx="152" cy="116" r="4" fill="#38bdf8"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Тяните гантель к тазу за счет сведения лопатки. Спина прямая.</div>
-        <div class="coach-callout">💡 Разгружает позвоночник за счет упора коленом и рукой.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div><input type="number" class="weight-chip-input" value="12"> кг</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div><input type="number" class="weight-chip-input" value="14"> кг</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div><input type="number" class="weight-chip-input" value="14"> кг</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(60)">60с</button><button class="timer-quick-btn" onclick="startTimer(90)">90с</button></div>
-        </div>
-      </div>
-
-      <!-- C3: Leg Extensions -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">3. Разгибание ног сидя</div>
-          <div class="ex-badge">Квадрицепс</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="60" y1="130" x2="220" y2="130" stroke="#1e293b" stroke-width="4"/>
-            <rect x="85" y="100" width="45" height="8" rx="2" fill="#334155"/>
-            <line x1="85" y1="100" x2="70" y2="60" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="75" cy="50" r="7" fill="#f8fafc"/>
-            <line x1="75" y1="57" x2="88" y2="100" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="88" y1="100" x2="145" y2="105" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <g class="anim-leg-ext">
-              <line x1="145" y1="105" x2="145" y2="140" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-              <circle cx="148" cy="135" r="6" fill="#cbd5e1"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Разгибайте колени до горизонтали, фиксируя квадрицепс вверху на 1 секунду.</div>
-        <div class="coach-callout">💡 Укрепляет связку надколенника.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div><input type="number" class="weight-chip-input" value="30"> кг</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div><input type="number" class="weight-chip-input" value="35"> кг</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div><input type="number" class="weight-chip-input" value="35"> кг</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(60)">60с</button><button class="timer-quick-btn" onclick="startTimer(90)">90с</button></div>
-        </div>
-      </div>
-
-      <!-- C4: Farmer Walk -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">4. Прогулка фермера с гантелями</div>
-          <div class="ex-badge">Кор / Хват</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="50" y1="140" x2="230" y2="140" stroke="#1e293b" stroke-width="3"/>
-            <circle cx="140" cy="50" r="7" fill="#f8fafc"/>
-            <line x1="140" y1="58" x2="140" y2="105" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <rect x="122" y="80" width="8" height="18" rx="2" fill="#cbd5e1"/>
-            <rect x="150" y="80" width="8" height="18" rx="2" fill="#cbd5e1"/>
-            <path class="anim-walk-f" d="M 137,105 L 125,128 L 122,140" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
-            <path class="anim-walk-b" d="M 143,105 L 155,128 L 158,140" fill="none" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Плечи расправлены, пресс в тонусе. Шагайте размеренным шагом по залу (40 шагов).</div>
-        <div class="coach-callout">💡 Сжигает огромное количество калорий.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div><input type="number" class="weight-chip-input" value="16"> x2 кг</div><span class="reps-tag">40 шагов</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div><input type="number" class="weight-chip-input" value="16"> x2 кг</div><span class="reps-tag">40 шагов</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div><input type="number" class="weight-chip-input" value="18"> x2 кг</div><span class="reps-tag">40 шагов</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(60)">60с</button><button class="timer-quick-btn" onclick="startTimer(90)">90с</button></div>
-        </div>
-      </div>
-
-      <!-- C5: Leg Raise -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">5. Подъем ног лежа на коврике</div>
-          <div class="ex-badge">Низ живота</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="50" y1="130" x2="230" y2="130" stroke="#1e293b" stroke-width="3"/>
-            <circle cx="75" cy="120" r="7" fill="#f8fafc"/>
-            <line x1="80" y1="125" x2="135" y2="125" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="95" y1="125" x2="125" y2="125" stroke="#f8fafc" stroke-width="4"/>
-            <g class="anim-leg-raise">
-              <line x1="130" y1="125" x2="185" y2="125" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-              <circle cx="185" cy="125" r="4" fill="#cbd5e1"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Ладони под ягодицами. Поднимайте ноги до угла 60–70°, не отрывая поясницу.</div>
-        <div class="coach-callout">💡 Руки под ягодицами полностью защищают крестец.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Сет 1</span><div>—</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 2</span><div>—</div><span class="reps-tag">10–12 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Сет 3</span><div>—</div><span class="reps-tag">12–15 повт</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-        <div class="card-footer">
-          <span class="timer-caption">Отдых:</span>
-          <div class="timer-pill-group"><button class="timer-quick-btn" onclick="startTimer(45)">45с</button><button class="timer-quick-btn" onclick="startTimer(60)">60с</button></div>
-        </div>
-      </div>
-
-      <!-- C6: Elliptical -->
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">6. Эллиптический тренажер</div>
-          <div class="ex-badge">Кардио / 15–20м</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="60" y1="135" x2="220" y2="135" stroke="#1e293b" stroke-width="4"/>
-            <line x1="160" y1="135" x2="160" y2="70" stroke="#334155" stroke-width="4"/>
-            <circle cx="130" cy="50" r="7" fill="#f8fafc"/>
-            <line x1="130" y1="57" x2="132" y2="100" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <line x1="130" y1="68" x2="155" y2="75" stroke="#f8fafc" stroke-width="3" stroke-linecap="round"/>
-            <g class="anim-ellip">
-              <ellipse cx="140" cy="125" rx="20" ry="8" fill="none" stroke="#38bdf8" stroke-width="3"/>
-              <circle cx="158" cy="125" r="4" fill="#cbd5e1"/>
-            </g>
-          </svg>
-        </div>
-        <div class="ex-desc">Плавное эллиптическое движение без отрыва стоп от педалей.</div>
-        <div class="coach-callout">💡 Нулевая ударная нагрузка на колени.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">Разгон</span><div>Умеренно</div><span class="reps-tag">5 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Работа</span><div>Пульс 125</div><span class="reps-tag">10 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">Заминка</span><div>Спокойно</div><span class="reps-tag">5 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ==============================================
-         CARDIO 40 MIN TAB
-         ============================================== -->
-    <div id="sub-cardio40" class="sub-tab-content hidden">
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">🔥 40 минут быстрой ходьбы в гору</div>
-          <div class="ex-badge">Zone 2 Fat Burn</div>
-        </div>
-        
-        <div class="anim-box">
-          <div class="anim-tag">Техника</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <line x1="60" y1="145" x2="205" y2="115" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-            <line x1="205" y1="115" x2="220" y2="75" stroke="#334155" stroke-width="4"/>
-            <rect x="70" y="24" width="140" height="22" rx="11" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.4)"/>
-            <text x="140" y="38" fill="#a7f3d0" font-size="10" font-weight="800" text-anchor="middle">❤️ ПУЛЬС: 115–130 УД/МИН</text>
-            <circle cx="140" cy="52" r="7" fill="#f8fafc"/>
-            <line x1="140" y1="59" x2="135" y2="95" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <line x1="138" y1="72" x2="155" y2="87" stroke="#f8fafc" stroke-width="3" stroke-linecap="round"/>
-            <path class="anim-walk-f" d="M 135,95 L 115,123 L 110,133" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
-            <path class="anim-walk-b" d="M 140,95 L 160,118 L 165,133" fill="none" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
-
-        <div class="ex-desc"><strong>Почему ходьба, а не бег:</strong> при весе 92 кг бег создает свыше 300 кг ударной нагрузки на каждый шаг. Быстрая ходьба в гору сжигает столько же калорий без вреда для суставов.</div>
-        <div class="coach-callout">💡 <strong>ПРАВИЛО:</strong> Не держитесь за поручни! Двигайте руками вдоль корпуса — это увеличивает расход калорий на 25%.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">1. Разгон</span><div>Уклон 2% • 4.5 км/ч</div><span class="reps-tag">5 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">2. Темп</span><div>Уклон 4% • 5.0 км/ч</div><span class="reps-tag">10 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">3. Жир</span><div>Уклон 6% • 5.2 км/ч</div><span class="reps-tag">15 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">4. Гора</span><div>Уклон 7% • 5.0 км/ч</div><span class="reps-tag">5 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">5. Заминка</span><div>Уклон 1% • 4.0 км/ч</div><span class="reps-tag">5 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-
-        <div class="card-footer">
-          <span class="timer-caption">Таймер этапа:</span>
-          <div class="timer-pill-group">
-            <button class="timer-quick-btn" onclick="startTimer(300)">5 мин</button>
-            <button class="timer-quick-btn" onclick="startTimer(600)">10 мин</button>
-            <button class="timer-quick-btn" onclick="startTimer(900)">15 мин</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==============================================
-         RECOVERY TAB
-         ============================================== -->
-    <div id="sub-recovery" class="sub-tab-content hidden">
-      <div class="ex-card">
-        <div class="ex-top">
-          <div class="ex-name">🏊 Бассейн + Сауна (1Fit)</div>
-          <div class="ex-badge">Релакс</div>
-        </div>
-        <div class="anim-box">
-          <div class="anim-tag">Восстановление</div>
-          <svg class="anim-svg" viewBox="0 0 280 160">
-            <path d="M 30,100 Q 60,95 90,100 T 150,100 T 210,100 T 270,100" fill="none" stroke="#38bdf8" stroke-width="3"/>
-            <path d="M 20,115 Q 50,110 80,115 T 140,115 T 200,115 T 260,115" fill="none" stroke="#0284c7" stroke-width="2" opacity="0.6"/>
-            <circle cx="120" cy="92" r="7" fill="#f8fafc"/>
-            <line x1="125" y1="94" x2="165" y2="98" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <path d="M 122,96 Q 135,82 145,95" fill="none" stroke="#f8fafc" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="ex-desc">Спокойное плавание брассом или на спине 30–40 минут + 10 минут сауны для расслабления мускулатуры.</div>
-        <div class="coach-callout">💡 Полная разгрузка суставов и позвоночника от гравитации.</div>
-
-        <div class="sets-block">
-          <div class="set-row"><span class="set-col-label">100м</span><div>Разминка</div><span class="reps-tag">5 мин</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">25 мин</span><div>Плавание</div><span class="reps-tag">Основное</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-          <div class="set-row"><span class="set-col-label">15 мин</span><div>Сауна</div><span class="reps-tag">Релакс</span><button class="btn-set-check" onclick="toggleSetRow(this)">Выполнить</button></div>
-        </div>
-      </div>
-    </div>
-
+    <!-- Exercises Container -->
+    <div id="exercises-container"></div>
   </div>
 
-  <!-- ==============================================
-       VIEW 2: CALENDAR & WORKOUT LOGS
-       ============================================== -->
-  <div id="view-calendar" class="container app-view hidden">
-    <div class="cal-box">
-      <div class="cal-top">
-        <button class="cal-arrow" onclick="prevMonth()">‹</button>
-        <div class="cal-title" id="cal-month-year">Октябрь 2026</div>
-        <button class="cal-arrow" onclick="nextMonth()">›</button>
-      </div>
-      <div class="cal-grid-layout" id="cal-weekdays">
-        <div class="cal-head-day">Пн</div>
-        <div class="cal-head-day">Вт</div>
-        <div class="cal-head-day">Ср</div>
-        <div class="cal-head-day">Чт</div>
-        <div class="cal-head-day">Пт</div>
-        <div class="cal-head-day">Сб</div>
-        <div class="cal-head-day">Вс</div>
-      </div>
-      <div class="cal-grid-layout" id="cal-days-grid" style="margin-top: 8px;"></div>
+  <!-- ==================== VIEW 2: 100+ LIBRARY ==================== -->
+  <div id="view-library" class="container hidden">
+    <div class="section-label">
+      <span>База упражнений</span>
+      <span id="lib-count" style="color: var(--primary-light);"></span>
     </div>
-
-    <h3 style="font-size: 15px; font-weight: 800; margin: 20px 0 12px; color: #fff;">История тренировок</h3>
-    <div id="log-feed-container"></div>
+    <input type="text" id="lib-search" placeholder="Поиск упражнения..." 
+      style="width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: #fff; font-size: 13px; font-weight: 600; outline: none; margin-bottom: 12px;"
+      oninput="searchLibrary()">
+    <div id="library-list"></div>
   </div>
 
-  <!-- ==============================================
-       VIEW 3: PROFILE & CUSTOMIZATION
-       ============================================== -->
-  <div id="view-profile" class="container app-view hidden">
-    <div class="prof-card">
-      <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 14px; color: #fff;">Параметры атлета</h3>
-      <div class="prof-row"><span>Рост</span><span>174 см</span></div>
-      <div class="prof-row"><span>Текущий вес</span><span id="prof-weight">92.0 кг</span></div>
-      <div class="prof-row"><span>ИМТ (BMI)</span><span id="prof-bmi">30.4 (Снижение веса)</span></div>
-      <div class="prof-row"><span>Абонемент</span><span style="color: var(--primary);">1Fit Multi-Club</span></div>
-    </div>
-
-    
-    <div class="prof-card">
-      <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 8px; color: #fff;">Настройки 1Fit</h3>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">Ваш основной зал / бассейн по 1Fit:</p>
-      <input type="text" id="input-gym-name" class="input-box" placeholder="Например: Invictus GO, Fidelity, Grandpool..." value="Фитнес-клуб по 1Fit">
-      <button class="btn-main" onclick="save1FitGym()">Сохранить клуб</button>
-      <button class="cal-sync-btn" style="margin-top: 10px;" onclick="open1FitApp()">
-        🚀 Запустить приложение 1Fit (QR / Залы)
-      </button>
-    </div>
-
-    <div class="prof-card">
-      <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 8px; color: #fff;">Обновить вес</h3>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">Фиксируйте взвешивание каждое утро натощак:</p>
-      <input type="number" id="input-new-weight" step="0.1" class="input-box" value="92.0">
-      <button class="btn-main" onclick="updateUserWeight()">Сохранить вес</button>
-    </div>
-
-    <div class="prof-card">
-      <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 8px; color: #fff;">Сброс сессии</h3>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Очистить галочки выполненных подходов за сегодня.</p>
-      <button class="btn-main" style="background: #ef4444; color: #fff; box-shadow: none;" onclick="resetDaySession()">Сбросить прогресс дня</button>
+  <!-- ==================== VIEW 3: JOURNAL ==================== -->
+  <div id="view-calendar" class="container hidden">
+    <div class="section-label"><span>Журнал тренировок</span></div>
+    <div id="workout-log-feed">
+      <div class="library-item">
+        <div><div class="lib-title">Неделя 1-4 • День 1 (Плечи/Трапеции)</div><div class="lib-cat">19 подходов выполнено</div></div>
+        <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
+      </div>
+      <div class="library-item">
+        <div><div class="lib-title">Неделя 1-4 • День 2 (Ноги, Руки)</div><div class="lib-cat">22 подхода выполнено</div></div>
+        <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
+      </div>
     </div>
   </div>
 
-  <!-- Bottom Navigation Bar (iOS Modern) -->
-  <div class="bottom-nav">
-    <button class="nav-btn active" onclick="switchMainView('workout', this)">
+  <!-- Floating Rest Timer Dock -->
+  <div class="rest-dock" id="rest-dock">
+    <div>
+      <div class="rest-timer-display" id="dock-timer-digits">60с</div>
+      <div class="rest-label" id="dock-ex-title">Отдых</div>
+    </div>
+    <div class="rest-controls">
+      <button class="btn-dock-action" onclick="adjustRest(-15)">-15с</button>
+      <button class="btn-dock-action" onclick="adjustRest(15)">+15с</button>
+      <button class="btn-dock-action" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5;" onclick="closeRestTimer()">✕</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="navbar">
+    <button class="nav-btn active" onclick="switchNav('workout', this)">
       <svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4M6 12h12"/></svg>
-      <span>Тренировка</span>
+      <span>Программа</span>
     </button>
-    <button class="nav-btn" onclick="switchMainView('calendar', this)">
+    <button class="nav-btn" onclick="switchNav('library', this)">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>База</span>
+    </button>
+    <button class="nav-btn" onclick="switchNav('calendar', this)">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span>Календарь</span>
+      <span>Журнал</span>
     </button>
-    <button class="nav-btn" onclick="switchMainView('profile', this)">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span>Профиль</span>
-    </button>
-  </div>
-
-  <!-- Floating Active Rest Timer -->
-  <div class="floating-timer" id="global-timer">
-    <span>⏱️ Отдых: <span id="timer-seconds">60</span>с</span>
-    <button class="timer-dismiss" onclick="stopTimer()">✕</button>
   </div>
 
   <script>
-    let state = {
-      user: { height: 174, weight: 92.0 },
-      water: 0,
-      streak: 0,
-      activeWorkoutTab: 'dayA',
-      workoutLogs: [
-        { date: '2026-10-12', title: 'День А: Базовый каркас', setsCount: 18, note: 'Отличный темп, жим ногами 65 кг' },
-        { date: '2026-10-14', title: 'День B: Рельеф и руки', setsCount: 18, note: 'Ходьба в гору 20 мин, пульс 128' }
-      ]
+    /* 1. БАЗА УПРАЖНЕНИЙ ИЗ PDF-ДОКУМЕНТА */
+    const DB = [
+      // Плечи / Трапеции
+      { id: 'db_seated_press', name: 'Жим гантелей сидя', cat: 'shoulders', target: 'Дельты (Плечи)', sets: 4, repsDef: '6-8', tip: 'Спина плотно прижата к спинке, мощный выжим вверх.' },
+      { id: 'upright_row', name: 'Тяга штанги к подбородку', cat: 'shoulders', target: 'Дельты и Трапеции', sets: 3, repsDef: '10-12', tip: 'Тяните локтями вверх, гриф скользит вдоль корпуса.' },
+      { id: 'bent_lateral_raise', name: 'Разведение гантелей в наклоне', cat: 'shoulders', target: 'Задняя дельта', sets: 3, repsDef: '10-12', tip: 'Корпус наклонен, разведение за счет задней дельты.' },
+      { id: 'bent_lateral_100', name: 'Разведение гантелей в наклоне (100 повт.)', cat: 'shoulders', target: 'Задняя дельта', sets: 1, repsDef: '100', tip: '1 подход на 100 повторений. Допускаются короткие паузы.' },
+      { id: 'arnold_press', name: 'Жим Арнольда', cat: 'shoulders', target: 'Передняя и средняя дельта', sets: 3, repsDef: '8-10', tip: 'Разворот ладоней наружу при выжимании гантелей вверх.' },
+      { id: 'lateral_raise_100', name: 'Разведение гантелей через стороны (100 повт.)', cat: 'shoulders', target: 'Средняя дельта', sets: 1, repsDef: '100', tip: '1 подход на 100 повторений. Пампинг с микро-паузами.' },
+      { id: 'standing_lateral_raise', name: 'Разведение гантелей через стороны стоя', cat: 'shoulders', target: 'Средняя дельта', sets: 4, repsDef: '10-12', tip: 'Локти слегка согнуты, движение строго в плоскости плеч.' },
+      { id: 'front_raise', name: 'Подъем гантелей перед собой', cat: 'shoulders', target: 'Передняя дельта', sets: 4, repsDef: '12-15', tip: 'Подконтрольный подъем без раскачки тела.' },
+      { id: 'cable_lateral_raise', name: 'Отведение руки в блоке', cat: 'shoulders', target: 'Средняя дельта', sets: 3, repsDef: '15-20', tip: 'Постоянное натяжение троса, максимальная изоляция.' },
+      { id: 'military_press', name: 'Армейский жим', cat: 'shoulders', target: 'Плечи и кор', sets: 5, repsDef: '5', tip: 'Тяжелый жим штанги стоя. Пресс и ягодицы напряжены.' },
+      { id: 'shrugs_barbell_heavy', name: 'Шраги со штангой (большой вес)', cat: 'back', target: 'Трапеции', sets: 5, repsDef: '5', tip: 'Большой вес. Подъем плеч вверх к ушам.' },
+      { id: 'shrugs_barbell', name: 'Шраги со штангой', cat: 'back', target: 'Трапеции', sets: 4, repsDef: '6-8', tip: 'Пауза в верхней точке на 1 секунду.' },
+      { id: 'shrugs_smith_behind', name: 'Шраги в Смите (гриф за спиной)', cat: 'back', target: 'Трапеции', sets: 3, repsDef: '10-12', tip: 'Гриф за спиной, лопатки сведены.' },
+
+      // Ноги
+      { id: 'barbell_squats', name: 'Приседания со штангой', cat: 'legs', target: 'Квадрицепс / Ягодицы', sets: 4, repsDef: ['15', '12', '8', '20'], tip: 'Пирамида по схеме: 1x15, 1x12, 1x8, 1x20.' },
+      { id: 'romanian_deadlift', name: 'Румынская тяга', cat: 'legs', target: 'Бицепс бедра / Ягодицы', sets: 4, repsDef: ['12', '10', '8', '15'], tip: 'Схема: 1x12, 1x10, 1x8, 1x15. Отводите таз назад.' },
+      { id: 'romanian_deadlift_5', name: 'Румынская тяга (5 подходов)', cat: 'legs', target: 'Бицепс бедра', sets: 5, repsDef: ['10', '8', '6', '8', '10'], tip: 'Пирамида: 10, 8, 6, 8, 10 повторений.' },
+      { id: 'leg_press', name: 'Жим ногами', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: '10-12', tip: 'Толкайте платформу пятками, не защелкивайте колени вверху.' },
+      { id: 'calf_raises', name: 'Подъем на носки (в тренажере/со штангой)', cat: 'legs', target: 'Икры', sets: 3, repsDef: '8-10', tip: 'Полная амплитуда с растяжением в нижней точке.' },
+      { id: 'leg_curl_elevated', name: 'Сгибание ног с приподнятым торсом', cat: 'legs', target: 'Бицепс бедра', sets: 3, repsDef: '10-12', tip: 'Торс приподнят (как при отжиманиях).' },
+      { id: 'leg_curl_100', name: 'Сгибание ног в тренажере (100 повт.)', cat: 'legs', target: 'Бицепс бедра', sets: 1, repsDef: '100', tip: 'Один подход на 100 повторений для максимального пампа.' },
+      { id: 'leg_extension', name: 'Разгибание ног в тренажере', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: '10-12', tip: 'Пиковое напряжение квадрицепса в верхней точке.' },
+
+      // Руки (Бицепс / Трицепс)
+      { id: 'barbell_curl', name: 'Подъем штанги на бицепс', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: '6-8', tip: 'Локти прижаты к бокам, читинг исключен.' },
+      { id: 'barbell_curl_5x5', name: 'Подъем штанги на бицепс (5х5)', cat: 'arms', target: 'Бицепс', sets: 5, repsDef: '5', tip: 'Тяжелая силовая работа на 5 повторений.' },
+      { id: 'barbell_curl_reverse', name: 'Подъем штанги прямым хватом', cat: 'arms', target: 'Брахиалис / Предплечья', sets: 3, repsDef: '10-12', tip: 'Хват сверху (пронированный).' },
+      { id: 'scott_curl', name: 'Подъем штанги на скамье Скотта', cat: 'arms', target: 'Низ бицепса', sets: 3, repsDef: '10-12', tip: 'Локти на подушке, изолированное сгибание.' },
+      { id: 'scott_curl_100', name: 'Подъем на скамье Скотта (100 повт.)', cat: 'arms', target: 'Бицепс', sets: 1, repsDef: '100', tip: '1 подход на 100 повторений с микро-паузами.' },
+      { id: 'hammer_curl', name: 'Сгибание рук с гантелями («молот»)', cat: 'arms', target: 'Брахиалис / Бицепс', sets: 3, repsDef: '12-15', tip: 'Нейтральный хват гантелей.' },
+      { id: 'alternate_db_curl', name: 'Альтернативный подъем гантелей', cat: 'arms', target: 'Бицепс', sets: 4, repsDef: '10-12', tip: 'Поочередный подъем с разворотом ладони кверху.' },
+      { id: 'machine_arm_curl', name: 'Сгибание рук в тренажере', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: '5-6', tip: 'Тяжелый изолированный подход.' },
+      { id: 'french_press_db', name: 'Французский жим с гантелями', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: '10-12', tip: 'Локти зафиксированы строго вверх.' },
+      { id: 'french_press', name: 'Французский жим со штангой', cat: 'arms', target: 'Трицепс', sets: 5, repsDef: '6-8', tip: 'Опускание ко лбу или за голову.' },
+      { id: 'close_grip_bench_incline_rev', name: 'Жим узким хватом в обратном наклоне', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: '6-8', tip: 'Отрицательный наклон скамьи, акцент на трицепс.' },
+      { id: 'close_grip_bench', name: 'Жим штанги узким хватом', cat: 'arms', target: 'Трицепс', sets: 4, repsDef: '8-10', tip: 'Хват на ширине плеч, локти ближе к корпусу.' },
+      { id: 'tricep_pushdown', name: 'Разгибание рук в вертикальном блоке', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: '12-15', tip: 'Полное выпрямление рук внизу с фиксацией.' },
+      { id: 'dips', name: 'Отжимания на брусьях', cat: 'chest', target: 'Грудь / Трицепс', sets: 3, repsDef: 'Max', tip: 'Работа в каждом подходе до отказа.' },
+
+      // Грудь / Спина
+      { id: 'incline_barbell_press', name: 'Жим штанги на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: '6-8', tip: 'Наклон скамьи 30–45 градусов.' },
+      { id: 'incline_db_press', name: 'Жим гантелей на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: '10-12', tip: 'Глубокая растяжка мышц груди внизу.' },
+      { id: 'flat_db_press', name: 'Жим гантелей лежа', cat: 'chest', target: 'Грудь', sets: 3, repsDef: '10-12', tip: 'Классический жим гантелей на горизонтальной скамье.' },
+      { id: 'decline_barbell_press', name: 'Жим штанги в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: '12-15', tip: 'Скамья с отрицательным наклоном.' },
+      { id: 'decline_db_press', name: 'Жим гантелей в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: '8-10', tip: 'Мощная прокачка нижней линии грудных.' },
+      { id: 'crossover_incline', name: 'Сведение в кроссовере на наклонной скамье', cat: 'chest', target: 'Грудь', sets: 3, repsDef: '10-12', tip: 'Сведение тросов перед собой на наклонной скамье.' },
+      { id: 'crossover_standing', name: 'Сведение рук в кроссовере стоя', cat: 'chest', target: 'Грудь', sets: 3, repsDef: '12-15', tip: 'Пиковое сжатие груди в конечной точке.' },
+      { id: 'bench_press_100', name: 'Жим лежа (100 повторений)', cat: 'chest', target: 'Грудь', sets: 1, repsDef: '100', tip: '1 памп-подход на 100 повторений с паузами.' },
+      { id: 'bent_over_row', name: 'Тяга штанги в наклоне', cat: 'back', target: 'Широчайшие и середина спины', sets: 3, repsDef: '6-8', tip: 'Тяга к поясу за счет сведения лопаток.' },
+      { id: 'lat_pulldown', name: 'Верхняя тяга к груди', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: '10-12', tip: 'Тяните локти вниз и назад к грудине.' },
+      { id: 'seated_cable_row', name: 'Тяга горизонтального блока', cat: 'back', target: 'Толщина спины', sets: 3, repsDef: '12-15', tip: 'Тяга рукояти к низу живота.' },
+      { id: 'pullups_weighted', name: 'Подтягивания широким хватом с весом', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: '6-8', tip: 'С дополнительным отягощением на поясе.' },
+
+      // Пресс
+      { id: 'cable_crunch', name: 'Скручивания в верхнем блоке (стоя/на коленях)', cat: 'abs', target: 'Пресс', sets: 4, repsDef: '12-15', tip: 'Тяните блок за счет округления спины и пресса.' },
+      { id: 'hanging_leg_raise', name: 'Подъем ног к перекладине (или лежа)', cat: 'abs', target: 'Низ живота', sets: 3, repsDef: 'Max', tip: 'Подъем ног до касания турника либо до максимума.' },
+      { id: 'fitball_crunch', name: 'Скручивания на фитболе', cat: 'abs', target: 'Пресс', sets: 3, repsDef: 'Max', tip: 'Большая амплитуда растяжения пресса на мяче.' }
+    ];
+
+    /* 2. РАСПИСАНИЕ С ПЕРИОДАМИ ИЗ PDF */
+    const PROGRAMS = {
+      phase1: {
+        title: 'Недели 1–4',
+        days: [
+          { title: 'День 1: Плечи/Трапеции', exercises: ['db_seated_press', 'upright_row', 'bent_lateral_raise', 'arnold_press', 'lateral_raise_100', 'shrugs_barbell_heavy'] },
+          { title: 'День 2: Ноги/Руки', exercises: ['barbell_squats', 'romanian_deadlift', 'barbell_curl', 'close_grip_bench_incline_rev', 'scott_curl', 'french_press_db', 'hammer_curl', 'tricep_pushdown'] },
+          { title: 'День 3: Трапеции/Плечи', exercises: ['shrugs_barbell', 'shrugs_smith_behind', 'upright_row', 'calf_raises', 'bent_lateral_100', 'military_press'] },
+          { title: 'День 4: Грудные/Спина', exercises: ['incline_barbell_press', 'bent_over_row', 'flat_db_press', 'lat_pulldown', 'decline_barbell_press', 'seated_cable_row'] }
+        ]
+      },
+      phase2: {
+        title: 'Недели 5–8',
+        days: [
+          { title: 'День 1: Грудные/Бицепсы', exercises: ['incline_barbell_press', 'incline_db_press', 'crossover_incline', 'bench_press_100', 'barbell_curl_5x5'] },
+          { title: 'День 2: Бедра', exercises: ['barbell_squats', 'romanian_deadlift', 'leg_press', 'leg_curl_elevated', 'leg_curl_100'] },
+          { title: 'День 3: Бицепс/Грудные', exercises: ['barbell_curl', 'barbell_curl_reverse', 'hammer_curl', 'machine_arm_curl', 'scott_curl_100', 'incline_db_press'] },
+          { title: 'День 4: Спина/Трицепс', exercises: ['bent_over_row', 'pullups_weighted', 'lat_pulldown', 'french_press', 'tricep_pushdown'] }
+        ]
+      },
+      phase3: {
+        title: 'Недели 9–12',
+        days: [
+          { title: 'День 1: Бедра', exercises: ['barbell_squats', 'leg_press', 'leg_extension', 'romanian_deadlift_5'] },
+          { title: 'День 2: Плечи/Спина', exercises: ['upright_row', 'bent_lateral_raise', 'cable_lateral_raise', 'bent_over_row', 'lat_pulldown', 'shrugs_smith_behind'] },
+          { title: 'День 3: Бицепсы/Трицепсы', exercises: ['scott_curl', 'alternate_db_curl', 'barbell_curl_reverse', 'close_grip_bench', 'french_press', 'tricep_pushdown'] },
+          { title: 'День 4: Грудные/Плечи', exercises: ['decline_db_press', 'dips', 'crossover_standing', 'db_seated_press', 'standing_lateral_raise', 'front_raise'] }
+        ]
+      },
+      abs_program: {
+        title: 'Пресс (в конце каждой тренировки)',
+        days: [
+          { title: 'Блок пресса из PDF', exercises: ['cable_crunch', 'hanging_leg_raise', 'fitball_crunch'] }
+        ]
+      }
     };
 
-    function loadState() {
-      try {
-        const saved = localStorage.getItem('1fit_tracker_state_v3');
-        if (saved) { state = JSON.parse(saved); }
-      } catch(e) { console.log('Storage not available', e); }
-      document.getElementById('prof-weight').textContent = state.user.weight.toFixed(1) + ' кг';
-      document.getElementById('header-user-badge').textContent = state.user.height + ' см • ' + state.user.weight.toFixed(1) + ' кг';
-      document.getElementById('input-new-weight').value = state.user.weight;
-      document.getElementById('stat-water').innerHTML = state.water.toFixed(2) + ' <span>л</span>';
-      calculateStreak();
-      renderLogs();
-      renderCalendar();
-      updateProgress();
-    }
+    /* 3. РАБОЧАЯ ЛОГИКА ИНТЕРФЕЙСА */
+    let state = {
+      goal: 'phase1',
+      dayIdx: 0
+    };
 
-    function saveState() {
-      try {
-        localStorage.setItem('1fit_tracker_state_v3', JSON.stringify(state));
-      } catch(e) { console.log('Storage save error', e); }
-    }
-
-    function switchMainView(viewName, btn) {
-      document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById('view-' + viewName).classList.remove('hidden');
+    function switchGoal(goalKey, btn) {
+      state.goal = goalKey;
+      state.dayIdx = 0;
+      document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
-      if (viewName === 'calendar') {
-        renderCalendar();
-        renderLogs();
-      }
+      renderDayTabs();
+      renderWorkoutExercises();
     }
 
-    function switchWorkoutDay(tabKey, btnElement) {
-      state.activeWorkoutTab = tabKey;
-      document.querySelectorAll('.sub-tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tabs .tab-pill').forEach(btn => btn.classList.remove('active'));
-      
-      const target = document.getElementById('sub-' + tabKey);
-      if (target) target.classList.remove('hidden');
-      
-      if (btnElement && btnElement.classList) {
-        btnElement.classList.add('active');
-      } else {
-        // Find by tabKey in onclick attribute if called programmatically
-        const matchingBtn = document.querySelector(`.tabs .tab-pill[onclick*="'${tabKey}'"]`);
-        if (matchingBtn) matchingBtn.classList.add('active');
-      }
+    function renderDayTabs() {
+      const prog = PROGRAMS[state.goal];
+      const row = document.getElementById('day-tabs-row');
+      row.innerHTML = '';
 
-      const titleMap = {
-        'dayA': 'День А: Базовый каркас',
-        'dayB': 'День B: Рельеф и руки',
-        'dayC': 'День C: Функционал и кор',
-        'cardio40': '🚶 40 мин ходьбы в гору (Zone 2)',
-        'recovery': '1Fit: Бассейн и сауна'
-      };
-      const titleEl = document.getElementById('active-plan-title');
-      if (titleEl) titleEl.textContent = titleMap[tabKey] || 'Тренировка';
-      updateProgress();
-    }
-
-    function toggleSetRow(btn) {
-      btn.classList.toggle('done');
-      btn.textContent = btn.classList.contains('done') ? '✓ Готово' : 'Выполнить';
-      updateProgress();
-      if (navigator.vibrate) { navigator.vibrate(35); }
-    }
-
-    function updateProgress() {
-      const activeContainer = document.querySelector('.sub-tab-content:not(.hidden)');
-      if (!activeContainer) return;
-      const allBtns = activeContainer.querySelectorAll('.btn-set-check');
-      const doneBtns = activeContainer.querySelectorAll('.btn-set-check.done');
-      const pct = allBtns.length ? Math.round((doneBtns.length / allBtns.length) * 100) : 0;
-      document.getElementById('stat-progress').textContent = pct + '%';
-    }
-
-    function addWater(amount) {
-      state.water += amount;
-      document.getElementById('stat-water').innerHTML = state.water.toFixed(2) + ' <span>л</span>';
-      saveState();
-      if (navigator.vibrate) { navigator.vibrate(25); }
-    }
-
-    function completeWorkoutSession() {
-      const activeContainer = document.querySelector('.sub-tab-content:not(.hidden)');
-      const doneBtns = activeContainer.querySelectorAll('.btn-set-check.done');
-      
-      if (doneBtns.length === 0) {
-        alert('Отметьте хотя бы один выполненный подход!');
-        return;
-      }
-
-      const todayStr = new Date().toISOString().split('T')[0];
-      const title = document.getElementById('active-plan-title').textContent;
-
-      state.workoutLogs.unshift({
-        date: todayStr,
-        title: title,
-        setsCount: doneBtns.length,
-        note: 'Завершено: ' + doneBtns.length + ' сетов'
+      prog.days.forEach((d, i) => {
+        const b = document.createElement('button');
+        b.className = `day-tab ${i === state.dayIdx ? 'active' : ''}`;
+        b.textContent = d.title.split(':')[0];
+        b.onclick = () => {
+          state.dayIdx = i;
+          renderDayTabs();
+          renderWorkoutExercises();
+        };
+        row.appendChild(b);
       });
-
-      saveState();
-      calculateStreak();
-      playBeep();
-      alert('🎉 Отлично! Тренировка зафиксирована в Календарь.');
-      switchMainView('calendar', document.querySelectorAll('.nav-btn')[1]);
     }
 
-    function calculateStreak() {
-      document.getElementById('stat-streak').innerHTML = state.workoutLogs.length + ' <span>тр.</span>';
-    }
-
-    let currentCalDate = new Date();
-
-    function renderCalendar() {
-      const year = currentCalDate.getFullYear();
-      const month = currentCalDate.getMonth();
-      const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-      document.getElementById('cal-month-year').textContent = `${monthNames[month]} ${year}`;
-
-      const grid = document.getElementById('cal-days-grid');
-      grid.innerHTML = '';
-
-      const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const today = new Date();
-
-      for (let i = 0; i < firstDayIndex; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'cal-cell';
-        emptyCell.style.opacity = '0.15';
-        grid.appendChild(emptyCell);
-      }
-
-      for (let d = 1; d <= daysInMonth; d++) {
-        const dayCell = document.createElement('div');
-        dayCell.className = 'cal-cell';
-        dayCell.textContent = d;
-
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        
-        if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === d) {
-          dayCell.classList.add('today');
-        }
-
-        const hasWorkout = state.workoutLogs.some(log => log.date === dateStr);
-        if (hasWorkout) {
-          dayCell.classList.add('done-day');
-          const dot = document.createElement('div');
-          dot.className = 'cal-dot-indicator';
-          dayCell.appendChild(dot);
-        }
-
-        dayCell.onclick = () => showDayInfo(dateStr);
-        grid.appendChild(dayCell);
-      }
-    }
-
-    function prevMonth() { currentCalDate.setMonth(currentCalDate.getMonth() - 1); renderCalendar(); }
-    function nextMonth() { currentCalDate.setMonth(currentCalDate.getMonth() + 1); renderCalendar(); }
-
-    function showDayInfo(dateStr) {
-      const logs = state.workoutLogs.filter(l => l.date === dateStr);
-      if (logs.length > 0) {
-        alert(`📅 Дата: ${dateStr}\n` + logs.map(l => `• ${l.title} (${l.setsCount} сетов)`).join('\n'));
-      } else {
-        if (confirm(`На дату ${dateStr} тренировок нет. Отметить тренировку вручную?`)) {
-          state.workoutLogs.unshift({ date: dateStr, title: 'Тренировка в зале (1Fit)', setsCount: 18, note: 'Добавлено вручную' });
-          saveState();
-          renderCalendar();
-          renderLogs();
-        }
-      }
-    }
-
-    function renderLogs() {
-      const container = document.getElementById('log-feed-container');
+    function renderWorkoutExercises() {
+      const prog = PROGRAMS[state.goal];
+      const day = prog.days[state.dayIdx] || prog.days[0];
+      const container = document.getElementById('exercises-container');
       container.innerHTML = '';
-      if (state.workoutLogs.length === 0) {
-        container.innerHTML = '<div style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 24px;">Пока нет сохраненных занятий.</div>';
-        return;
-      }
-      state.workoutLogs.forEach(log => {
-        const item = document.createElement('div');
-        item.className = 'history-card';
-        item.innerHTML = `
-          <div>
-            <div class="history-title">${log.date} — ${log.title}</div>
-            <div class="history-sub">${log.note || 'Выполнено успешно'}</div>
+
+      day.exercises.forEach((exId, idx) => {
+        const ex = DB.find(e => e.id === exId);
+        if (!ex) return;
+
+        let setsRows = '';
+        const numSets = ex.sets || 3;
+
+        for (let s = 1; s <= numSets; s++) {
+          let repValue = ex.repsDef;
+          if (Array.isArray(ex.repsDef)) {
+            repValue = ex.repsDef[s - 1] || ex.repsDef[ex.repsDef.length - 1];
+          }
+
+          setsRows += `
+            <div class="set-row">
+              <span class="set-label">Сет ${s}</span>
+              <div><input type="number" class="weight-input" placeholder="кг" value="40"> кг</div>
+              <span class="reps-label">${repValue} повт</span>
+              <button class="btn-set" onclick="checkSet(this, '${ex.name}')">Выполнить</button>
+            </div>
+          `;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'exercise-card';
+        card.innerHTML = `
+          <div class="ex-header">
+            <div class="ex-title-wrap">
+              <div class="ex-num">${idx + 1}</div>
+              <div class="ex-name">${ex.name}</div>
+            </div>
+            <div class="ex-target-badge">${ex.target}</div>
           </div>
-          <div class="history-tag">${log.setsCount} сетов</div>
+          <div class="ex-desc">${ex.tip}</div>
+          <div class="sets-block">${setsRows}</div>
+          <div class="ex-footer">
+            <div class="timer-buttons">
+              <button class="btn-timer-chip" onclick="startRest(60, '${ex.name}')">60с</button>
+              <button class="btn-timer-chip" onclick="startRest(90, '${ex.name}')">90с</button>
+              <button class="btn-timer-chip" onclick="startRest(120, '${ex.name}')">120с</button>
+            </div>
+          </div>
         `;
-        container.appendChild(item);
+        container.appendChild(card);
       });
     }
 
-    /* Sound Gong Engine (Web Audio API) */
-    function playBeep() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.6);
-      } catch(e) {}
+    function checkSet(btn, exName) {
+      btn.classList.toggle('done');
+      const isDone = btn.classList.contains('done');
+      btn.textContent = isDone ? '✓ Готово' : 'Выполнить';
+      if (isDone) startRest(75, exName);
     }
 
-    /* Floating Timer Engine */
-    let timerInterval = null;
-    function startTimer(seconds) {
-      clearInterval(timerInterval);
-      const timerEl = document.getElementById('global-timer');
-      const secEl = document.getElementById('timer-seconds');
-      timerEl.classList.add('active');
-      secEl.textContent = seconds;
+    let restTimerId = null;
+    let restSeconds = 60;
 
-      let remaining = seconds;
-      timerInterval = setInterval(() => {
-        remaining--;
-        secEl.textContent = remaining;
-        if (remaining <= 0) {
-          clearInterval(timerInterval);
-          playBeep();
-          if (navigator.vibrate) { navigator.vibrate([250, 100, 250, 100, 250]); }
-          timerEl.classList.remove('active');
+    function startRest(sec, exTitle) {
+      clearInterval(restTimerId);
+      restSeconds = sec || 60;
+      const dock = document.getElementById('rest-dock');
+      const digits = document.getElementById('dock-timer-digits');
+      const title = document.getElementById('dock-ex-title');
+
+      dock.classList.add('active');
+      digits.textContent = `${restSeconds}с`;
+      title.textContent = `Отдых: ${exTitle || ''}`;
+
+      restTimerId = setInterval(() => {
+        restSeconds--;
+        digits.textContent = `${restSeconds}с`;
+        if (restSeconds <= 0) {
+          clearInterval(restTimerId);
+          digits.textContent = 'В БОЙ!';
+          setTimeout(closeRestTimer, 2000);
         }
       }, 1000);
     }
 
-    function stopTimer() {
-      clearInterval(timerInterval);
-      document.getElementById('global-timer').classList.remove('active');
+    function adjustRest(delta) {
+      restSeconds = Math.max(5, restSeconds + delta);
+      document.getElementById('dock-timer-digits').textContent = `${restSeconds}с`;
     }
 
-    function updateUserWeight() {
-      const val = parseFloat(document.getElementById('input-new-weight').value);
-      if (!isNaN(val) && val > 30) {
-        state.user.weight = val;
-        saveState();
-        document.getElementById('prof-weight').textContent = val.toFixed(1) + ' кг';
-        document.getElementById('header-user-badge').textContent = state.user.height + ' см • ' + val.toFixed(1) + ' кг';
-        alert('Вес обновлен!');
-      }
+    function closeRestTimer() {
+      clearInterval(restTimerId);
+      document.getElementById('rest-dock').classList.remove('active');
     }
 
-    function resetDaySession() {
-      if (confirm('Сбросить отметки всех сетов за текущую сессию?')) {
-        document.querySelectorAll('.btn-set-check').forEach(btn => {
-          btn.classList.remove('done');
-          btn.textContent = 'Выполнить';
-        });
-        updateProgress();
-      }
+    function renderLibrary() {
+      const list = document.getElementById('library-list');
+      list.innerHTML = '';
+      document.getElementById('lib-count').textContent = `${DB.length} упр.`;
+
+      DB.forEach(ex => {
+        const item = document.createElement('div');
+        item.className = 'library-item';
+        item.innerHTML = `
+          <div>
+            <div class="lib-title">${ex.name}</div>
+            <div class="lib-cat">${ex.target} • Подходов: ${ex.sets} (${Array.isArray(ex.repsDef) ? ex.repsDef.join('/') : ex.repsDef})</div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
     }
 
-    
-    // 1Fit Integration logic
-    function open1FitApp() {
-      // 1. Try deep linking schemes for 1Fit mobile app
-      // iOS / Android custom URL schemes or universal links
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      
-      if (isMobile) {
-        // Attempt deep link to 1Fit app scheme
-        window.location.href = "onefit://";
-        
-        // Fallback to web or app store if not opened within 1.5s
-        setTimeout(() => {
-          if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            window.open("https://apps.apple.com/app/1fit/id1453965908", "_blank");
-          } else if (/Android/i.test(navigator.userAgent)) {
-            window.open("https://play.google.com/store/apps/details?id=kz.onefit", "_blank");
-          } else {
-            window.open("https://1fit.app", "_blank");
-          }
-        }, 1500);
-      } else {
-        window.open("https://1fit.app", "_blank");
-      }
+    function searchLibrary() {
+      const q = document.getElementById('lib-search').value.toLowerCase().trim();
+      const list = document.getElementById('library-list');
+      list.innerHTML = '';
+
+      const filtered = DB.filter(e => e.name.toLowerCase().includes(q) || e.target.toLowerCase().includes(q));
+      filtered.forEach(ex => {
+        const item = document.createElement('div');
+        item.className = 'library-item';
+        item.innerHTML = `
+          <div>
+            <div class="lib-title">${ex.name}</div>
+            <div class="lib-cat">${ex.target}</div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
     }
 
-    function save1FitGym() {
-      const name = document.getElementById('input-gym-name').value.trim();
-      if (name) {
-        if (!state.onefit) state.onefit = {};
-        state.onefit.gymName = name;
-        saveState();
-        document.getElementById('saved-gym-name').textContent = name;
-        alert('Клуб 1Fit сохранен: ' + name);
-      }
+    function switchNav(viewId, btn) {
+      document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('view-' + viewId).classList.remove('hidden');
+      if (btn) btn.classList.add('active');
+      if (viewId === 'library') renderLibrary();
     }
 
-    function useBonus(type) {
-      if (!state.onefit) state.onefit = { sauna: 0, pool: 0 };
-      if (type === 'sauna') {
-        state.onefit.sauna = (state.onefit.sauna || 0) + 1;
-      } else if (type === 'pool') {
-        state.onefit.pool = (state.onefit.pool || 0) + 1;
-      }
-      saveState();
-      update1FitUI();
-      if (navigator.vibrate) navigator.vibrate(30);
-    }
-
-    function update1FitUI() {
-      if (!state.onefit) state.onefit = { sauna: 0, pool: 0, gymName: 'Фитнес-клуб по 1Fit' };
-      const saunaEl = document.getElementById('sauna-bonus-val');
-      const poolEl = document.getElementById('pool-bonus-val');
-      const gymEl = document.getElementById('saved-gym-name');
-      const inputGymEl = document.getElementById('input-gym-name');
-
-      if (saunaEl) saunaEl.textContent = `${state.onefit.sauna || 0} / 2`;
-      if (poolEl) poolEl.textContent = `${state.onefit.pool || 0} / 8`;
-      if (gymEl) gymEl.textContent = state.onefit.gymName || 'Фитнес-клуб по 1Fit';
-      if (inputGymEl) inputGymEl.value = state.onefit.gymName || 'Фитнес-клуб по 1Fit';
-    }
-
-    function addToGoogleCalendar() {
-      const now = new Date();
-      // Schedule workout 1 hour from now
-      const start = new Date(now.getTime() + 60 * 60 * 1000);
-      const end = new Date(start.getTime() + 60 * 60 * 1000); // 1 hour workout
-
-      const formatCalTime = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
-      
-      const gymName = (state.onefit && state.onefit.gymName) ? state.onefit.gymName : "Зал 1Fit";
-      const title = encodeURIComponent("Тренировка в зале (" + gymName + ")");
-      const details = encodeURIComponent("План Full Body (1Fit): 6 упражнений по программе. Не забыть абонемент 1Fit и бутылку воды 1л!");
-      const location = encodeURIComponent(gymName);
-      
-      const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${formatCalTime(start)}/${formatCalTime(end)}&details=${details}&location=${location}`;
-      window.open(gcalUrl, "_blank");
-    }
-
-    // Extended load
-    const originalLoadState = loadState;
-    window.onload = function() { originalLoadState(); update1FitUI(); };
+    window.onload = () => {
+      renderDayTabs();
+      renderWorkoutExercises();
+    };
   </script>
 </body>
 </html>
