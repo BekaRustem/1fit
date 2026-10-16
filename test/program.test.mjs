@@ -12,4 +12,11 @@ for (const exercise of ['Жим гантелей сидя', 'Жим ногами
 }
 assert.match(source, /phaseIndex\(s\)/, 'the app must choose the phase from the start date');
 
+for (const label of ['Сегодня', 'Серия тренировок', 'Прогресс', 'Программа и данные', 'Экспортировать копию']) {
+  assert.match(source, new RegExp(label), `missing Russian UI label: ${label}`);
+}
+for (const label of ['>Today<', '>Streak<', '>Progress<', '>More<', 'Your streak']) {
+  assert.doesNotMatch(source, new RegExp(label), `English UI label remains: ${label}`);
+}
+
 console.log('Mass-program definition is present.');
