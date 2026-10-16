@@ -30,6 +30,10 @@ for (const label of ['Начать упражнение', 'Завершить у
 assert.match(source, /function startExercise\(/, 'each exercise must be startable');
 assert.match(source, /function finishExercise\(/, 'each exercise must be finishable');
 assert.match(source, /function exerciseBenefit\(/, 'each exercise must explain its benefit');
+assert.match(source, /Режим тренировки/, 'the app must offer distraction-free workout mode');
+assert.match(source, /function toggleWorkoutMode\(/, 'the workout mode must be toggleable');
+assert.match(source, /function playRestSignal\(/, 'the rest timer must play an end signal');
+assert.match(source, /function prepareRestSound\(/, 'the rest timer must prepare audio after user interaction');
 assert.match(source, /function toggleRestWidget\(/, 'the rest timer must be toggleable as a widget');
 assert.match(source, /function enableRestSwipe\(/, 'the rest timer must support a swipe gesture');
 assert.match(source, /rest-widget/, 'the rest timer must use a hidden widget container');

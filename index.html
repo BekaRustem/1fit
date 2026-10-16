@@ -62,6 +62,9 @@
   .exercise-active{margin:4px 0 10px;padding:10px;border:1px solid rgba(52,211,153,.35);border-radius:12px;background:linear-gradient(135deg,rgba(52,211,153,.09),var(--card2));animation:exerciseOpen .22s ease-out}
   .exercise-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.exercise-info div{border:1px solid var(--line);border-radius:10px;padding:8px;font-size:12px;line-height:1.35}.exercise-info b{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.35px;margin-bottom:3px}
   .finish-exercise{margin-top:10px;background:var(--card);color:var(--accent);border:1px solid rgba(52,211,153,.45)}
+  .mode-toggle{border:1px solid rgba(34,211,238,.35);border-radius:10px;background:rgba(34,211,238,.1);color:var(--accent2);padding:7px 9px;font-size:12px;font-weight:800;white-space:nowrap}
+  .workout-mode .ex:not(.active){display:none}.workout-mode .ex.active{border-top:0;padding-top:0}
+  .mode-note{color:var(--accent2);font-size:12px;margin:-2px 0 10px}
   @keyframes exerciseOpen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
   @keyframes exerciseComplete{0%{transform:scale(.94)}65%{transform:scale(1.04)}100%{transform:scale(1)}}
   .technique-frames{position:relative;height:176px;max-width:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#52747c}
@@ -244,6 +247,8 @@ let treadmillInterval=null;
 let restTimer={remaining:90,total:90,running:false,endsAt:null};
 let restInterval=null;
 let restWidgetOpen=false;
+let workoutMode=false;
+let restAudio=null;
 let openTechniqueId=null;
 
 function load(){
@@ -490,6 +495,15 @@ function renderTreadmill(){
   return `<section class="card treadmill" aria-label="Таймер ходьбы на дорожке"><div class="treadhead"><div><div class="treadtitle">40 минут ходьбы в гору</div><div class="treadhint">Перед силовой тренировкой</div></div><span class="treadmeta">${treadmill.rest?'ОТДЫХ':'ЗОНА 2'}</span></div><div class="timer-ring" id="treadmillRing" style="background:${ringBackground(treadmill.remaining,treadmillTotal(),'var(--accent2)')}"><span id="treadmillClock">${timeLabel(treadmill.remaining)}</span></div><div class="treadstage">${stage.name}</div><div class="treadhint">Уклон ${stage.incline} · ${stage.speed}</div><div class="treadlist">${rows}</div><div class="treadcontrols"><button class="btn sm" onclick="treadmillStart()">${label}</button><button class="btn sm ghost" onclick="treadmillNext()">${next}</button><button class="btn sm ghost" onclick="treadmillReset()">Сброс</button></div></section>`;
 }
 function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}restTimer.running=false;restTimer.endsAt=null}
+function prepareRestSound(){
+  const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
+  try{if(!restAudio)restAudio=new Audio();if(restAudio.state==='suspended')restAudio.resume()}catch(e){}
+}
+function playRestSignal(){
+  if(!restAudio||restAudio.state!=='running')return;
+  try{[0,.22].forEach(delay=>{const osc=restAudio.createOscillator(),gain=restAudio.createGain(),at=restAudio.currentTime+delay;osc.frequency.value=660;gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.12,at+.02);gain.gain.exponentialRampToValueAtTime(.0001,at+.16);osc.connect(gain).connect(restAudio.destination);osc.start(at);osc.stop(at+.17)})}catch(e){}
+}
+function notifyRestFinished(){playRestSignal();if(navigator.vibrate)navigator.vibrate([120,80,120])}
 function updateRestClock(){
   const label=timeLabel(restTimer.remaining);
   const el=document.getElementById('restClock');if(el)el.textContent=label;
@@ -500,12 +514,13 @@ function syncRestTimer(){
   if(!restTimer.running||!restTimer.endsAt)return;
   restTimer.remaining=Math.max(0,Math.ceil((restTimer.endsAt-Date.now())/1000));
   updateRestClock();
-  if(restTimer.remaining===0){stopRestTimer();if(navigator.vibrate)navigator.vibrate([120,80,120]);render()}
+  if(restTimer.remaining===0){stopRestTimer();notifyRestFinished();render()}
 }
 function startRest(seconds){
   if(seconds){stopRestTimer();restTimer={remaining:seconds,total:seconds,running:false,endsAt:null}}
   if(restTimer.running){syncRestTimer();stopRestTimer();render();return}
   if(restTimer.remaining===0)restTimer.remaining=restTimer.total;
+  prepareRestSound();
   restTimer.running=true;
   restTimer.endsAt=Date.now()+restTimer.remaining*1000;
   restInterval=setInterval(syncRestTimer,250);
@@ -513,6 +528,7 @@ function startRest(seconds){
 }
 function resetRest(){stopRestTimer();restTimer={remaining:90,total:90,running:false,endsAt:null};render()}
 function toggleRestWidget(force){restWidgetOpen=typeof force==='boolean'?force:!restWidgetOpen;render()}
+function toggleWorkoutMode(){workoutMode=!workoutMode;render()}
 function renderRestTimer(){
   const label=restTimer.running?'Пауза':'Старт отдыха';
   const status=restTimer.remaining===0?'Отдых закончен':'Выбери длительность или продолжи текущий отсчёт';
@@ -568,14 +584,14 @@ function renderToday(){
   // lift day
   const s=getSession(cur);
   prepareTreadmill();
-  h+=renderTreadmill();
+  if(!workoutMode)h+=renderTreadmill();
   h+=renderRestTimer();
   h+=`<div class="row between" style="margin-bottom:10px">
       <h2 class="title" style="margin:0">${p.name}</h2>
-      <span class="focus ${p.focus==='Hypertrophy'?'hyp':''}">${p.focus}</span></div>`;
-  h+=`<div class="hint" style="margin:-2px 0 10px">Вес · повторы: по одной строке на упражнение. Одно число = одинаковый вес во всех подходах;
+      <div class="row" style="gap:7px"><span class="focus ${p.focus==='Hypertrophy'?'hyp':''}">${p.focus}</span><button class="mode-toggle" type="button" onclick="toggleWorkoutMode()">${workoutMode?'Обычный вид':'Режим тренировки'}</button></div></div>`;
+  h+=workoutMode?`<div class="mode-note">Показано текущее упражнение. Чтобы выбрать другое — выйди в обычный вид.</div>`:`<div class="hint" style="margin:-2px 0 10px">Вес · повторы: по одной строке на упражнение. Одно число = одинаковый вес во всех подходах;
       нажми <b>,</b>, если подходы отличаются (например, <b>60, 60, 55</b>).</div>`;
-  h+=`<div class="card">`;
+  h+=`<div class="card ${workoutMode&&s.activeExerciseId?'workout-mode':''}">`;
   p.ex.forEach(ex=>{
     const sets = (s&&s.sets[ex.id]) || null;
     const active=s&&s.activeExerciseId===ex.id;
@@ -587,7 +603,7 @@ function renderToday(){
     if(ls)bits.push(`Прошлый раз: ${setLabel(ex,ls.sets,eu)}`);
     else if(ex.m==='load'&&recommendedWeight(ex,null,eu))bits.push(`Старт: ${recommendedWeight(ex,null,eu)} ${eu}`);
     if(pr!=null)bits.push(`<span class="pr">Рекорд ${prLabel(ex,pr,eu)}</span>`);
-    h+=`<div class="ex ${finished?'completed':''}"><div class="exhead">
+    h+=`<div class="ex ${active?'active':''} ${finished?'completed':''}"><div class="exhead">
         <div style="min-width:0"><button class="exnamebutton ${openTechniqueId===ex.id?'open':''}" onclick="toggleTechnique('${ex.id}')" aria-expanded="${openTechniqueId===ex.id}">${ex.name}</button>
           ${bits.length?`<div class="last">${bits.join(' · ')}</div>`:''}</div>
         <div class="exmeta">
