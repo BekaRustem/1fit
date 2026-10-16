@@ -30,6 +30,8 @@ for (const label of ['Начать упражнение', 'Завершить у
 assert.match(source, /function startExercise\(/, 'each exercise must be startable');
 assert.match(source, /function finishExercise\(/, 'each exercise must be finishable');
 assert.match(source, /function exerciseBenefit\(/, 'each exercise must explain its benefit');
+assert.match(source, /Выполнено упражнений/, 'the workout header must show exercise completion progress');
+assert.match(source, /workout-progress/, 'the workout header must render a compact progress indicator');
 assert.match(source, /Режим тренировки/, 'the app must offer distraction-free workout mode');
 assert.match(source, /function toggleWorkoutMode\(/, 'the workout mode must be toggleable');
 assert.match(source, /function playRestSignal\(/, 'the rest timer must play an end signal');
