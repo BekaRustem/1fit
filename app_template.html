@@ -161,6 +161,9 @@
   .hide{display:none}
   .center{text-align:center}
   .emptyst{text-align:center;color:var(--muted);padding:30px 10px;font-size:14px}
+  .body-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.body-form .field input{padding-right:42px}
+  .body-form .btn{width:auto;white-space:nowrap}.photo-actions{display:flex;gap:8px;margin-top:8px}.photo-actions .btn{margin:0;flex:1}
+  .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.photo-grid figure{margin:0}.photo-grid img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:1px solid var(--line)}.photo-grid figcaption{font-size:10px;color:var(--muted);margin-top:3px;text-align:center}
 </style>
 </head>
 <body>
@@ -238,6 +241,8 @@ const WEEKDAY_OF_ID={day1:1,day2:2,day3:4,day4:6,rest:0};
 /* ---------- State ---------- */
 const KEY='gymtracker.v1';
 const BKEY='gymtracker.v1.bak';   // last-good snapshot; only read if the primary record is unreadable
+const MAX_PROGRESS_PHOTOS=12;
+const MAX_PROGRESS_PHOTO_BYTES=10*1024*1024;
 let data = load();
 let cur = todayStr();   // selected date on Today tab
 let tab = 'today';
@@ -262,6 +267,8 @@ function load(){
   if(!d||!d.sessions)d={meta:{startDate:null},sessions:{}};
   if(!d.settings)d.settings={unit:'kg'};
   if(!d.settings.exUnit)d.settings.exUnit={};   // per-exercise unit preference
+  if(!d.body)d.body={entries:{}};
+  if(!d.body.entries||typeof d.body.entries!=='object')d.body.entries={};
   if(!d.overrides)d.overrides={};               // per-date workout swap: {date: dayId}
   if(!d.shifts)d.shifts=[];                      // schedule shifts: [{from, days}] append-only
   if(restored){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}  // repair the primary record now
@@ -272,7 +279,8 @@ function save(){
   try{
     localStorage.setItem(KEY,j);
     if(data.sessions&&Object.keys(data.sessions).length)localStorage.setItem(BKEY,j);
-  }catch(e){}
+    return true;
+  }catch(e){return false}
 }
 
 /* ---------- Units ---------- */
@@ -779,6 +787,41 @@ function calShift(n){let {y,m}=calMonth;m+=n;if(m<0){m=11;y--}if(m>11){m=0;y++}c
 function jump(ds){if(ds>todayStr())return;cur=ds;tab='today';render();window.scrollTo(0,0)}
 
 /* ---------- Progress tab ---------- */
+function bodyStore(){if(!data.body)data.body={entries:{}};if(!data.body.entries)data.body.entries={};return data.body.entries}
+function safeWeight(value){const n=Number(String(value).replace(',','.'));return Number.isFinite(n)&&n>=30&&n<=300?Math.round(n*10)/10:null}
+function safePhoto(src){return typeof src==='string'&&src.length<2000000&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(src)?src:''}
+function bodyRows(){return Object.entries(bodyStore()).map(([date,entry])=>({date,weight:safeWeight(entry&&entry.weight),photo:safePhoto(entry&&entry.photo)})).filter(entry=>entry.weight!==null||entry.photo).sort((a,b)=>a.date.localeCompare(b.date))}
+function saveBodyWeight(){
+  const input=document.getElementById('bodyWeight');const weight=safeWeight(input&&input.value);
+  if(weight===null){alert('Введи вес от 30 до 300 кг.');return}
+  const store=bodyStore(),entry=store[todayStr()]||{};entry.weight=weight;store[todayStr()]=entry;
+  if(!save()){alert('Не удалось сохранить вес на этом устройстве.');return}render();
+}
+function trimProgressPhotos(){
+  const rows=bodyRows().filter(row=>row.photo).sort((a,b)=>b.date.localeCompare(a.date));
+  rows.slice(MAX_PROGRESS_PHOTOS).forEach(row=>{delete bodyStore()[row.date].photo});
+}
+function addProgressPhoto(input){
+  const file=input&&input.files&&input.files[0];if(!file)return;
+  const allowed=['image/jpeg','image/png','image/webp'];
+  if(!allowed.includes(file.type)||file.size>MAX_PROGRESS_PHOTO_BYTES){alert('Выбери JPG, PNG или WebP до 10 МБ.');input.value='';return}
+  const reader=new FileReader();
+  reader.onerror=()=>alert('Не удалось прочитать фото.');
+  reader.onload=()=>{const image=new Image();image.onerror=()=>alert('Не удалось обработать фото.');image.onload=()=>{
+    const scale=Math.min(1,900/Math.max(image.naturalWidth,image.naturalHeight));const canvas=document.createElement('canvas');
+    canvas.width=Math.max(1,Math.round(image.naturalWidth*scale));canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));
+    canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);const photo=canvas.toDataURL('image/jpeg',.76);
+    const store=bodyStore(),previous=store[todayStr()]&&store[todayStr()].photo;store[todayStr()]={...(store[todayStr()]||{}),photo};trimProgressPhotos();
+    if(!save()){if(previous)store[todayStr()].photo=previous;else delete store[todayStr()].photo;alert('Не хватает места для фото. Удали старые фото и попробуй снова.');return}input.value='';render();
+  };image.src=String(reader.result)};reader.readAsDataURL(file);
+}
+function removeProgressPhoto(){const entry=bodyStore()[todayStr()];if(!entry||!entry.photo)return;delete entry.photo;if(!entry.weight)delete bodyStore()[todayStr()];save();render()}
+function bodyProgressHTML(){
+  const rows=bodyRows(),today=bodyStore()[todayStr()]||{},current=safeWeight(today.weight),weights=rows.filter(row=>row.weight!==null);
+  const first=weights[0],last=weights[weights.length-1],delta=first&&last?rnd(last.weight-first.weight):null;
+  const photos=rows.filter(row=>row.photo).slice(-3).reverse();
+  return `<section class="card"><div class="row between"><div><h3 style="margin:0;font-size:16px">Контроль формы</h3><div class="muted small" style="margin-top:3px">Вес тела и фото для сравнения.</div></div>${last?`<b style="color:var(--accent)">${fmtN(last.weight)} кг</b>`:''}</div><div class="body-form"><div class="field"><input id="bodyWeight" inputmode="decimal" placeholder="Вес тела" value="${current===null?'':current}"><span class="u" style="right:12px">кг</span></div><button class="btn sm" type="button" onclick="saveBodyWeight()">Сохранить</button></div><div class="photo-actions"><button class="btn sm ghost" type="button" onclick="document.getElementById('progressPhoto').click()">Добавить фото</button>${today.photo?'<button class="btn sm ghost" type="button" onclick="removeProgressPhoto()">Удалить фото</button>':''}</div><input id="progressPhoto" class="hide" type="file" accept="image/jpeg,image/png,image/webp" onchange="addProgressPhoto(this)"><div class="hint" style="margin-top:8px">Фото хранятся только на этом устройстве. Сохраняются последние ${MAX_PROGRESS_PHOTOS} снимков.</div>${delta!==null?`<div class="small" style="margin-top:10px">Изменение веса: <b style="color:${delta<=0?'var(--accent)':'var(--warn)'}">${delta>0?'+':''}${fmtN(delta)} кг</b></div>`:''}${weights.length>1?'<canvas id="bodyChart" height="160" style="margin-top:10px"></canvas>':''}${photos.length?`<div class="photo-grid">${photos.map(row=>`<figure><img src="${row.photo}" alt="Фото прогресса ${pretty(row.date)}"><figcaption>${pretty(row.date).split(',')[0]}</figcaption></figure>`).join('')}</div>`:''}</section>`;
+}
 function nextLiftPlan(){
   let date=todayStr();
   for(let i=0;i<21;i++){
@@ -803,7 +846,8 @@ function smartProgressHTML(){
 }
 function renderProgress(){
   const ids=Object.keys(exName).filter(id=>Object.keys(data.sessions).some(d=>{const b=bestVal({m:exName[id].m},data.sessions[d].sets[id]);return b!=null}));
-  if(!ids.length){return done(`<h2 class="title">Прогресс</h2>${smartProgressHTML()}<div class="emptyst">Запиши несколько тренировок — и здесь появятся графики прогресса. 📈</div>`)}
+  const bodyPts=bodyRows().filter(row=>row.weight!==null).map(row=>({date:row.date,v:row.weight}));
+  if(!ids.length){done(`<h2 class="title">Прогресс</h2>${bodyProgressHTML()}${smartProgressHTML()}<div class="emptyst">Запиши несколько тренировок — и здесь появятся графики прогресса. 📈</div>`);if(bodyPts.length>1)drawChart(bodyPts,'кг','bodyChart');return}
   if(!progSel||!ids.includes(progSel))progSel=ids[0];
   const m=exName[progSel].m;
   if(!progUnit)progUnit=data.settings.unit;
@@ -812,7 +856,7 @@ function renderProgress(){
   Object.keys(data.sessions).sort().forEach(d=>{const b=bestVal({m},data.sessions[d].sets[progSel]);if(b!=null)ptsK.push({date:d,k:b})});
   const pts=ptsK.map(p=>({date:p.date,v:isLoad?rnd(fromKg(p.k,progUnit)):p.k}));
   const ul=m==='time'?'сек':m==='reps'?'повт.':progUnit;
-  let h=`<h2 class="title">Прогресс</h2>${smartProgressHTML()}<div class="sub">Лучший подход каждой тренировки.</div>
+  let h=`<h2 class="title">Прогресс</h2>${bodyProgressHTML()}${smartProgressHTML()}<div class="sub">Лучший подход каждой тренировки.</div>
     <select onchange="progSel=this.value;render()">${ids.map(id=>`<option value="${id}" ${id===progSel?'selected':''}>${exName[id].name}</option>`).join('')}</select>`;
   if(isLoad)h+=`<div class="row between" style="margin-top:10px"><span class="muted small">Единица измерения</span>${segUnit(progUnit,'setProgUnit')}</div>`;
   const first=pts[0].v,lastp=pts[pts.length-1].v,best=Math.max(...pts.map(p=>p.v));
@@ -828,9 +872,10 @@ function renderProgress(){
     return `<div class="histrow"><span class="muted">${pretty(p.date)}</span><b>${right}</b></div>`;}).join('')}</div>`;
   done(h);
   drawChart(pts,ul);
+  if(bodyPts.length>1)drawChart(bodyPts,'кг','bodyChart');
 }
-function drawChart(pts,unit){
-  const c=document.getElementById('chart');if(!c)return;
+function drawChart(pts,unit,id='chart'){
+  const c=document.getElementById(id);if(!c)return;
   const dpr=window.devicePixelRatio||1;const W=c.clientWidth,H=200;
   c.width=W*dpr;c.height=H*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);
   const padL=34,padR=12,padT=14,padB=22;
@@ -882,10 +927,10 @@ function exportData(){
 }
 function importData(inp){
   const f=inp.files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);if(d.sessions){if(!d.overrides)d.overrides={};if(!d.shifts)d.shifts=[];data=d;save();render();alert('Резервная копия восстановлена ✓')}else alert('Неверный файл резервной копии')}catch(e){alert('Не удалось прочитать файл')}};
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(d.sessions){if(!d.overrides)d.overrides={};if(!d.shifts)d.shifts=[];if(!d.body||!d.body.entries)d.body={entries:{}};data=d;save();render();alert('Резервная копия восстановлена ✓')}else alert('Неверный файл резервной копии')}catch(e){alert('Не удалось прочитать файл')}};
   r.readAsText(f);
 }
-function resetData(){if(confirm('Удалить все записанные тренировки и серии? Это действие нельзя отменить.')){data={meta:{startDate:null},sessions:{},settings:{unit:'kg',exUnit:{}},overrides:{},shifts:[]};try{localStorage.removeItem(BKEY)}catch(e){}save();cur=todayStr();render()}}
+function resetData(){if(confirm('Удалить все записанные тренировки и серии? Это действие нельзя отменить.')){data={meta:{startDate:null},sessions:{},settings:{unit:'kg',exUnit:{}},overrides:{},shifts:[],body:{entries:{}}};try{localStorage.removeItem(BKEY)}catch(e){}save();cur=todayStr();render()}}
 
 /* ---------- Nav ---------- */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;if(tab==='today')cur=todayStr();window.scrollTo(0,0);render()});

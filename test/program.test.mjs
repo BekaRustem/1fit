@@ -51,6 +51,12 @@ assert.match(source, /function recommendedWeight\(/, 'the app must calculate the
 assert.match(source, /Следующая тренировка/, 'the progress tab must show the next workout plan');
 assert.match(source, /function nextLiftPlan\(/, 'the app must find the next strength workout');
 assert.match(source, /function smartProgressHTML\(/, 'the progress tab must render automatic weight suggestions');
+for (const label of ['Контроль формы', 'Вес тела', 'Добавить фото', 'Фото хранятся только на этом устройстве']) {
+  assert.match(source, new RegExp(label), `missing body-progress control: ${label}`);
+}
+assert.match(source, /function saveBodyWeight\(/, 'body weight must be saved locally');
+assert.match(source, /function addProgressPhoto\(/, 'progress photos must be validated before storage');
+assert.match(source, /MAX_PROGRESS_PHOTOS/, 'progress photos must have a retention limit');
 for (const label of ['Техника выполнения', 'toggleTechnique', 'ANIMATION_SLUGS', 'CC BY-SA 4.0']) {
   assert.match(source, new RegExp(label), `missing exercise animation support: ${label}`);
 }
