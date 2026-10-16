@@ -234,7 +234,7 @@ let progSel = null;
 let progUnit = null;    // display unit on Progress tab
 let treadmill={date:null,phase:0,remaining:TREADMILL[0].minutes*60,running:false,rest:false,complete:false};
 let treadmillInterval=null;
-let restTimer={remaining:90,total:90,running:false};
+let restTimer={remaining:90,total:90,running:false,endsAt:null};
 let restInterval=null;
 let restWidgetOpen=false;
 let openTechniqueId=null;
@@ -481,22 +481,34 @@ function renderTreadmill(){
   const next=treadmill.rest?'Завершить отдых':treadmill.phase<TREADMILL.length-1?'Следующий этап':'К отдыху';
   return `<section class="card treadmill" aria-label="Таймер ходьбы на дорожке"><div class="treadhead"><div><div class="treadtitle">40 минут ходьбы в гору</div><div class="treadhint">Перед силовой тренировкой</div></div><span class="treadmeta">${treadmill.rest?'ОТДЫХ':'ЗОНА 2'}</span></div><div class="timer-ring" id="treadmillRing" style="background:${ringBackground(treadmill.remaining,treadmillTotal(),'var(--accent2)')}"><span id="treadmillClock">${timeLabel(treadmill.remaining)}</span></div><div class="treadstage">${stage.name}</div><div class="treadhint">Уклон ${stage.incline} · ${stage.speed}</div><div class="treadlist">${rows}</div><div class="treadcontrols"><button class="btn sm" onclick="treadmillStart()">${label}</button><button class="btn sm ghost" onclick="treadmillNext()">${next}</button><button class="btn sm ghost" onclick="treadmillReset()">Сброс</button></div></section>`;
 }
-function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}restTimer.running=false}
-function updateRestClock(){const el=document.getElementById('restClock');if(el)el.textContent=timeLabel(restTimer.remaining);const ring=document.getElementById('restRing');if(ring)ring.style.background=ringBackground(restTimer.remaining,restTimer.total,'var(--accent)')}
+function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}restTimer.running=false;restTimer.endsAt=null}
+function updateRestClock(){
+  const label=timeLabel(restTimer.remaining);
+  const el=document.getElementById('restClock');if(el)el.textContent=label;
+  const launcher=document.getElementById('restLauncherClock');if(launcher)launcher.textContent=label;
+  const ring=document.getElementById('restRing');if(ring)ring.style.background=ringBackground(restTimer.remaining,restTimer.total,'var(--accent)');
+}
+function syncRestTimer(){
+  if(!restTimer.running||!restTimer.endsAt)return;
+  restTimer.remaining=Math.max(0,Math.ceil((restTimer.endsAt-Date.now())/1000));
+  updateRestClock();
+  if(restTimer.remaining===0){stopRestTimer();if(navigator.vibrate)navigator.vibrate([120,80,120]);render()}
+}
 function startRest(seconds){
-  if(seconds){stopRestTimer();restTimer={remaining:seconds,total:seconds,running:false}}
-  if(restTimer.running){stopRestTimer();render();return}
+  if(seconds){stopRestTimer();restTimer={remaining:seconds,total:seconds,running:false,endsAt:null}}
+  if(restTimer.running){syncRestTimer();stopRestTimer();render();return}
   if(restTimer.remaining===0)restTimer.remaining=restTimer.total;
   restTimer.running=true;
-  restInterval=setInterval(()=>{if(restTimer.remaining>0){restTimer.remaining--;updateRestClock()}if(restTimer.remaining===0){stopRestTimer();if(navigator.vibrate)navigator.vibrate([120,80,120]);render()}},1000);
+  restTimer.endsAt=Date.now()+restTimer.remaining*1000;
+  restInterval=setInterval(syncRestTimer,250);
   render();
 }
-function resetRest(){stopRestTimer();restTimer={remaining:90,total:90,running:false};render()}
+function resetRest(){stopRestTimer();restTimer={remaining:90,total:90,running:false,endsAt:null};render()}
 function toggleRestWidget(force){restWidgetOpen=typeof force==='boolean'?force:!restWidgetOpen;render()}
 function renderRestTimer(){
   const label=restTimer.running?'Пауза':'Старт отдыха';
   const status=restTimer.remaining===0?'Отдых закончен':'Выбери длительность или продолжи текущий отсчёт';
-  return `<button class="rest-launcher" type="button" onclick="toggleRestWidget()" aria-label="Открыть таймер отдыха" aria-expanded="${restWidgetOpen}">Отдых <span>${timeLabel(restTimer.remaining)}</span></button><section class="card rest-timer rest-widget ${restWidgetOpen?'open':''}" aria-label="Таймер отдыха между подходами"><div class="treadhead"><div><div class="treadtitle">Отдых между подходами</div><div class="treadhint">${status}</div></div><button class="rest-close" type="button" onclick="toggleRestWidget(false)" aria-label="Скрыть таймер отдыха">×</button></div><div class="timer-ring" id="restRing" style="background:${ringBackground(restTimer.remaining,restTimer.total,'var(--accent)')}"><span id="restClock">${timeLabel(restTimer.remaining)}</span></div><div class="treadcontrols"><button class="btn sm" onclick="startRest()">${label}</button><button class="btn sm ghost" onclick="startRest(60)">60 сек</button><button class="btn sm ghost" onclick="startRest(90)">90 сек</button><button class="btn sm ghost" onclick="startRest(120)">120 сек</button><button class="btn sm ghost" onclick="resetRest()">Сброс</button></div></section>`;
+  return `<button class="rest-launcher" type="button" onclick="toggleRestWidget()" aria-label="Открыть таймер отдыха" aria-expanded="${restWidgetOpen}">Отдых <span id="restLauncherClock">${timeLabel(restTimer.remaining)}</span></button><section class="card rest-timer rest-widget ${restWidgetOpen?'open':''}" aria-label="Таймер отдыха между подходами"><div class="treadhead"><div><div class="treadtitle">Отдых между подходами</div><div class="treadhint">${status}</div></div><button class="rest-close" type="button" onclick="toggleRestWidget(false)" aria-label="Скрыть таймер отдыха">×</button></div><div class="timer-ring" id="restRing" style="background:${ringBackground(restTimer.remaining,restTimer.total,'var(--accent)')}"><span id="restClock">${timeLabel(restTimer.remaining)}</span></div><div class="treadcontrols"><button class="btn sm" onclick="startRest()">${label}</button><button class="btn sm ghost" onclick="startRest(60)">60 сек</button><button class="btn sm ghost" onclick="startRest(90)">90 сек</button><button class="btn sm ghost" onclick="startRest(120)">120 сек</button><button class="btn sm ghost" onclick="resetRest()">Сброс</button></div></section>`;
 }
 function toggleTechnique(id){openTechniqueId=openTechniqueId===id?null:id;render()}
 function techniqueHTML(ex){
