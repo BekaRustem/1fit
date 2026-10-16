@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#0a0e17">
-  <title>Фитнес Тренер Pro — Масса + Кардио на склоне</title>
+  <title>Фитнес Тренер Pro — GitHub Ultimate</title>
   <style>
     :root {
       --bg: #0a0e17;
@@ -33,7 +33,7 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      padding-bottom: calc(85px + var(--safe-bottom));
+      padding-bottom: calc(95px + var(--safe-bottom));
       min-height: 100vh;
       user-select: none;
     }
@@ -85,25 +85,37 @@
       letter-spacing: 0.5px;
     }
 
-    .user-pill {
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-pill {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border);
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: #e2e8f0;
       display: flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
     }
 
-    .user-dot {
+    .status-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 8px var(--accent);
+    }
+
+    .status-dot.muted {
+      background: var(--text-muted);
+      box-shadow: none;
     }
 
     .container {
@@ -164,7 +176,7 @@
       gap: 8px;
       overflow-x: auto;
       padding-bottom: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       scrollbar-width: none;
     }
 
@@ -192,12 +204,54 @@
       font-weight: 800;
     }
 
+    /* Muscle Heatmap Card */
+    .heatmap-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .heatmap-info h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .heatmap-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .heatmap-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .heat-tag {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary-light);
+    }
+
+    /* Exercise Cards */
     .exercise-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 22px;
       padding: 16px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.3);
     }
 
@@ -319,18 +373,31 @@
       color: #fff;
       font-size: 13px;
       font-weight: 700;
-      width: 65px;
+      width: 60px;
       text-align: center;
       padding: 6px;
       border-radius: 8px;
       outline: none;
     }
 
-    .reps-label {
-      font-size: 12px;
-      font-weight: 600;
+    .reps-input {
+      background: var(--card-active);
+      border: 1px solid var(--border);
       color: var(--primary-light);
-      min-width: 65px;
+      font-size: 13px;
+      font-weight: 800;
+      width: 48px;
+      text-align: center;
+      padding: 6px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .orm-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--accent);
+      min-width: 50px;
       text-align: center;
     }
 
@@ -340,10 +407,10 @@
       color: #e2e8f0;
       font-size: 12px;
       font-weight: 700;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 10px;
       cursor: pointer;
-      min-width: 95px;
+      min-width: 85px;
       text-align: center;
       transition: all 0.15s;
     }
@@ -387,15 +454,33 @@
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
       cursor: pointer;
     }
 
-    .cardio-stage-title {
-      font-size: 13px;
-      font-weight: 800;
+    /* Finish Workout Bar */
+    .finish-bar {
+      margin-top: 14px;
+      margin-bottom: 24px;
+    }
+
+    .btn-finish-workout {
+      width: 100%;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 18px;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
     /* Floating Dock Timer */
@@ -451,6 +536,7 @@
       cursor: pointer;
     }
 
+    /* Bottom Navbar */
     .navbar {
       position: fixed;
       bottom: 0;
@@ -518,49 +604,153 @@
     .hidden {
       display: none !important;
     }
+
+    /* Modal Result Dialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--card);
+      border: 1px solid var(--primary-light);
+      border-radius: 24px;
+      padding: 20px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat-tile {
+      background: rgba(10, 14, 23, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--primary-light);
+    }
+
+    .stat-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Top App Bar -->
   <header>
     <div class="header-logo">
       <div class="logo-badge">⚡</div>
       <div class="logo-text">
-        <h1>ПРО ТРЕНЕР</h1>
-        <p>КУРС 12 НЕДЕЛЬ (МАССА + СЖИГАНИЕ ЖИРА)</p>
+        <h1>ПРО ТРЕНЕР PRO</h1>
+        <p>МАССА + КАРДИО НА СКЛОНЕ</p>
       </div>
     </div>
-    <div class="user-pill">
-      <div class="user-dot"></div>
-      <span id="user-badge-text">174 см • 92 кг</span>
+    <div class="header-actions">
+      <div class="status-pill" id="voice-toggle-btn" onclick="toggleVoiceCoach()">
+        <span id="voice-icon">🔊</span>
+        <span id="voice-text">Голос: ВКЛ</span>
+      </div>
+      <div class="status-pill" id="wakelock-pill">
+        <div class="status-dot" id="wakelock-dot"></div>
+        <span>Экран ON</span>
+      </div>
     </div>
   </header>
 
   <!-- ==================== VIEW 1: WORKOUT ==================== -->
   <div id="view-workout" class="container">
+    
     <div class="section-label">
-      <span>Выберите период:</span>
+      <span>Период программы:</span>
     </div>
     <div class="goal-scroll">
       <button class="goal-btn active" onclick="switchGoal('phase1', this)">
-        <span>🏋️</span> Недели 1–4
+        <span>🏋️</span> Недели 1–4[cite: 3]
       </button>
       <button class="goal-btn" onclick="switchGoal('phase2', this)">
-        <span>🔥</span> Недели 5–8
+        <span>🔥</span> Недели 5–8[cite: 4]
       </button>
       <button class="goal-btn" onclick="switchGoal('phase3', this)">
-        <span>💥</span> Недели 9–12
+        <span>💥</span> Недели 9–12[cite: 5]
       </button>
       <button class="goal-btn" onclick="switchGoal('abs_program', this)">
-        <span>🍫</span> Пресс (в конце)
+        <span>🍫</span> Пресс из PDF[cite: 3, 5]
       </button>
     </div>
 
     <!-- Day Sub-Tabs -->
     <div class="day-tabs" id="day-tabs-row"></div>
 
+    <!-- Muscle Heatmap Card -->
+    <div class="heatmap-card">
+      <div class="heatmap-info">
+        <h4>Целевые мышцы дня</h4>
+        <p id="heat-muscles-text">Плечи, Трапеции, Икры</p>
+        <div class="heatmap-tags" id="heat-tags-box"></div>
+      </div>
+      <!-- SVG Muscle Silhouette -->
+      <svg width="60" height="90" viewBox="0 0 60 90" id="body-heatmap-svg">
+        <circle cx="30" cy="10" r="7" fill="#334155"/>
+        <!-- Shoulders / Chest -->
+        <path id="heat-shoulders" d="M18,18 Q30,16 42,18 L46,26 L14,26 Z" fill="#334155"/>
+        <path id="heat-chest" d="M20,26 L40,26 L38,40 L22,40 Z" fill="#334155"/>
+        <!-- Arms -->
+        <path id="heat-arms" d="M12,25 L16,45 L11,46 Z M48,25 L44,45 L49,46 Z" fill="#334155"/>
+        <!-- Core / Abs -->
+        <rect id="heat-abs" x="23" y="41" width="14" height="15" rx="3" fill="#334155"/>
+        <!-- Legs -->
+        <path id="heat-legs" d="M22,57 L19,85 L26,85 L28,57 Z M32,57 L34,85 L41,85 L38,57 Z" fill="#334155"/>
+      </svg>
+    </div>
+
     <!-- Exercises Container -->
     <div id="exercises-container"></div>
+
+    <!-- Finish Workout Button -->
+    <div class="finish-bar">
+      <button class="btn-finish-workout" onclick="finishCurrentWorkout()">
+        <span>🏁</span> Завершить тренировку и рассчитать итоги
+      </button>
+    </div>
+
   </div>
 
   <!-- ==================== VIEW 2: LIBRARY ==================== -->
@@ -575,22 +765,27 @@
     <div id="library-list"></div>
   </div>
 
-  <!-- ==================== VIEW 3: JOURNAL ==================== -->
+  <!-- ==================== VIEW 3: JOURNAL & BACKUP ==================== -->
   <div id="view-calendar" class="container hidden">
-    <div class="section-label"><span>Журнал тренировок</span></div>
-    <div id="workout-log-feed">
-      <div class="library-item">
-        <div><div class="lib-title">Неделя 1-4 • День 1 (Ходьба в гору 40м + Плечи)</div><div class="lib-cat">Разминка 40 мин + 19 подходов</div></div>
-        <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
-      </div>
-      <div class="library-item">
-        <div><div class="lib-title">Неделя 1-4 • День 2 (Ходьба в гору 40м + Ноги/Руки)</div><div class="lib-cat">Разминка 40 мин + 22 подхода</div></div>
-        <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Выполнено</span>
-      </div>
+    <div class="section-label">
+      <span>Журнал тренировок</span>
+      <span id="log-total-count" style="color: var(--accent);">0 сессий</span>
     </div>
+
+    <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+      <button onclick="exportDataBackup()" style="flex: 1; background: var(--card); border: 1px solid var(--primary); color: #fff; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer;">
+        📥 Экспорт бэкапа (JSON)
+      </button>
+      <label style="flex: 1; background: var(--card); border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; text-align: center; cursor: pointer;">
+        📤 Импорт бэкапа
+        <input type="file" id="import-file-input" style="display: none;" onchange="importDataBackup(event)">
+      </label>
+    </div>
+
+    <div id="workout-log-feed"></div>
   </div>
 
-  <!-- Floating Rest Timer Dock -->
+  <!-- Floating Dock Timer -->
   <div class="rest-dock" id="rest-dock">
     <div>
       <div class="rest-timer-display" id="dock-timer-digits">00:00</div>
@@ -607,7 +802,7 @@
   <div class="navbar">
     <button class="nav-btn active" onclick="switchNav('workout', this)">
       <svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4M6 12h12"/></svg>
-      <span>Программа</span>
+      <span>Тренировка</span>
     </button>
     <button class="nav-btn" onclick="switchNav('library', this)">
       <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
@@ -619,8 +814,78 @@
     </button>
   </div>
 
+  <!-- Summary Modal Dialog -->
+  <div class="modal-backdrop" id="summary-modal">
+    <div class="modal-box">
+      <div class="modal-title">🔥 Отличная тренировка!</div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        Все данные подсчитаны и сохранены в ваш дневник.
+      </p>
+
+      <div class="stats-grid">
+        <div class="stat-tile">
+          <div class="stat-val" id="res-time-val">48 мин</div>
+          <div class="stat-lbl">Время</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-val" id="res-tonnage-val">5 840 кг</div>
+          <div class="stat-lbl">Тоннаж</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-val" id="res-sets-val">19</div>
+          <div class="stat-lbl">Подходов</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-val" id="res-cals-val">510 ккал</div>
+          <div class="stat-lbl">Калории</div>
+        </div>
+      </div>
+
+      <button onclick="closeSummaryModal()" style="width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer;">
+        Отлично, в журнал
+      </button>
+    </div>
+  </div>
+
   <script>
-    /* 1. БАЗА УПРАЖНЕНИЙ */
+    /* ==================== 1. WAKE LOCK API (ЭКРАН НЕ ГАСНЕТ) ==================== */
+    let wakeLockInstance = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLockInstance = await navigator.wakeLock.request('screen');
+          document.getElementById('wakelock-dot').classList.remove('muted');
+          wakeLockInstance.addEventListener('release', () => {
+            document.getElementById('wakelock-dot').classList.add('muted');
+          });
+        }
+      } catch (err) {}
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (wakeLockInstance !== null && document.visibilityState === 'visible') {
+        requestWakeLock();
+      }
+    });
+    requestWakeLock();
+
+    /* ==================== 2. ГОЛОСОВОЙ ТРЕНЕР (WEB SPEECH API) ==================== */
+    let voiceCoachEnabled = true;
+    function speakText(text) {
+      if (!voiceCoachEnabled || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = 'ru-RU';
+      msg.rate = 1.05;
+      window.speechSynthesis.speak(msg);
+    }
+    function toggleVoiceCoach() {
+      voiceCoachEnabled = !voiceCoachEnabled;
+      document.getElementById('voice-icon').textContent = voiceCoachEnabled ? '🔊' : '🔇';
+      document.getElementById('voice-text').textContent = voiceCoachEnabled ? 'Голос: ВКЛ' : 'Голос: ВЫКЛ';
+      if (voiceCoachEnabled) speakText('Голосовой тренер включен');
+    }
+
+    /* ==================== 3. БАЗА УПРАЖНЕНИЙ ==================== */
     const DB = [
       {
         id: 'incline_walk_40',
@@ -628,8 +893,8 @@
         cat: 'cardio',
         target: 'Zone 2 Fat Burn',
         isCardioBox: true,
-        desc: '<strong>Почему ходьба, а не бег:</strong> при весе 92 кг бег создает свыше 300 кг ударной нагрузки на каждый шаг. Быстрая ходьба в гору сжигает столько же калорий без вреда для суставов.',
-        tip: '💡 <strong>ПРАВИЛО:</strong> Не держитесь за поручни! Двигайте руками вдоль корпуса — это увеличивает расход калорий на 25%.',
+        desc: '<strong>Почему ходьба, а не бег:</strong> при весе 92 кг бег создает свыше 300 кг ударной нагрузки на каждый шаг. Быстрая ходьба в гору сжигает столько же калорий без вреда для суставов[cite: 1, 11].',
+        tip: '💡 <strong>ПРАВИЛО:</strong> Не держитесь за поручни! Двигайте руками вдоль корпуса — это увеличивает расход калорий на 25%[cite: 11].',
         stages: [
           { num: '1.', name: 'Разгон', param: 'Уклон 2% • 4.5 км/ч', minutes: 5 },
           { num: '2.', name: 'Темп', param: 'Уклон 4% • 5.0 км/ч', minutes: 10 },
@@ -638,134 +903,220 @@
           { num: '5.', name: 'Заминка', param: 'Уклон 1% • 4.0 км/ч', minutes: 5 }
         ]
       },
-      { id: 'db_seated_press', name: 'Жим гантелей сидя', cat: 'shoulders', target: 'Дельты (Плечи)', sets: 4, repsDef: '6-8', tip: 'Спина плотно прижата к спинке, мощный выжим вверх.' },
-      { id: 'upright_row', name: 'Тяга штанги к подбородку', cat: 'shoulders', target: 'Дельты и Трапеции', sets: 3, repsDef: '10-12', tip: 'Тяните локтями вверх, гриф скользит вдоль корпуса.' },
-      { id: 'bent_lateral_raise', name: 'Разведение гантелей в наклоне', cat: 'shoulders', target: 'Задняя дельта', sets: 3, repsDef: '10-12', tip: 'Корпус наклонен, разведение за счет задней дельты.' },
-      { id: 'bent_lateral_100', name: 'Разведение гантелей в наклоне (100 повт.)', cat: 'shoulders', target: 'Задняя дельта', sets: 1, repsDef: '100', tip: '1 подход на 100 повторений. Допускаются короткие паузы.' },
-      { id: 'arnold_press', name: 'Жим Арнольда', cat: 'shoulders', target: 'Передняя и средняя дельта', sets: 3, repsDef: '8-10', tip: 'Разворот ладоней наружу при выжимании гантелей вверх.' },
-      { id: 'lateral_raise_100', name: 'Разведение гантелей через стороны (100 повт.)', cat: 'shoulders', target: 'Средняя дельта', sets: 1, repsDef: '100', tip: '1 подход на 100 повторений. Пампинг с микро-паузами.' },
-      { id: 'standing_lateral_raise', name: 'Разведение гантелей через стороны стоя', cat: 'shoulders', target: 'Средняя дельта', sets: 4, repsDef: '10-12', tip: 'Локти слегка согнуты, движение строго в плоскости плеч.' },
-      { id: 'front_raise', name: 'Подъем гантелей перед собой', cat: 'shoulders', target: 'Передняя дельта', sets: 4, repsDef: '12-15', tip: 'Подконтрольный подъем без раскачки тела.' },
-      { id: 'cable_lateral_raise', name: 'Отведение руки в блоке', cat: 'shoulders', target: 'Средняя дельта', sets: 3, repsDef: '15-20', tip: 'Постоянное натяжение троса, максимальная изоляция.' },
-      { id: 'military_press', name: 'Армейский жим', cat: 'shoulders', target: 'Плечи и кор', sets: 5, repsDef: '5', tip: 'Тяжелый жим штанги стоя. Пресс и ягодицы напряжены.' },
-      { id: 'shrugs_barbell_heavy', name: 'Шраги со штангой (большой вес)', cat: 'back', target: 'Трапеции', sets: 5, repsDef: '5', tip: 'Большой вес. Подъем плеч вверх к ушам.' },
-      { id: 'shrugs_barbell', name: 'Шраги со штангой', cat: 'back', target: 'Трапеции', sets: 4, repsDef: '6-8', tip: 'Пауза в верхней точке на 1 секунду.' },
-      { id: 'shrugs_smith_behind', name: 'Шраги в Смите (гриф за спиной)', cat: 'back', target: 'Трапеции', sets: 3, repsDef: '10-12', tip: 'Гриф за спиной, лопатки сведены.' },
+      { id: 'db_seated_press', name: 'Жим гантелей сидя', cat: 'shoulders', target: 'Дельты', sets: 4, repsDef: 8, tip: 'Спина плотно прижата к спинке, мощный выжим вверх[cite: 3].' },
+      { id: 'upright_row', name: 'Тяга штанги к подбородку', cat: 'shoulders', target: 'Дельты и Трапеции', sets: 3, repsDef: 10, tip: 'Тяните локтями вверх, гриф скользит вдоль корпуса[cite: 3].' },
+      { id: 'bent_lateral_raise', name: 'Разведение гантелей в наклоне', cat: 'shoulders', target: 'Задняя дельта', sets: 3, repsDef: 12, tip: 'Корпус наклонен, разведение за счет задней дельты[cite: 3].' },
+      { id: 'bent_lateral_100', name: 'Разведение гантелей в наклоне (100 повт.)', cat: 'shoulders', target: 'Задняя дельта', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений. Допускаются короткие паузы[cite: 3].' },
+      { id: 'arnold_press', name: 'Жим Арнольда', cat: 'shoulders', target: 'Дельты', sets: 3, repsDef: 10, tip: 'Разворот ладоней наружу при выжимании гантелей вверх[cite: 3].' },
+      { id: 'lateral_raise_100', name: 'Разведение гантелей через стороны (100 повт.)', cat: 'shoulders', target: 'Средняя дельта', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений. Пампинг с микро-паузами[cite: 3].' },
+      { id: 'standing_lateral_raise', name: 'Разведение гантелей через стороны стоя', cat: 'shoulders', target: 'Средняя дельта', sets: 4, repsDef: 12, tip: 'Локти слегка согнуты, подъем строго в стороны[cite: 5].' },
+      { id: 'front_raise', name: 'Подъем гантелей перед собой', cat: 'shoulders', target: 'Передняя дельта', sets: 4, repsDef: 12, tip: 'Подконтрольный подъем без раскачки тела[cite: 5].' },
+      { id: 'cable_lateral_raise', name: 'Отведение руки в блоке', cat: 'shoulders', target: 'Средняя дельта', sets: 3, repsDef: 15, tip: 'Постоянное натяжение троса, максимальная изоляция[cite: 5].' },
+      { id: 'military_press', name: 'Армейский жим', cat: 'shoulders', target: 'Плечи и кор', sets: 5, repsDef: 5, tip: 'Тяжелый жим штанги стоя. Пресс и ягодицы напряжены[cite: 3].' },
+      { id: 'shrugs_barbell_heavy', name: 'Шраги со штангой (большой вес)', cat: 'back', target: 'Трапеции', sets: 5, repsDef: 5, tip: 'Большой вес. Подъем плеч вверх к ушам[cite: 3].' },
+      { id: 'shrugs_barbell', name: 'Шраги со штангой', cat: 'back', target: 'Трапеции', sets: 4, repsDef: 8, tip: 'Пауза в верхней точке на 1 секунду[cite: 3].' },
+      { id: 'shrugs_smith_behind', name: 'Шраги в Смите (гриф за спиной)', cat: 'back', target: 'Трапеции', sets: 3, repsDef: 12, tip: 'Гриф за спиной, лопатки сведены[cite: 3].' },
 
-      { id: 'barbell_squats', name: 'Приседания со штангой', cat: 'legs', target: 'Квадрицепс / Ягодицы', sets: 4, repsDef: ['15', '12', '8', '20'], tip: 'Пирамида по схеме: 1x15, 1x12, 1x8, 1x20.' },
-      { id: 'romanian_deadlift', name: 'Румынская тяга', cat: 'legs', target: 'Бицепс бедра / Ягодицы', sets: 4, repsDef: ['12', '10', '8', '15'], tip: 'Схема: 1x12, 1x10, 1x8, 1x15. Отводите таз назад.' },
-      { id: 'romanian_deadlift_5', name: 'Румынская тяга (5 подходов)', cat: 'legs', target: 'Бицепс бедра', sets: 5, repsDef: ['10', '8', '6', '8', '10'], tip: 'Пирамида: 10, 8, 6, 8, 10 повторений.' },
-      { id: 'leg_press', name: 'Жим ногами', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: '10-12', tip: 'Толкайте платформу пятками, не защелкивайте колени вверху.' },
-      { id: 'calf_raises', name: 'Подъем на носки (в тренажере/со штангой)', cat: 'legs', target: 'Икры', sets: 3, repsDef: '8-10', tip: 'Полная амплитуда с растяжением в нижней точке.' },
-      { id: 'leg_curl_elevated', name: 'Сгибание ног с приподнятым торсом', cat: 'legs', target: 'Бицепс бедра', sets: 3, repsDef: '10-12', tip: 'Торс приподнят (как при отжиманиях).' },
-      { id: 'leg_curl_100', name: 'Сгибание ног в тренажере (100 повт.)', cat: 'legs', target: 'Бицепс бедра', sets: 1, repsDef: '100', tip: 'Один подход на 100 повторений для максимального пампа.' },
-      { id: 'leg_extension', name: 'Разгибание ног в тренажере', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: '10-12', tip: 'Пиковое напряжение квадрицепса в верхней точке.' },
+      { id: 'barbell_squats', name: 'Приседания со штангой', cat: 'legs', target: 'Квадрицепс / Ягодицы', sets: 4, repsDef: [15, 12, 8, 20], tip: 'Пирамида по схеме: 1x15, 1x12, 1x8, 1x20[cite: 3].' },
+      { id: 'romanian_deadlift', name: 'Румынская тяга', cat: 'legs', target: 'Бицепс бедра', sets: 4, repsDef: [12, 10, 8, 15], tip: 'Схема: 1x12, 1x10, 1x8, 1x15. Отводите таз назад[cite: 3].' },
+      { id: 'romanian_deadlift_5', name: 'Румынская тяга (5 подходов)', cat: 'legs', target: 'Бицепс бедра', sets: 5, repsDef: [10, 8, 6, 8, 10], tip: 'Пирамида: 10, 8, 6, 8, 10 повторений[cite: 5].' },
+      { id: 'leg_press', name: 'Жим ногами', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: 12, tip: 'Толкайте платформу пятками, не вставляйте колени в замок[cite: 4].' },
+      { id: 'calf_raises', name: 'Подъем на носки (в тренажере/со штангой)', cat: 'legs', target: 'Икры', sets: 3, repsDef: 10, tip: 'Полная амплитуда с растяжением в нижней точке[cite: 3].' },
+      { id: 'leg_curl_elevated', name: 'Сгибание ног с приподнятым торсом', cat: 'legs', target: 'Бицепс бедра', sets: 3, repsDef: 12, tip: 'Торс приподнят (как при отжиманиях)[cite: 4].' },
+      { id: 'leg_curl_100', name: 'Сгибание ног в тренажере (100 повт.)', cat: 'legs', target: 'Бицепс бедра', sets: 1, repsDef: 100, tip: 'Один подход на 100 повторений для максимального пампа[cite: 4].' },
+      { id: 'leg_extension', name: 'Разгибание ног в тренажере', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: 12, tip: 'Пиковое напряжение квадрицепса в верхней точке[cite: 5].' },
 
-      { id: 'barbell_curl', name: 'Подъем штанги на бицепс', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: '6-8', tip: 'Локти прижаты к бокам, читинг исключен.' },
-      { id: 'barbell_curl_5x5', name: 'Подъем штанги на бицепс (5х5)', cat: 'arms', target: 'Бицепс', sets: 5, repsDef: '5', tip: 'Тяжелая силовая работа на 5 повторений.' },
-      { id: 'barbell_curl_reverse', name: 'Подъем штанги прямым хватом', cat: 'arms', target: 'Брахиалис / Предплечья', sets: 3, repsDef: '10-12', tip: 'Хват сверху (пронированный).' },
-      { id: 'scott_curl', name: 'Подъем штанги на скамье Скотта', cat: 'arms', target: 'Низ бицепса', sets: 3, repsDef: '10-12', tip: 'Локти на подушке, изолированное сгибание.' },
-      { id: 'scott_curl_100', name: 'Подъем на скамье Скотта (100 повт.)', cat: 'arms', target: 'Бицепс', sets: 1, repsDef: '100', tip: '1 подход на 100 повторений с микро-паузами.' },
-      { id: 'hammer_curl', name: 'Сгибание рук с гантелями («молот»)', cat: 'arms', target: 'Брахиалис / Бицепс', sets: 3, repsDef: '12-15', tip: 'Нейтральный хват гантелей.' },
-      { id: 'alternate_db_curl', name: 'Альтернативный подъем гантелей', cat: 'arms', target: 'Бицепс', sets: 4, repsDef: '10-12', tip: 'Поочередный подъем с разворотом ладони кверху.' },
-      { id: 'machine_arm_curl', name: 'Сгибание рук в тренажере', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: '5-6', tip: 'Тяжелый изолированный подход.' },
-      { id: 'french_press_db', name: 'Французский жим с гантелями', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: '10-12', tip: 'Локти зафиксированы строго вверх.' },
-      { id: 'french_press', name: 'Французский жим со штангой', cat: 'arms', target: 'Трицепс', sets: 5, repsDef: '6-8', tip: 'Опускание ко лбу или за голову.' },
-      { id: 'close_grip_bench_incline_rev', name: 'Жим узким хватом в обратном наклоне', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: '6-8', tip: 'Отрицательный наклон скамьи, акцент на трицепс.' },
-      { id: 'close_grip_bench', name: 'Жим штанги узким хватом', cat: 'arms', target: 'Трицепс', sets: 4, repsDef: '8-10', tip: 'Хват на ширине плеч, локти ближе к корпусу.' },
-      { id: 'tricep_pushdown', name: 'Разгибание рук в вертикальном блоке', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: '12-15', tip: 'Полное выпрямление рук внизу с фиксацией.' },
-      { id: 'dips', name: 'Отжимания на брусьях', cat: 'chest', target: 'Грудь / Трицепс', sets: 3, repsDef: 'Max', tip: 'Работа в каждом подходе до отказа.' },
+      { id: 'barbell_curl', name: 'Подъем штанги на бицепс', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: 8, tip: 'Локти прижаты к бокам, читинг исключен[cite: 3].' },
+      { id: 'barbell_curl_5x5', name: 'Подъем штанги на бицепс (5х5)', cat: 'arms', target: 'Бицепс', sets: 5, repsDef: 5, tip: 'Тяжелая силовая работа на 5 повторений[cite: 4].' },
+      { id: 'barbell_curl_reverse', name: 'Подъем штанги прямым хватом', cat: 'arms', target: 'Брахиалис / Предплечья', sets: 3, repsDef: 12, tip: 'Хват сверху (пронированный)[cite: 4].' },
+      { id: 'scott_curl', name: 'Подъем штанги на скамье Скотта', cat: 'arms', target: 'Низ бицепса', sets: 3, repsDef: 10, tip: 'Локти на подушке, изолированное сгибание[cite: 3].' },
+      { id: 'scott_curl_100', name: 'Подъем на скамье Скотта (100 повт.)', cat: 'arms', target: 'Бицепс', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений с микро-паузами[cite: 4].' },
+      { id: 'hammer_curl', name: 'Сгибание рук с гантелями («молот»)', cat: 'arms', target: 'Брахиалис / Бицепс', sets: 3, repsDef: 12, tip: 'Нейтральный хват гантелей[cite: 3].' },
+      { id: 'alternate_db_curl', name: 'Альтернативный подъем гантелей', cat: 'arms', target: 'Бицепс', sets: 4, repsDef: 10, tip: 'Поочередный подъем с разворотом ладони кверху[cite: 5].' },
+      { id: 'machine_arm_curl', name: 'Сгибание рук в тренажере', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: 6, tip: 'Тяжелый изолированный подход[cite: 4].' },
+      { id: 'french_press_db', name: 'Французский жим с гантелями', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 10, tip: 'Локти зафиксированы строго вверх[cite: 3].' },
+      { id: 'french_press', name: 'Французский жим со штангой', cat: 'arms', target: 'Трицепс', sets: 5, repsDef: 8, tip: 'Опускание ко лбу или за голову[cite: 4].' },
+      { id: 'close_grip_bench_incline_rev', name: 'Жим узким хватом в обратном наклоне', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 8, tip: 'Отрицательный наклон скамьи, акцент на трицепс[cite: 3].' },
+      { id: 'close_grip_bench', name: 'Жим штанги узким хватом', cat: 'arms', target: 'Трицепс', sets: 4, repsDef: 10, tip: 'Хват на ширине плеч, локти ближе к корпусу[cite: 5].' },
+      { id: 'tricep_pushdown', name: 'Разгибание рук в вертикальном блоке', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 12, tip: 'Полное выпрямление рук внизу с фиксацией[cite: 3].' },
+      { id: 'dips', name: 'Отжимания на брусьях', cat: 'chest', target: 'Грудь / Трицепс', sets: 3, repsDef: 12, tip: 'Работа в каждом подходе до отказа[cite: 5].' },
 
-      { id: 'incline_barbell_press', name: 'Жим штанги на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: '6-8', tip: 'Наклон скамьи 30–45 градусов.' },
-      { id: 'incline_db_press', name: 'Жим гантелей на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: '10-12', tip: 'Глубокая растяжка мышц груди внизу.' },
-      { id: 'flat_db_press', name: 'Жим гантелей лежа', cat: 'chest', target: 'Грудь', sets: 3, repsDef: '10-12', tip: 'Классический жим гантелей на горизонтальной скамье.' },
-      { id: 'decline_barbell_press', name: 'Жим штанги в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: '12-15', tip: 'Скамья с отрицательным наклоном.' },
-      { id: 'decline_db_press', name: 'Жим гантелей в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: '8-10', tip: 'Мощная прокачка нижней линии грудных.' },
-      { id: 'crossover_incline', name: 'Сведение в кроссовере на наклонной скамье', cat: 'chest', target: 'Грудь', sets: 3, repsDef: '10-12', tip: 'Сведение тросов перед собой на наклонной скамье.' },
-      { id: 'crossover_standing', name: 'Сведение рук в кроссовере стоя', cat: 'chest', target: 'Грудь', sets: 3, repsDef: '12-15', tip: 'Пиковое сжатие груди в конечной точке.' },
-      { id: 'bench_press_100', name: 'Жим лежа (100 повторений)', cat: 'chest', target: 'Грудь', sets: 1, repsDef: '100', tip: '1 памп-подход на 100 повторений с паузами.' },
-      { id: 'bent_over_row', name: 'Тяга штанги в наклоне', cat: 'back', target: 'Широчайшие и середина спины', sets: 3, repsDef: '6-8', tip: 'Тяга к поясу за счет сведения лопаток.' },
-      { id: 'lat_pulldown', name: 'Верхняя тяга к груди', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: '10-12', tip: 'Тяните локти вниз и назад к грудине.' },
-      { id: 'seated_cable_row', name: 'Тяга горизонтального блока', cat: 'back', target: 'Толщина спины', sets: 3, repsDef: '12-15', tip: 'Тяга рукояти к низу живота.' },
-      { id: 'pullups_weighted', name: 'Подтягивания широким хватом с весом', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: '6-8', tip: 'С дополнительным отягощением на поясе.' },
+      { id: 'incline_barbell_press', name: 'Жим штанги на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: 8, tip: 'Наклон скамьи 30–45 градусов[cite: 3].' },
+      { id: 'incline_db_press', name: 'Жим гантелей на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: 10, tip: 'Глубокая растяжка мышц груди внизу[cite: 4].' },
+      { id: 'flat_db_press', name: 'Жим гантелей лежа', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 10, tip: 'Классический жим гантелей на горизонтальной скамье[cite: 3].' },
+      { id: 'decline_barbell_press', name: 'Жим штанги в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: 12, tip: 'Скамья с отрицательным наклоном[cite: 3].' },
+      { id: 'decline_db_press', name: 'Жим гантелей в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: 10, tip: 'Мощная прокачка нижней линии грудных[cite: 5].' },
+      { id: 'crossover_incline', name: 'Сведение в кроссовере на наклонной скамье', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 12, tip: 'Сведение тросов перед собой на наклонной скамье[cite: 4].' },
+      { id: 'crossover_standing', name: 'Сведение рук в кроссовере стоя', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 12, tip: 'Пиковое сжатие груди в конечной точке[cite: 5].' },
+      { id: 'bench_press_100', name: 'Жим лежа (100 повторений)', cat: 'chest', target: 'Грудь', sets: 1, repsDef: 100, tip: '1 памп-подход на 100 повторений с паузами[cite: 4].' },
+      { id: 'bent_over_row', name: 'Тяга штанги в наклоне', cat: 'back', target: 'Широчайшие и середина спины', sets: 3, repsDef: 8, tip: 'Тяга к поясу за счет сведения лопаток[cite: 3].' },
+      { id: 'lat_pulldown', name: 'Верхняя тяга к груди', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: 10, tip: 'Тяните локти вниз и назад к грудине[cite: 3].' },
+      { id: 'seated_cable_row', name: 'Тяга горизонтального блока', cat: 'back', target: 'Толщина спины', sets: 3, repsDef: 12, tip: 'Тяга рукояти к низу живота[cite: 3].' },
+      { id: 'pullups_weighted', name: 'Подтягивания широким хватом с весом', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: 8, tip: 'С дополнительным отягощением на поясе[cite: 4].' },
 
-      { id: 'cable_crunch', name: 'Скручивания в верхнем блоке (стоя/на коленях)', cat: 'abs', target: 'Пресс', sets: 4, repsDef: '12-15', tip: 'Тяните блок за счет округления спины и пресса.' },
-      { id: 'hanging_leg_raise', name: 'Подъем ног к перекладине (или лежа)', cat: 'abs', target: 'Низ живота', sets: 3, repsDef: 'Max', tip: 'Подъем ног до касания турника либо до максимума.' },
-      { id: 'fitball_crunch', name: 'Скручивания на фитболе', cat: 'abs', target: 'Пресс', sets: 3, repsDef: 'Max', tip: 'Большая амплитуда растяжения пресса на мяче.' }
+      { id: 'cable_crunch', name: 'Скручивания в верхнем блоке (стоя/на коленях)', cat: 'abs', target: 'Пресс', sets: 4, repsDef: 12, tip: 'Тяните блок за счет округления спины и пресса[cite: 5].' },
+      { id: 'hanging_leg_raise', name: 'Подъем ног к перекладине (или лежа)', cat: 'abs', target: 'Низ живота', sets: 3, repsDef: 15, tip: 'Подъем ног до касания турника либо до максимума[cite: 5].' },
+      { id: 'fitball_crunch', name: 'Скручивания на фитболе', cat: 'abs', target: 'Пресс', sets: 3, repsDef: 15, tip: 'Большая амплитуда растяжения пресса на мяче[cite: 5].' }
     ];
 
-    /* 2. СХЕМЫ ТРЕНИРОВОК */
+    /* ==================== 4. ПРОГРАММЫ ==================== */
     const PROGRAMS = {
       phase1: {
         title: 'Недели 1–4',
         days: [
-          { title: 'День 1: Плечи/Трапеции', exercises: ['incline_walk_40', 'db_seated_press', 'upright_row', 'bent_lateral_raise', 'arnold_press', 'lateral_raise_100', 'shrugs_barbell_heavy'] },
-          { title: 'День 2: Ноги/Руки', exercises: ['incline_walk_40', 'barbell_squats', 'romanian_deadlift', 'barbell_curl', 'close_grip_bench_incline_rev', 'scott_curl', 'french_press_db', 'hammer_curl', 'tricep_pushdown'] },
-          { title: 'День 3: Трапеции/Плечи', exercises: ['incline_walk_40', 'shrugs_barbell', 'shrugs_smith_behind', 'upright_row', 'calf_raises', 'bent_lateral_100', 'military_press'] },
-          { title: 'День 4: Грудные/Спина', exercises: ['incline_walk_40', 'incline_barbell_press', 'bent_over_row', 'flat_db_press', 'lat_pulldown', 'decline_barbell_press', 'seated_cable_row'] }
+          { title: 'День 1: Плечи/Трапеции', muscles: ['shoulders', 'back'], exercises: ['incline_walk_40', 'db_seated_press', 'upright_row', 'bent_lateral_raise', 'arnold_press', 'lateral_raise_100', 'shrugs_barbell_heavy'] },
+          { title: 'День 2: Ноги/Руки', muscles: ['legs', 'arms'], exercises: ['incline_walk_40', 'barbell_squats', 'romanian_deadlift', 'barbell_curl', 'close_grip_bench_incline_rev', 'scott_curl', 'french_press_db', 'hammer_curl', 'tricep_pushdown'] },
+          { title: 'День 3: Трапеции/Плечи', muscles: ['shoulders', 'back', 'legs'], exercises: ['incline_walk_40', 'shrugs_barbell', 'shrugs_smith_behind', 'upright_row', 'calf_raises', 'bent_lateral_100', 'military_press'] },
+          { title: 'День 4: Грудные/Спина', muscles: ['chest', 'back'], exercises: ['incline_walk_40', 'incline_barbell_press', 'bent_over_row', 'flat_db_press', 'lat_pulldown', 'decline_barbell_press', 'seated_cable_row'] }
         ]
       },
       phase2: {
         title: 'Недели 5–8',
         days: [
-          { title: 'День 1: Грудные/Бицепсы', exercises: ['incline_walk_40', 'incline_barbell_press', 'incline_db_press', 'crossover_incline', 'bench_press_100', 'barbell_curl_5x5'] },
-          { title: 'День 2: Бедра', exercises: ['incline_walk_40', 'barbell_squats', 'romanian_deadlift', 'leg_press', 'leg_curl_elevated', 'leg_curl_100'] },
-          { title: 'День 3: Бицепс/Грудные', exercises: ['incline_walk_40', 'barbell_curl', 'barbell_curl_reverse', 'hammer_curl', 'machine_arm_curl', 'scott_curl_100', 'incline_db_press'] },
-          { title: 'День 4: Спина/Трицепс', exercises: ['incline_walk_40', 'bent_over_row', 'pullups_weighted', 'lat_pulldown', 'french_press', 'tricep_pushdown'] }
+          { title: 'День 1: Грудные/Бицепсы', muscles: ['chest', 'arms'], exercises: ['incline_walk_40', 'incline_barbell_press', 'incline_db_press', 'crossover_incline', 'bench_press_100', 'barbell_curl_5x5'] },
+          { title: 'День 2: Бедра', muscles: ['legs'], exercises: ['incline_walk_40', 'barbell_squats', 'romanian_deadlift', 'leg_press', 'leg_curl_elevated', 'leg_curl_100'] },
+          { title: 'День 3: Бицепс/Грудные', muscles: ['arms', 'chest'], exercises: ['incline_walk_40', 'barbell_curl', 'barbell_curl_reverse', 'hammer_curl', 'machine_arm_curl', 'scott_curl_100', 'incline_db_press'] },
+          { title: 'День 4: Спина/Трицепс', muscles: ['back', 'arms'], exercises: ['incline_walk_40', 'bent_over_row', 'pullups_weighted', 'lat_pulldown', 'french_press', 'tricep_pushdown'] }
         ]
       },
       phase3: {
         title: 'Недели 9–12',
         days: [
-          { title: 'День 1: Бедра', exercises: ['incline_walk_40', 'barbell_squats', 'leg_press', 'leg_extension', 'romanian_deadlift_5'] },
-          { title: 'День 2: Плечи/Спина', exercises: ['incline_walk_40', 'upright_row', 'bent_lateral_raise', 'cable_lateral_raise', 'bent_over_row', 'lat_pulldown', 'shrugs_smith_behind'] },
-          { title: 'День 3: Бицепсы/Трицепсы', exercises: ['incline_walk_40', 'scott_curl', 'alternate_db_curl', 'barbell_curl_reverse', 'close_grip_bench', 'french_press', 'tricep_pushdown'] },
-          { title: 'День 4: Грудные/Плечи', exercises: ['incline_walk_40', 'decline_db_press', 'dips', 'crossover_standing', 'db_seated_press', 'standing_lateral_raise', 'front_raise'] }
+          { title: 'День 1: Бедра', muscles: ['legs'], exercises: ['incline_walk_40', 'barbell_squats', 'leg_press', 'leg_extension', 'romanian_deadlift_5'] },
+          { title: 'День 2: Плечи/Спина', muscles: ['shoulders', 'back'], exercises: ['incline_walk_40', 'upright_row', 'bent_lateral_raise', 'cable_lateral_raise', 'bent_over_row', 'lat_pulldown', 'shrugs_smith_behind'] },
+          { title: 'День 3: Бицепсы/Трицепсы', muscles: ['arms'], exercises: ['incline_walk_40', 'scott_curl', 'alternate_db_curl', 'barbell_curl_reverse', 'close_grip_bench', 'french_press', 'tricep_pushdown'] },
+          { title: 'День 4: Грудные/Плечи', muscles: ['chest', 'shoulders'], exercises: ['incline_walk_40', 'decline_db_press', 'dips', 'crossover_standing', 'db_seated_press', 'standing_lateral_raise', 'front_raise'] }
         ]
       },
       abs_program: {
         title: 'Пресс (в конце любой тренировки)',
         days: [
-          { title: 'Блок пресса из PDF', exercises: ['cable_crunch', 'hanging_leg_raise', 'fitball_crunch'] }
+          { title: 'Блок пресса из PDF', muscles: ['abs'], exercises: ['cable_crunch', 'hanging_leg_raise', 'fitball_crunch'] }
         ]
       }
     };
 
-    let state = {
+    /* ==================== 5. ХРАНИЛИЩЕ И СОСТОЯНИЕ ==================== */
+    let appState = {
       goal: 'phase1',
-      dayIdx: 0
+      dayIdx: 0,
+      savedWeights: {},
+      workoutLogs: [],
+      sessionStartTime: Date.now()
     };
 
+    function loadSavedData() {
+      try {
+        const d = localStorage.getItem('trainer_pro_data_v1');
+        if (d) {
+          const parsed = JSON.parse(d);
+          appState = Object.assign(appState, parsed);
+        }
+      } catch (e) {}
+      renderLogs();
+    }
+
+    function persistData() {
+      try {
+        localStorage.setItem('trainer_pro_data_v1', JSON.stringify(appState));
+      } catch (e) {}
+    }
+
+    /* ==================== 6. РЕНДЕРИНГ ==================== */
     function switchGoal(goalKey, btn) {
-      state.goal = goalKey;
-      state.dayIdx = 0;
+      appState.goal = goalKey;
+      appState.dayIdx = 0;
+      appState.sessionStartTime = Date.now();
       document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
+      persistData();
       renderDayTabs();
       renderWorkoutExercises();
     }
 
     function renderDayTabs() {
-      const prog = PROGRAMS[state.goal];
+      const prog = PROGRAMS[appState.goal];
       const row = document.getElementById('day-tabs-row');
       row.innerHTML = '';
 
       prog.days.forEach((d, i) => {
         const b = document.createElement('button');
-        b.className = `day-tab ${i === state.dayIdx ? 'active' : ''}`;
+        b.className = `day-tab ${i === appState.dayIdx ? 'active' : ''}`;
         b.textContent = d.title.split(':')[0];
         b.onclick = () => {
-          state.dayIdx = i;
+          appState.dayIdx = i;
+          appState.sessionStartTime = Date.now();
+          persistData();
           renderDayTabs();
           renderWorkoutExercises();
         };
         row.appendChild(b);
       });
+      updateHeatmapVisuals();
+    }
+
+    function updateHeatmapVisuals() {
+      const prog = PROGRAMS[appState.goal];
+      const day = prog.days[appState.dayIdx] || prog.days[0];
+      const tagsBox = document.getElementById('heat-tags-box');
+      tagsBox.innerHTML = '';
+
+      // Reset SVG parts
+      ['shoulders', 'chest', 'arms', 'abs', 'legs'].forEach(m => {
+        const el = document.getElementById(`heat-${m}`);
+        if (el) el.setAttribute('fill', '#334155');
+      });
+
+      const muscleNames = {
+        shoulders: 'Дельты',
+        chest: 'Грудные',
+        arms: 'Руки (Бицепс/Трицепс)',
+        back: 'Спина / Трапеции',
+        abs: 'Пресс и кор',
+        legs: 'Бедра и икры'
+      };
+
+      const activeMuscles = day.muscles || ['chest'];
+      document.getElementById('heat-muscles-text').textContent = activeMuscles.map(m => muscleNames[m] || m).join(', ');
+
+      activeMuscles.forEach(m => {
+        const tag = document.createElement('span');
+        tag.className = 'heat-tag';
+        tag.textContent = muscleNames[m] || m;
+        tagsBox.appendChild(tag);
+
+        const svgPart = document.getElementById(`heat-${m}`);
+        if (svgPart) svgPart.setAttribute('fill', '#0284c7');
+      });
+    }
+
+    /* Расчет 1ПМ по формуле Эпли: 1RM = Weight * (1 + Reps/30) */
+    function calcEpley1RM(weight, reps) {
+      if (!weight || !reps || reps <= 0) return 0;
+      if (reps === 1) return weight;
+      return Math.round(weight * (1 + reps / 30));
+    }
+
+    function onWeightOrRepsChange(exId, setIdx) {
+      const wEl = document.getElementById(`w-inp-${exId}-${setIdx}`);
+      const rEl = document.getElementById(`r-inp-${exId}-${setIdx}`);
+      const ormEl = document.getElementById(`orm-${exId}-${setIdx}`);
+
+      if (wEl && rEl && ormEl) {
+        const w = parseFloat(wEl.value) || 0;
+        const r = parseInt(rEl.value) || 0;
+        const orm = calcEpley1RM(w, r);
+        ormEl.textContent = orm > 0 ? `1ПМ: ${orm}к` : '';
+
+        // Save last used weight
+        appState.savedWeights[`${exId}_s${setIdx}`] = w;
+        persistData();
+      }
     }
 
     function renderWorkoutExercises() {
-      const prog = PROGRAMS[state.goal];
-      const day = prog.days[state.dayIdx] || prog.days[0];
+      const prog = PROGRAMS[appState.goal];
+      const day = prog.days[appState.dayIdx] || prog.days[0];
       const container = document.getElementById('exercises-container');
       container.innerHTML = '';
 
@@ -787,7 +1138,7 @@
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span class="reps-label" id="cardio-time-label-${sIdx}">${st.minutes} мин</span>
-                  <button class="btn-set" id="cardio-btn-${sIdx}" onclick="startCardioStage(${sIdx}, ${st.minutes}, '${st.name}')">Старт</button>
+                  <button class="btn-set" id="cardio-btn-${sIdx}" onclick="startCardioStage(${sIdx}, ${st.minutes}, '${st.name}', '${st.param}')">Старт</button>
                 </div>
               </div>
             `;
@@ -803,15 +1154,13 @@
             </div>
 
             <div>
-              <div class="cardio-pulse-badge-inline">❤️ ПУЛЬС: 115–130 УД/МИН (Zone 2)</div>
+              <div class="cardio-pulse-badge-inline">❤️ ПУЛЬС: 115–130 УД/МИН (Zone 2)[cite: 1, 11]</div>
             </div>
 
             <div class="ex-desc">${ex.desc}</div>
             <div class="ex-tip-box">${ex.tip}</div>
 
-            <div class="sets-block">
-              ${stagesHtml}
-            </div>
+            <div class="sets-block">${stagesHtml}</div>
 
             <div class="ex-footer">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Быстрый таймер:</span>
@@ -827,17 +1176,28 @@
           const numSets = ex.sets || 3;
 
           for (let s = 1; s <= numSets; s++) {
-            let repValue = ex.repsDef;
+            let defReps = ex.repsDef;
             if (Array.isArray(ex.repsDef)) {
-              repValue = ex.repsDef[s - 1] || ex.repsDef[ex.repsDef.length - 1];
+              defReps = ex.repsDef[s - 1] || ex.repsDef[ex.repsDef.length - 1];
             }
+            const savedW = appState.savedWeights[`${ex.id}_s${s}`] || 40;
+            const init1RM = calcEpley1RM(savedW, defReps);
 
             setsRows += `
               <div class="set-row">
                 <span class="set-label">Сет ${s}</span>
-                <div><input type="number" class="weight-input" placeholder="кг" value="40"> кг</div>
-                <span class="reps-label">${repValue} повт</span>
-                <button class="btn-set" onclick="checkSet(this, '${ex.name}')">Выполнить</button>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <input type="number" class="weight-input" id="w-inp-${ex.id}-${s}" value="${savedW}" 
+                    oninput="onWeightOrRepsChange('${ex.id}', ${s})">
+                  <span style="font-size: 11px; color: var(--text-muted);">кг</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <input type="number" class="reps-input" id="r-inp-${ex.id}-${s}" value="${defReps}" 
+                    oninput="onWeightOrRepsChange('${ex.id}', ${s})">
+                  <span style="font-size: 11px; color: var(--text-muted);">повт</span>
+                </div>
+                <span class="orm-label" id="orm-${ex.id}-${s}">1ПМ: ${init1RM}к</span>
+                <button class="btn-set" onclick="checkSet(this, '${ex.name}', '${ex.id}', ${s})">Выполнить</button>
               </div>
             `;
           }
@@ -864,11 +1224,13 @@
 
         container.appendChild(card);
       });
+      updateHeatmapVisuals();
     }
 
+    /* ==================== 7. ИНТЕРАКТИВНЫЙ ТАЙМЕР И ЭТАПЫ ==================== */
     let activeCardioIdx = null;
 
-    function startCardioStage(stageIdx, minutes, stageName) {
+    function startCardioStage(stageIdx, minutes, stageName, stageParam) {
       const btn = document.getElementById(`cardio-btn-${stageIdx}`);
       const row = document.getElementById(`cardio-stage-row-${stageIdx}`);
 
@@ -890,6 +1252,8 @@
       btn.textContent = 'Идёт...';
       activeCardioIdx = stageIdx;
 
+      speakText(`Внимание, этап ${stageName}. Параметры: ${stageParam}`);
+
       startCountdown(minutes * 60, `Этап: ${stageName}`, () => {
         finishStage(stageIdx);
       });
@@ -909,17 +1273,27 @@
       if (!manual && stageIdx < 4) {
         const nextRow = document.getElementById(`cardio-stage-row-${stageIdx + 1}`);
         if (nextRow) nextRow.classList.add('active-stage');
+        speakText('Этап завершен. Переходите к следующему уровню нагрузки.');
       }
       activeCardioIdx = null;
     }
 
-    function checkSet(btn, exName) {
+    function checkSet(btn, exName, exId, setNum) {
       btn.classList.toggle('done');
       const isDone = btn.classList.contains('done');
       btn.textContent = isDone ? '✓ Готово' : 'Выполнить';
-      if (isDone) startCountdown(60, `Отдых: ${exName}`);
+
+      if (isDone) {
+        const rEl = document.getElementById(`r-inp-${exId}-${setNum}`);
+        const reps = rEl ? parseInt(rEl.value) : 10;
+        if (reps >= 12) {
+          speakText(`Отличный подход. На следующей тренировке можно накинуть плюс 2 килограмма.`);
+        }
+        startCountdown(75, `Отдых: ${exName}`);
+      }
     }
 
+    /* Плавающий таймер */
     let mainTimerId = null;
     let mainSeconds = 0;
     let onTimerComplete = null;
@@ -941,18 +1315,22 @@
         mainSeconds--;
         digits.textContent = formatTimer(mainSeconds);
 
+        if (mainSeconds === 3) {
+          speakText('Три, два, один, в бой!');
+        }
+
         if (mainSeconds <= 0) {
           clearInterval(mainTimerId);
-          playSignal();
+          playSignalGong();
           if (navigator.vibrate) navigator.vibrate([300, 150, 300]);
-          digits.textContent = 'ВРЕМЯ!';
+          digits.textContent = 'В БОЙ!';
 
           if (onTimerComplete) {
             onTimerComplete();
             onTimerComplete = null;
           }
 
-          setTimeout(closeRestTimer, 2500);
+          setTimeout(closeRestTimer, 2200);
         }
       }, 1000);
     }
@@ -973,7 +1351,7 @@
       document.getElementById('rest-dock').classList.remove('active');
     }
 
-    function playSignal() {
+    function playSignalGong() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         if (ctx.state === 'suspended') ctx.resume();
@@ -986,9 +1364,120 @@
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
         osc.start();
         osc.stop(ctx.currentTime + 1.2);
-      } catch(e) {}
+      } catch (e) {}
     }
 
+    /* ==================== 8. ЗАВЕРШЕНИЕ ТРЕНИРОВКИ И ТОННАЖ ==================== */
+    function finishCurrentWorkout() {
+      const elapsedMins = Math.max(1, Math.round((Date.now() - appState.sessionStartTime) / 60000));
+      let totalTonnage = 0;
+      let completedSets = 0;
+
+      // Scan all done sets
+      document.querySelectorAll('.exercise-card').forEach(card => {
+        const sets = card.querySelectorAll('.set-row');
+        sets.forEach(row => {
+          const btn = row.querySelector('.btn-set');
+          if (btn && btn.classList.contains('done')) {
+            completedSets++;
+            const wInp = row.querySelector('.weight-input');
+            const rInp = row.querySelector('.reps-input');
+            if (wInp && rInp) {
+              const w = parseFloat(wInp.value) || 0;
+              const r = parseInt(rInp.value) || 0;
+              totalTonnage += (w * r);
+            }
+          }
+        });
+      });
+
+      // Calories estimation: walking on incline burns ~350 kcal + strength ~150-250 kcal
+      const burnedCals = Math.round(elapsedMins * 8.5 + completedSets * 7);
+
+      document.getElementById('res-time-val').textContent = `${elapsedMins} мин`;
+      document.getElementById('res-tonnage-val').textContent = `${totalTonnage.toLocaleString()} кг`;
+      document.getElementById('res-sets-val').textContent = completedSets;
+      document.getElementById('res-cals-val').textContent = `${burnedCals} ккал`;
+
+      // Log to history
+      const prog = PROGRAMS[appState.goal];
+      const day = prog.days[appState.dayIdx] || prog.days[0];
+      const newEntry = {
+        date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }),
+        title: `${prog.title} • ${day.title}`,
+        tonnage: totalTonnage,
+        sets: completedSets,
+        cals: burnedCals
+      };
+      appState.workoutLogs.unshift(newEntry);
+      persistData();
+      renderLogs();
+
+      speakText(`Тренировка завершена! Поднятый тоннаж: ${totalTonnage} килограмм. Сожжено ${burnedCals} калорий.`);
+      document.getElementById('summary-modal').classList.add('active');
+    }
+
+    function closeSummaryModal() {
+      document.getElementById('summary-modal').classList.remove('active');
+      switchNav('calendar', document.querySelectorAll('.nav-btn')[2]);
+    }
+
+    /* ==================== 9. ЖУРНАЛ И БЭКАПЫ ==================== */
+    function renderLogs() {
+      const feed = document.getElementById('workout-log-feed');
+      if (!feed) return;
+      feed.innerHTML = '';
+      document.getElementById('log-total-count').textContent = `${appState.workoutLogs.length} сессий`;
+
+      if (appState.workoutLogs.length === 0) {
+        feed.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 30px 10px; font-size: 13px;">Журнал пуст. Завершите первую тренировку!</div>`;
+        return;
+      }
+
+      appState.workoutLogs.forEach(lg => {
+        const item = document.createElement('div');
+        item.className = 'library-item';
+        item.innerHTML = `
+          <div>
+            <div class="lib-title">${lg.title}</div>
+            <div class="lib-cat">${lg.date} • Тоннаж: <strong>${lg.tonnage.toLocaleString()} кг</strong> • ${lg.sets} сетов • ${lg.cals} ккал</div>
+          </div>
+          <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Сделано</span>
+        `;
+        feed.appendChild(item);
+      });
+    }
+
+    function exportDataBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `trainer_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importDataBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          appState = Object.assign(appState, parsed);
+          persistData();
+          renderLogs();
+          renderWorkoutExercises();
+          alert('✅ Данные успешно восстановлены из резервной копии!');
+        } catch (err) {
+          alert('Ошибка чтения файла бэкапа');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /* ==================== 10. КАТАЛОГ БАЗЫ УПРАЖНЕНИЙ ==================== */
     function renderLibrary() {
       const list = document.getElementById('library-list');
       list.innerHTML = '';
@@ -1032,9 +1521,11 @@
       document.getElementById('view-' + viewId).classList.remove('hidden');
       if (btn) btn.classList.add('active');
       if (viewId === 'library') renderLibrary();
+      if (viewId === 'calendar') renderLogs();
     }
 
     window.onload = () => {
+      loadSavedData();
       renderDayTabs();
       renderWorkoutExercises();
     };
