@@ -549,7 +549,7 @@ function renderToday(){
   });
   h+=`</div>`;
   const dn=s&&s.completed;
-  h+=`<button class="btn ${dn?'done':''}" onclick="toggleComplete()">${dn?'✓ Тренировка записана — нажми, чтобы отменить':'Завершить тренировку 🔥'}</button>`;
+  h+=`<button class="btn ${dn?'done':''}" onclick="toggleComplete()">${dn?'✓ Тренировка записана — нажми, чтобы отменить':'Завершить тренировку'}</button>`;
   done(h);
 }
 function setLabel(ex,sets,u){
