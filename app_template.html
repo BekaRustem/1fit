@@ -562,7 +562,6 @@ function renderToday(){
       <div class="t">${pretty(cur)}</div></div>
     <button class="navbtn" onclick="shift(1)" ${cur>=todayStr()?'disabled style=\"opacity:.3\"':''}>›</button>
   </div>`;
-  h+=deloadBanner();
   h+=swapHTML();
 
   if(p.type==='rest'){
