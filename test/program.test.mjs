@@ -15,6 +15,11 @@ assert.match(source, /phaseIndex\(s\)/, 'the app must choose the phase from the 
 for (const label of ['Сегодня', 'Серия тренировок', 'Прогресс', 'Программа и данные', 'Экспортировать копию']) {
   assert.match(source, new RegExp(label), `missing Russian UI label: ${label}`);
 }
+
+for (const label of ['40 минут ходьбы в гору', 'Разогрев', 'Темп', 'Жиросжигание', 'Гора', 'Заминка', 'Отдых перед силовой тренировкой']) {
+  assert.match(source, new RegExp(label), `missing treadmill label: ${label}`);
+}
+assert.match(source, /function renderTreadmill\(/, 'the treadmill timer must render before lift days');
 for (const label of ['>Today<', '>Streak<', '>Progress<', '>More<', 'Your streak']) {
   assert.doesNotMatch(source, new RegExp(label), `English UI label remains: ${label}`);
 }

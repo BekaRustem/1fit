@@ -85,6 +85,16 @@
   .banner{background:linear-gradient(135deg,rgba(245,158,11,.14),rgba(245,158,11,.05));
     border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:12px 14px;margin-bottom:12px}
   .banner b{color:var(--warn)}
+  .treadmill{border-color:rgba(34,211,238,.32);background:linear-gradient(135deg,rgba(34,211,238,.1),var(--card))}
+  .treadhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .treadtitle{font-size:16px;font-weight:800}.treadmeta{color:var(--accent2);font-size:12px;font-weight:700;white-space:nowrap}
+  .treadtimer{font-variant-numeric:tabular-nums;font-size:34px;font-weight:800;letter-spacing:1px;margin:10px 0 2px}
+  .treadstage{font-size:14px;font-weight:700}.treadhint{font-size:12px;color:var(--muted);margin-top:4px}
+  .treadlist{margin-top:12px;border-top:1px solid var(--line)}
+  .treadrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
+  .treadrow.active{color:var(--accent2);font-weight:700}.treadrow.done{opacity:.5}
+  .treadnum{width:18px;color:var(--muted)}.treadrow span:last-child{margin-left:auto;white-space:nowrap}
+  .treadcontrols{display:flex;gap:8px;margin-top:12px}.treadcontrols .btn{margin:0}
   /* nav */
   nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(11,15,20,.92);
     backdrop-filter:blur(12px);border-top:1px solid var(--line);
@@ -165,6 +175,14 @@ const PHASES = [
   }}
 ];
 const ABS=[e('cable_crunch','Скручивания в верхнем блоке',3,'12-15'),e('hanging_leg_raise','Подъем ног к перекладине или лежа',3,'Max'),e('fitball_crunch','Скручивания на фитболе',3,'Max')];
+const TREADMILL=[
+  {name:'Разогрев',minutes:5,incline:'2%',speed:'4.5 км/ч'},
+  {name:'Темп',minutes:10,incline:'4%',speed:'5.0 км/ч'},
+  {name:'Жиросжигание',minutes:15,incline:'6%',speed:'5.2 км/ч'},
+  {name:'Гора',minutes:5,incline:'7%',speed:'5.0 км/ч'},
+  {name:'Заминка',minutes:5,incline:'1%',speed:'4.0 км/ч'},
+];
+const TREADMILL_REST=120;
 const exName = {};
 PHASES.forEach(phase=>Object.values(phase.days).forEach(d=>d.ex.forEach(x=>{exName[x.id]=exName[x.id]||{name:x.name,m:x.m}})));
 ABS.forEach(x=>{exName[x.id]={name:x.name,m:x.m}});
@@ -178,6 +196,8 @@ let cur = todayStr();   // selected date on Today tab
 let tab = 'today';
 let progSel = null;
 let progUnit = null;    // display unit on Progress tab
+let treadmill={date:null,phase:0,remaining:TREADMILL[0].minutes*60,running:false,rest:false,complete:false};
+let treadmillInterval=null;
 
 function load(){
   let d=null,restored=false;
@@ -376,6 +396,34 @@ function deloadBanner(){
   return `<div class="banner small"><b>Первые 2 недели.</b> Начни с умеренного веса и оставляй 2-4 повтора в запасе.</div>`;
 }
 
+function timeLabel(sec){const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function currentTreadmill(){return treadmill.rest?{name:'Отдых перед силовой тренировкой',minutes:2,incline:'Вода',speed:'Восстанови дыхание'}:TREADMILL[treadmill.phase]}
+function updateTreadmillClock(){const el=document.getElementById('treadmillClock');if(el)el.textContent=timeLabel(treadmill.remaining)}
+function stopTreadmill(){if(treadmillInterval){clearInterval(treadmillInterval);treadmillInterval=null}treadmill.running=false}
+function advanceTreadmill(){
+  if(treadmill.rest){treadmill.complete=true;treadmill.rest=false;treadmill.remaining=0;stopTreadmill();render();return}
+  if(treadmill.phase<TREADMILL.length-1){treadmill.phase++;treadmill.remaining=TREADMILL[treadmill.phase].minutes*60;stopTreadmill();render();return}
+  treadmill.rest=true;treadmill.remaining=TREADMILL_REST;stopTreadmill();render();
+}
+function treadmillStart(){
+  if(treadmill.complete)return;
+  if(treadmill.running){stopTreadmill();render();return}
+  treadmill.running=true;
+  treadmillInterval=setInterval(()=>{if(treadmill.remaining>0){treadmill.remaining--;updateTreadmillClock()}if(treadmill.remaining===0)advanceTreadmill()},1000);
+  render();
+}
+function treadmillNext(){advanceTreadmill()}
+function treadmillReset(){stopTreadmill();treadmill={date:cur,phase:0,remaining:TREADMILL[0].minutes*60,running:false,rest:false,complete:false};render()}
+function prepareTreadmill(){if(treadmill.date!==cur){stopTreadmill();treadmill={date:cur,phase:0,remaining:TREADMILL[0].minutes*60,running:false,rest:false,complete:false}}}
+function renderTreadmill(){
+  const stage=currentTreadmill();
+  if(treadmill.complete)return `<div class="card treadmill"><div class="treadhead"><div><div class="treadtitle">🏃 Дорожка завершена</div><div class="treadhint">40 минут ходьбы и отдых перед силовой тренировкой выполнены.</div></div><span class="treadmeta">ГОТОВО</span></div><button class="btn sm ghost" style="margin-top:12px" onclick="treadmillReset()">Начать заново</button></div>`;
+  const rows=TREADMILL.map((step,i)=>`<div class="treadrow ${!treadmill.rest&&i===treadmill.phase?'active':''} ${i<treadmill.phase?'done':''}"><span class="treadnum">${i+1}.</span><span>${step.name}</span><span>${step.incline} · ${step.speed} · ${step.minutes} мин</span></div>`).join('');
+  const label=treadmill.running?'Пауза':'Старт';
+  const next=treadmill.rest?'Завершить отдых':treadmill.phase<TREADMILL.length-1?'Следующий этап':'К отдыху';
+  return `<section class="card treadmill" aria-label="Таймер ходьбы на дорожке"><div class="treadhead"><div><div class="treadtitle">🏃 40 минут ходьбы в гору</div><div class="treadhint">Перед силовой тренировкой</div></div><span class="treadmeta">${treadmill.rest?'ОТДЫХ':'ЗОНА 2'}</span></div><div class="treadtimer" id="treadmillClock">${timeLabel(treadmill.remaining)}</div><div class="treadstage">${stage.name}</div><div class="treadhint">Уклон ${stage.incline} · ${stage.speed}</div><div class="treadlist">${rows}</div><div class="treadcontrols"><button class="btn sm" onclick="treadmillStart()">${label}</button><button class="btn sm ghost" onclick="treadmillNext()">${next}</button><button class="btn sm ghost" onclick="treadmillReset()">Сброс</button></div></section>`;
+}
+
 function renderToday(){
   const p=prog(cur);const isToday=cur===todayStr();
   let h=`<div class="datebar">
@@ -405,6 +453,8 @@ function renderToday(){
 
   // lift day
   const s=getSession(cur);
+  prepareTreadmill();
+  h+=renderTreadmill();
   h+=`<div class="row between" style="margin-bottom:10px">
       <h2 class="title" style="margin:0">${p.name}</h2>
       <span class="focus ${p.focus==='Hypertrophy'?'hyp':''}">${p.focus}</span></div>`;
