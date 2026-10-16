@@ -1415,4 +1415,225 @@
         if (mainSeconds <= 0) {
           clearInterval(mainTimerId);
           playSignalGong();
-          if (navigator.vibrate) navigator
+          if (navigator.vibrate) navigator.vibrate([250, 100, 250]);
+          digits.textContent = 'В БОЙ!';
+
+          if (onTimerComplete) {
+            onTimerComplete();
+            onTimerComplete = null;
+          }
+
+          setTimeout(closeRestTimer, 2000);
+        }
+      }, 1000);
+    }
+
+    function formatTimer(s) {
+      const m = Math.floor(s / 60);
+      const rem = s % 60;
+      return `${m < 10 ? '0' : ''}${m}:${rem < 10 ? '0' : ''}${rem}`;
+    }
+
+    function adjustRest(delta) {
+      mainSeconds = Math.max(5, mainSeconds + delta);
+      document.getElementById('dock-timer-digits').textContent = formatTimer(mainSeconds);
+    }
+
+    function closeRestTimer() {
+      clearInterval(mainTimerId);
+      document.getElementById('rest-dock').classList.remove('active');
+    }
+
+    function playSignalGong() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+        osc.start();
+        osc.stop(ctx.currentTime + 1.2);
+      } catch (e) {}
+    }
+
+    /* 8. ЗАВЕРШЕНИЕ ТРЕНИРОВКИ */
+    let lastSummaryText = '';
+
+    function finishCurrentWorkout() {
+      const elapsedMins = Math.max(1, Math.round((Date.now() - appState.sessionStartTime) / 60000));
+      let totalTonnage = 0;
+      let completedSets = 0;
+
+      document.querySelectorAll('.exercise-card').forEach(card => {
+        const sets = card.querySelectorAll('.set-row');
+        sets.forEach(row => {
+          const btn = row.querySelector('.btn-set');
+          if (btn && btn.classList.contains('done')) {
+            completedSets++;
+            const wInp = row.querySelector('.weight-input');
+            const rInp = row.querySelector('.reps-input');
+            if (wInp && rInp) {
+              const w = parseFloat(wInp.value) || 0;
+              const r = parseInt(rInp.value) || 0;
+              totalTonnage += (w * r);
+            }
+          }
+        });
+      });
+
+      const burnedCals = Math.round(elapsedMins * 8.5 + completedSets * 7);
+
+      document.getElementById('res-time-val').textContent = `${elapsedMins} мин`;
+      document.getElementById('res-tonnage-val').textContent = `${totalTonnage.toLocaleString()} кг`;
+      document.getElementById('res-sets-val').textContent = completedSets;
+      document.getElementById('res-cals-val').textContent = `${burnedCals} ккал`;
+
+      const prog = PROGRAMS[appState.goal];
+      const day = prog.days[appState.dayIdx] || prog.days[0];
+      const nowStr = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      
+      const newEntry = {
+        date: nowStr,
+        title: `${prog.title} • ${day.title}`,
+        tonnage: totalTonnage,
+        sets: completedSets,
+        cals: burnedCals
+      };
+      appState.workoutLogs.unshift(newEntry);
+      persistData();
+      renderLogs();
+
+      lastSummaryText = `⚡ Тренировка завершена (${nowStr})\n📋 ${newEntry.title}\n⏱️ Время: ${elapsedMins} мин\n🏋️ Тоннаж: ${totalTonnage} кг\n🔥 Сожжено: ${burnedCals} ккал\n✅ Выполнено сетов: ${completedSets}`;
+
+      speakText(`Тренировка завершена! Поднятый тоннаж: ${totalTonnage} килограмм. Сожжено ${burnedCals} калорий.`);
+      document.getElementById('summary-modal').classList.add('active');
+    }
+
+    function copyWorkoutReport() {
+      if (navigator.clipboard && lastSummaryText) {
+        navigator.clipboard.writeText(lastSummaryText).then(() => {
+          alert('📋 Отчет скопирован в буфер обмена!');
+        });
+      }
+    }
+
+    function closeSummaryModal() {
+      document.getElementById('summary-modal').classList.remove('active');
+      switchNav('calendar', document.querySelectorAll('.nav-btn')[2]);
+    }
+
+    /* 9. ЖУРНАЛ И БЭКАПЫ */
+    function renderLogs() {
+      const feed = document.getElementById('workout-log-feed');
+      if (!feed) return;
+      feed.innerHTML = '';
+      document.getElementById('log-total-count').textContent = `${appState.workoutLogs.length} сессий`;
+
+      if (appState.workoutLogs.length === 0) {
+        feed.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 30px 10px; font-size: 13px;">Журнал пуст. Завершите первую тренировку!</div>`;
+        return;
+      }
+
+      appState.workoutLogs.forEach(lg => {
+        const item = document.createElement('div');
+        item.className = 'library-item';
+        item.innerHTML = `
+          <div>
+            <div class="lib-title">${lg.title}</div>
+            <div class="lib-cat">${lg.date} • Тоннаж: <strong>${lg.tonnage.toLocaleString()} кг</strong> • ${lg.sets} сетов • ${lg.cals} ккал</div>
+          </div>
+          <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Сделано</span>
+        `;
+        feed.appendChild(item);
+      });
+    }
+
+    function exportDataBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `trainer_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importDataBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          appState = Object.assign(appState, parsed);
+          persistData();
+          renderLogs();
+          renderWorkoutExercises();
+          alert('✅ Данные успешно восстановлены из резервной копии!');
+        } catch (err) {
+          alert('Ошибка чтения файла бэкапа');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /* 10. КАТАЛОГ УПРАЖНЕНИЙ */
+    function renderLibrary() {
+      const list = document.getElementById('library-list');
+      list.innerHTML = '';
+      document.getElementById('lib-count').textContent = `${DB.length} упр.`;
+
+      DB.forEach(ex => {
+        const item = document.createElement('div');
+        item.className = 'library-item';
+        item.innerHTML = `
+          <div>
+            <div class="lib-title">${ex.name}</div>
+            <div class="lib-cat">${ex.target}</div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function searchLibrary() {
+      const q = document.getElementById('lib-search').value.toLowerCase().trim();
+      const list = document.getElementById('library-list');
+      list.innerHTML = '';
+
+      const filtered = DB.filter(e => e.name.toLowerCase().includes(q) || e.target.toLowerCase().includes(q));
+      filtered.forEach(ex => {
+        const item = document.createElement('div');
+        item.className = 'library-item';
+        item.innerHTML = `
+          <div>
+            <div class="lib-title">${ex.name}</div>
+            <div class="lib-cat">${ex.target}</div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function switchNav(viewId, btn) {
+      document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('view-' + viewId).classList.remove('hidden');
+      if (btn) btn.classList.add('active');
+      if (viewId === 'library') renderLibrary();
+      if (viewId === 'calendar') renderLogs();
+    }
+
+    window.onload = () => {
+      loadSavedData();
+      renderDayTabs();
+      renderWorkoutExercises();
+      updateProgressBar();
+    };
+  </script>
+</body>
+</html>
