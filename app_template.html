@@ -53,6 +53,14 @@
   .exhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
   .exmeta{display:flex;align-items:center;gap:7px;flex:0 0 auto}
   .exname{font-weight:700;font-size:15px}
+  .exnamebutton{border:0;background:none;color:var(--txt);font:inherit;font-weight:700;font-size:15px;padding:0;text-align:left;cursor:pointer}
+  .exnamebutton::after{content:'⌄';color:var(--accent2);font-size:13px;margin-left:6px}.exnamebutton.open::after{content:'⌃'}
+  .technique{margin:2px 0 10px;padding:10px;background:var(--card2);border:1px solid var(--line);border-radius:12px}
+  .technique h3{font-size:13px;margin:0 0 6px}.technique p{font-size:12px;color:var(--muted);line-height:1.4;margin:6px 0 0}
+  .technique-frames{position:relative;height:176px;max-width:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#fff}
+  .technique-frames img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;animation:techFrames 2.1s infinite}
+  .technique-frames img:nth-child(2){animation-delay:-1.4s}.technique-frames img:nth-child(3){animation-delay:-.7s}
+  @keyframes techFrames{0%,30%{opacity:1}33%,100%{opacity:0}}
   .scheme{color:var(--muted);font-size:12px;white-space:nowrap}
   .last{color:var(--accent2);font-size:12px;margin-top:1px}
   .pr{color:var(--warn);font-size:11px;font-weight:700}
@@ -184,6 +192,14 @@ const START_WEIGHTS={
   incline_db_press:[10],incline_cable_fly:[10],bench_press:[20],leg_press:[80],elevated_leg_curl:[20],leg_curl:[25],reverse_barbell_curl:[12.5],machine_curl:[20],weighted_pull_up:[0],french_press:[15],
   leg_extension:[25],cable_abduction:[5],alternate_db_curl:[8],close_grip_bench:[25],decline_db_press:[10],cable_fly:[10],front_raise:[4]
 };
+const ANIMATION_SLUGS={
+  seated_db_press:'seated-dumbbell-press',upright_row:'upright-row',rear_delt_fly:'rear-delt-fly',arnold_press:'arnold-press',lateral_raise:'lateral-raise',barbell_shrug:'shrug',
+  back_squat:'squat',rdl:'romanian-deadlift',barbell_curl:'bicep-curl',reverse_close_grip_bench:'close-grip-bench-press',preacher_curl:'preacher-curl',db_french_press:'dumbbell-overhead-tricep-extension',hammer_curl:'hammer-curl',tricep_pushdown:'tricep-pushdown',
+  smith_shrug:'shrug',calf_raise:'calf-raise',military_press:'overhead-press',incline_barbell_press:'incline-bench-press',barbell_row:'barbell-row',flat_db_press:'dumbbell-bench-press',lat_pulldown:'lat-pulldown',decline_barbell_press:'decline-bench-press',seated_cable_row:'seated-row',
+  incline_db_press:'incline-dumbbell-press',incline_cable_fly:'incline-cable-fly',bench_press:'bench-press',leg_press:'leg-press',elevated_leg_curl:'leg-curl',leg_curl:'leg-curl',reverse_barbell_curl:'reverse-curl',machine_curl:'bicep-curl',weighted_pull_up:'weighted-pull-up',french_press:'skull-crusher',
+  leg_extension:'leg-extension',cable_abduction:'cable-standing-hip-abduction',alternate_db_curl:'bicep-curl',close_grip_bench:'close-grip-bench-press',decline_db_press:'decline-dumbbell-press',dips:'dip',cable_fly:'cable-fly',front_raise:'front-raise',
+  cable_crunch:'cable-crunch',hanging_leg_raise:'captains-chair-knee-raise',fitball_crunch:'crunch'
+};
 const TREADMILL=[
   {name:'Разогрев',minutes:5,incline:'2%',speed:'4.5 км/ч'},
   {name:'Темп',minutes:10,incline:'4%',speed:'5.0 км/ч'},
@@ -207,6 +223,7 @@ let progSel = null;
 let progUnit = null;    // display unit on Progress tab
 let treadmill={date:null,phase:0,remaining:TREADMILL[0].minutes*60,running:false,rest:false,complete:false};
 let treadmillInterval=null;
+let openTechniqueId=null;
 
 function load(){
   let d=null,restored=false;
@@ -448,6 +465,13 @@ function renderTreadmill(){
   const next=treadmill.rest?'Завершить отдых':treadmill.phase<TREADMILL.length-1?'Следующий этап':'К отдыху';
   return `<section class="card treadmill" aria-label="Таймер ходьбы на дорожке"><div class="treadhead"><div><div class="treadtitle">🏃 40 минут ходьбы в гору</div><div class="treadhint">Перед силовой тренировкой</div></div><span class="treadmeta">${treadmill.rest?'ОТДЫХ':'ЗОНА 2'}</span></div><div class="treadtimer" id="treadmillClock">${timeLabel(treadmill.remaining)}</div><div class="treadstage">${stage.name}</div><div class="treadhint">Уклон ${stage.incline} · ${stage.speed}</div><div class="treadlist">${rows}</div><div class="treadcontrols"><button class="btn sm" onclick="treadmillStart()">${label}</button><button class="btn sm ghost" onclick="treadmillNext()">${next}</button><button class="btn sm ghost" onclick="treadmillReset()">Сброс</button></div></section>`;
 }
+function toggleTechnique(id){openTechniqueId=openTechniqueId===id?null:id;render()}
+function techniqueHTML(ex){
+  const slug=ANIMATION_SLUGS[ex.id];
+  if(!slug)return '';
+  const base=`exercise-media/${slug}`;
+  return `<div class="technique"><h3>Техника выполнения</h3><div class="technique-frames"><img src="${base}/frame-1.png" alt="${ex.name}: исходное положение"><img src="${base}/frame-2.png" alt="${ex.name}: движение"><img src="${base}/frame-3.png" alt="${ex.name}: конечное положение"></div><p>Анимация - визуальный ориентир. Делай движение контролируемо и остановись при боли.</p></div>`;
+}
 
 function renderToday(){
   const p=prog(cur);const isToday=cur===todayStr();
@@ -497,12 +521,12 @@ function renderToday(){
     else if(ex.m==='load'&&recommendedWeight(ex,null,eu))bits.push(`Старт: ${recommendedWeight(ex,null,eu)} ${eu}`);
     if(pr!=null)bits.push(`<span class="pr">Рекорд ${prLabel(ex,pr,eu)}</span>`);
     h+=`<div class="ex"><div class="exhead">
-        <div style="min-width:0"><div class="exname">${ex.name}</div>
+        <div style="min-width:0"><button class="exnamebutton ${openTechniqueId===ex.id?'open':''}" onclick="toggleTechnique('${ex.id}')" aria-expanded="${openTechniqueId===ex.id}">${ex.name}</button>
           ${bits.length?`<div class="last">${bits.join(' · ')}</div>`:''}</div>
         <div class="exmeta">
           <div class="scheme">${ex.sets}×${ex.m==='time'?ex.target+'s':ex.target}${ex.note||''}</div>
           ${ex.m!=='time'?segUnitEx(ex.id,eu):''}</div>
-      </div><div class="sets">`;
+      </div>${openTechniqueId===ex.id?techniqueHTML(ex):''}<div class="sets">`;
     const lsets = ls?ls.sets:null;
     const sep = `<button class="sep" onmousedown="event.preventDefault()" onclick="addSep(this)">,</button>`;
     if(ex.m==='time'){
@@ -729,6 +753,7 @@ function renderMore(){
     h+=`<div class="histrow"><span><b>${dn}</b> · ${p.name}</span>
       <span class="muted tiny">${p.ex.length} упражнений</span></div>`});
   h+=`</div>`;
+  h+=`<div class="center muted tiny" style="margin:4px 0 10px">Анимации упражнений: <a href="https://github.com/bryllim/workout-guide" target="_blank" rel="noopener" style="color:var(--accent2)">Workout Guide</a>, CC BY-SA 4.0.</div>`;
   h+=`<div class="card"><div class="small muted" style="margin-bottom:10px">Твои данные хранятся на этом устройстве. Создай резервную копию:</div>
     <div class="row" style="gap:10px;margin-bottom:10px">
       <button class="btn sm ghost" onclick="exportData()">⬇︎ Экспортировать копию</button>

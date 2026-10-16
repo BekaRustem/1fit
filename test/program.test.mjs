@@ -24,6 +24,9 @@ for (const label of ['Стартовый вес', 'Автоприбавка', 'S
   assert.match(source, new RegExp(label), `missing load recommendation: ${label}`);
 }
 assert.match(source, /function recommendedWeight\(/, 'the app must calculate the next suggested load');
+for (const label of ['Техника выполнения', 'toggleTechnique', 'ANIMATION_SLUGS', 'CC BY-SA 4.0']) {
+  assert.match(source, new RegExp(label), `missing exercise animation support: ${label}`);
+}
 for (const label of ['>Today<', '>Streak<', '>Progress<', '>More<', 'Your streak']) {
   assert.doesNotMatch(source, new RegExp(label), `English UI label remains: ${label}`);
 }
