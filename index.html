@@ -588,7 +588,7 @@ function renderToday(){
   h+=renderRestTimer();
   h+=`<div class="row between" style="margin-bottom:10px">
       <h2 class="title" style="margin:0">${p.name}</h2>
-      <div class="row" style="gap:7px"><span class="focus ${p.focus==='Hypertrophy'?'hyp':''}">${p.focus}</span><button class="mode-toggle" type="button" onclick="toggleWorkoutMode()">${workoutMode?'Обычный вид':'Режим тренировки'}</button></div></div>`;
+      <button class="mode-toggle" type="button" onclick="toggleWorkoutMode()">${workoutMode?'Обычный вид':'Режим тренировки'}</button></div>`;
   h+=workoutMode?`<div class="mode-note">Показано текущее упражнение. Чтобы выбрать другое — выйди в обычный вид.</div>`:`<div class="hint" style="margin:-2px 0 10px">Вес · повторы: по одной строке на упражнение. Одно число = одинаковый вес во всех подходах;
       нажми <b>,</b>, если подходы отличаются (например, <b>60, 60, 55</b>).</div>`;
   h+=`<div class="card ${workoutMode&&s.activeExerciseId?'workout-mode':''}">`;
