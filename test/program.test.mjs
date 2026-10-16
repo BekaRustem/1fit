@@ -40,6 +40,8 @@ for (const label of ['SYNCRA', 'Добро пожаловать на трени�
 }
 assert.match(source, /function closeWelcome\(/, 'the welcome screen must dismiss automatically');
 assert.match(source, /welcome-screen/, 'the app must render an animated welcome screen');
+assert.match(source, /border-radius:999px/, 'the bottom dock must use a capsule shape');
+assert.match(source, /\.tab\.active\{color:var\(--accent\);background:/, 'the active dock tab must have its own rounded surface');
 assert.match(source, /Выполнено упражнений/, 'the workout header must show exercise completion progress');
 assert.match(source, /workout-progress/, 'the workout header must render a compact progress indicator');
 assert.match(source, /Режим тренировки/, 'the app must offer distraction-free workout mode');
