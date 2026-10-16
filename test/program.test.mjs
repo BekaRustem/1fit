@@ -30,6 +30,11 @@ for (const label of ['Начать упражнение', 'Завершить у
 assert.match(source, /function startExercise\(/, 'each exercise must be startable');
 assert.match(source, /function finishExercise\(/, 'each exercise must be finishable');
 assert.match(source, /function exerciseBenefit\(/, 'each exercise must explain its benefit');
+for (const label of ['Итог тренировки', 'Общий объём', 'Новые рекорды', 'Изменение к прошлому разу']) {
+  assert.match(source, new RegExp(label), `missing workout summary label: ${label}`);
+}
+assert.match(source, /function workoutSummaryHTML\(/, 'the app must render a workout summary');
+assert.match(source, /function sessionVolume\(/, 'the app must calculate workout volume');
 assert.match(source, /Выполнено упражнений/, 'the workout header must show exercise completion progress');
 assert.match(source, /workout-progress/, 'the workout header must render a compact progress indicator');
 assert.match(source, /Режим тренировки/, 'the app must offer distraction-free workout mode');

@@ -66,6 +66,8 @@
   .workout-progress{border:1px solid rgba(52,211,153,.35);border-radius:999px;background:rgba(52,211,153,.1);color:var(--accent);padding:6px 8px;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
   .workout-mode .ex:not(.active){display:none}.workout-mode .ex.active{border-top:0;padding-top:0}
   .mode-note{color:var(--accent2);font-size:12px;margin:-2px 0 10px}
+  .workout-summary{border-color:rgba(52,211,153,.4);background:linear-gradient(135deg,rgba(52,211,153,.12),var(--card));animation:exerciseOpen .28s ease-out}
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.summary-grid div{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px;font-size:12px}.summary-grid b{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.35px;margin-bottom:3px}
   @keyframes exerciseOpen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
   @keyframes exerciseComplete{0%{transform:scale(.94)}65%{transform:scale(1.04)}100%{transform:scale(1)}}
   .technique-frames{position:relative;height:176px;max-width:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#52747c}
@@ -530,11 +532,12 @@ function syncRestTimer(){
   updateRestClock();
   if(restTimer.remaining===0){stopRestTimer();notifyRestFinished();render()}
 }
-function startRest(seconds){
+function startRest(seconds,openWidget=false){
   if(seconds){stopRestTimer();restTimer={remaining:seconds,total:seconds,running:false,endsAt:null}}
   if(restTimer.running){syncRestTimer();stopRestTimer();render();return}
   if(restTimer.remaining===0)restTimer.remaining=restTimer.total;
   prepareRestSound();
+  if(openWidget)restWidgetOpen=true;
   restTimer.running=true;
   restTimer.endsAt=Date.now()+restTimer.remaining*1000;
   restInterval=setInterval(syncRestTimer,250);
@@ -566,7 +569,17 @@ function exerciseBenefit(ex){
   return 'Развивает силу целевых мышц и закрепляет технику движения.';
 }
 function startExercise(exId){const s=ensureSession(cur);s.activeExerciseId=exId;if(s.exerciseDone[exId])delete s.exerciseDone[exId];openTechniqueId=exId;save();render()}
-function finishExercise(exId){const s=ensureSession(cur);s.exerciseDone[exId]=true;if(s.activeExerciseId===exId)s.activeExerciseId=null;save();render()}
+function sessionVolume(plan,session){return plan.ex.reduce((sum,ex)=>sum+(ex.m==='load'?(session.sets[ex.id]||[]).reduce((part,set)=>part+(set&&Number.isFinite(+set.w)&&Number.isFinite(+set.r)?toKg(set.w,set.u||'kg')*+set.r:0),0):0),0)}
+function previousExerciseBest(ex){let best=null;Object.keys(data.sessions).filter(date=>date<cur).forEach(date=>{const value=bestVal(ex,data.sessions[date].sets[ex.id]);if(value!==null)best=Math.max(best??-Infinity,value)});return best}
+function workoutSummaryHTML(plan,session){
+  const volume=sessionVolume(plan,session),records=[],changes=[];
+  plan.ex.forEach(ex=>{const current=bestVal(ex,session.sets[ex.id]);if(current===null)return;const previous=previousExerciseBest(ex);if(previous===null){records.push(`${ex.name}: первый результат`);return}if(current>previous){const difference=current-previous;records.push(`${ex.name}: +${fmtN(ex.m==='load'?fromKg(difference,exUnit(ex.id)):difference)} ${ex.m==='load'?exUnit(ex.id):ex.m==='time'?'сек':'повт.'}`)}changes.push(`${ex.name}: ${current>previous?'+':''}${fmtN(ex.m==='load'?fromKg(current-previous,exUnit(ex.id)):current-previous)} ${ex.m==='load'?exUnit(ex.id):ex.m==='time'?'сек':'повт.'}`)});
+  return `<section class="card workout-summary"><h3 style="margin:0;font-size:17px">Итог тренировки</h3><div class="summary-grid"><div><b>Общий объём</b>${fmtN(volume)} кг</div><div><b>Новые рекорды</b>${records.length}</div></div><div class="summary-grid"><div style="grid-column:1/-1"><b>Изменение к прошлому разу</b>${changes.length?changes.join('<br>'):'Запиши результаты, чтобы увидеть сравнение.'}</div></div>${records.length?`<div class="small" style="margin-top:10px"><b style="color:var(--accent)">Новые рекорды</b><br>${records.join('<br>')}</div>`:''}</section>`;
+}
+function finishExercise(exId){
+  const s=ensureSession(cur),plan=prog(cur);s.exerciseDone[exId]=true;if(s.activeExerciseId===exId)s.activeExerciseId=null;save();
+  if(!plan.ex.every(ex=>s.exerciseDone[ex.id])){startRest(90,true);return}render();
+}
 
 function renderToday(){
   const p=prog(cur);const isToday=cur===todayStr();
@@ -647,6 +660,7 @@ function renderToday(){
     h+=`</div>`;
   });
   h+=`</div>`;
+  if(completedExercises===p.ex.length)h+=workoutSummaryHTML(p,s);
   const dn=s&&s.completed;
   h+=`<button class="btn ${dn?'done':''}" onclick="toggleComplete()">${dn?'✓ Тренировка записана — нажми, чтобы отменить':'Завершить тренировку'}</button>`;
   done(h);
