@@ -20,6 +20,12 @@ for (const label of ['40 минут ходьбы в гору', 'Разогрев
   assert.match(source, new RegExp(label), `missing treadmill label: ${label}`);
 }
 assert.match(source, /function renderTreadmill\(/, 'the treadmill timer must render before lift days');
+for (const label of ['Отдых между подходами', '60 сек', '90 сек', '120 сек']) {
+  assert.match(source, new RegExp(label), `missing rest timer control: ${label}`);
+}
+assert.match(source, /function renderRestTimer\(/, 'the app must render a rest timer between sets');
+assert.match(source, /function ringBackground\(/, 'the timers must calculate a progress ring');
+assert.match(source, /id="treadmillRing"/, 'the treadmill must render a progress ring');
 for (const label of ['START_WEIGHTS', 'incline_barbell_press']) {
   assert.match(source, new RegExp(label), `missing load recommendation: ${label}`);
 }

@@ -96,13 +96,18 @@
   .treadmill{border-color:rgba(34,211,238,.32);background:linear-gradient(135deg,rgba(34,211,238,.1),var(--card))}
   .treadhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
   .treadtitle{font-size:16px;font-weight:800}.treadmeta{color:var(--accent2);font-size:12px;font-weight:700;white-space:nowrap}
+  .timer-ring{width:108px;height:108px;border-radius:50%;display:grid;place-items:center;margin:12px auto;position:relative}
+  .timer-ring:before{content:'';position:absolute;inset:6px;border-radius:50%;background:var(--card)}
+  .timer-ring span{position:relative;font-variant-numeric:tabular-nums;font-size:24px;font-weight:800;letter-spacing:.5px}
   .treadtimer{font-variant-numeric:tabular-nums;font-size:34px;font-weight:800;letter-spacing:1px;margin:10px 0 2px}
   .treadstage{font-size:14px;font-weight:700}.treadhint{font-size:12px;color:var(--muted);margin-top:4px}
   .treadlist{margin-top:12px;border-top:1px solid var(--line)}
   .treadrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
   .treadrow.active{color:var(--accent2);font-weight:700}.treadrow.done{opacity:.5}
   .treadnum{width:18px;color:var(--muted)}.treadrow span:last-child{margin-left:auto;white-space:nowrap}
-  .treadcontrols{display:flex;gap:8px;margin-top:12px}.treadcontrols .btn{margin:0}
+  .treadcontrols{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.treadcontrols .btn{margin:0;flex:1 1 92px}
+  .rest-timer{border-color:rgba(52,211,153,.32)}
+  .rest-timer .timer-ring:before{background:var(--card)}
   /* nav */
   nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(11,15,20,.92);
     backdrop-filter:blur(12px);border-top:1px solid var(--line);
@@ -223,6 +228,8 @@ let progSel = null;
 let progUnit = null;    // display unit on Progress tab
 let treadmill={date:null,phase:0,remaining:TREADMILL[0].minutes*60,running:false,rest:false,complete:false};
 let treadmillInterval=null;
+let restTimer={remaining:90,total:90,running:false};
+let restInterval=null;
 let openTechniqueId=null;
 
 function load(){
@@ -440,7 +447,9 @@ function deloadBanner(){
 
 function timeLabel(sec){const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
 function currentTreadmill(){return treadmill.rest?{name:'Отдых перед силовой тренировкой',minutes:2,incline:'Вода',speed:'Восстанови дыхание'}:TREADMILL[treadmill.phase]}
-function updateTreadmillClock(){const el=document.getElementById('treadmillClock');if(el)el.textContent=timeLabel(treadmill.remaining)}
+function ringBackground(remaining,total,color){const progress=Math.max(0,Math.min(100,(1-remaining/total)*100));return `conic-gradient(${color} ${progress}%,var(--card2) ${progress}% 100%)`}
+function treadmillTotal(){return treadmill.rest?TREADMILL_REST:TREADMILL[treadmill.phase].minutes*60}
+function updateTreadmillClock(){const el=document.getElementById('treadmillClock');if(el)el.textContent=timeLabel(treadmill.remaining);const ring=document.getElementById('treadmillRing');if(ring)ring.style.background=ringBackground(treadmill.remaining,treadmillTotal(),'var(--accent2)')}
 function stopTreadmill(){if(treadmillInterval){clearInterval(treadmillInterval);treadmillInterval=null}treadmill.running=false}
 function advanceTreadmill(){
   if(treadmill.rest){treadmill.complete=true;treadmill.rest=false;treadmill.remaining=0;stopTreadmill();render();return}
@@ -459,11 +468,27 @@ function treadmillReset(){stopTreadmill();treadmill={date:cur,phase:0,remaining:
 function prepareTreadmill(){if(treadmill.date!==cur){stopTreadmill();treadmill={date:cur,phase:0,remaining:TREADMILL[0].minutes*60,running:false,rest:false,complete:false}}}
 function renderTreadmill(){
   const stage=currentTreadmill();
-  if(treadmill.complete)return `<div class="card treadmill"><div class="treadhead"><div><div class="treadtitle">🏃 Дорожка завершена</div><div class="treadhint">40 минут ходьбы и отдых перед силовой тренировкой выполнены.</div></div><span class="treadmeta">ГОТОВО</span></div><button class="btn sm ghost" style="margin-top:12px" onclick="treadmillReset()">Начать заново</button></div>`;
+  if(treadmill.complete)return `<div class="card treadmill"><div class="treadhead"><div><div class="treadtitle">Дорожка завершена</div><div class="treadhint">40 минут ходьбы и отдых перед силовой тренировкой выполнены.</div></div><span class="treadmeta">ГОТОВО</span></div><button class="btn sm ghost" style="margin-top:12px" onclick="treadmillReset()">Начать заново</button></div>`;
   const rows=TREADMILL.map((step,i)=>`<div class="treadrow ${!treadmill.rest&&i===treadmill.phase?'active':''} ${i<treadmill.phase?'done':''}"><span class="treadnum">${i+1}.</span><span>${step.name}</span><span>${step.incline} · ${step.speed} · ${step.minutes} мин</span></div>`).join('');
   const label=treadmill.running?'Пауза':'Старт';
   const next=treadmill.rest?'Завершить отдых':treadmill.phase<TREADMILL.length-1?'Следующий этап':'К отдыху';
-  return `<section class="card treadmill" aria-label="Таймер ходьбы на дорожке"><div class="treadhead"><div><div class="treadtitle">🏃 40 минут ходьбы в гору</div><div class="treadhint">Перед силовой тренировкой</div></div><span class="treadmeta">${treadmill.rest?'ОТДЫХ':'ЗОНА 2'}</span></div><div class="treadtimer" id="treadmillClock">${timeLabel(treadmill.remaining)}</div><div class="treadstage">${stage.name}</div><div class="treadhint">Уклон ${stage.incline} · ${stage.speed}</div><div class="treadlist">${rows}</div><div class="treadcontrols"><button class="btn sm" onclick="treadmillStart()">${label}</button><button class="btn sm ghost" onclick="treadmillNext()">${next}</button><button class="btn sm ghost" onclick="treadmillReset()">Сброс</button></div></section>`;
+  return `<section class="card treadmill" aria-label="Таймер ходьбы на дорожке"><div class="treadhead"><div><div class="treadtitle">40 минут ходьбы в гору</div><div class="treadhint">Перед силовой тренировкой</div></div><span class="treadmeta">${treadmill.rest?'ОТДЫХ':'ЗОНА 2'}</span></div><div class="timer-ring" id="treadmillRing" style="background:${ringBackground(treadmill.remaining,treadmillTotal(),'var(--accent2)')}"><span id="treadmillClock">${timeLabel(treadmill.remaining)}</span></div><div class="treadstage">${stage.name}</div><div class="treadhint">Уклон ${stage.incline} · ${stage.speed}</div><div class="treadlist">${rows}</div><div class="treadcontrols"><button class="btn sm" onclick="treadmillStart()">${label}</button><button class="btn sm ghost" onclick="treadmillNext()">${next}</button><button class="btn sm ghost" onclick="treadmillReset()">Сброс</button></div></section>`;
+}
+function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}restTimer.running=false}
+function updateRestClock(){const el=document.getElementById('restClock');if(el)el.textContent=timeLabel(restTimer.remaining);const ring=document.getElementById('restRing');if(ring)ring.style.background=ringBackground(restTimer.remaining,restTimer.total,'var(--accent)')}
+function startRest(seconds){
+  if(seconds){stopRestTimer();restTimer={remaining:seconds,total:seconds,running:false}}
+  if(restTimer.running){stopRestTimer();render();return}
+  if(restTimer.remaining===0)restTimer.remaining=restTimer.total;
+  restTimer.running=true;
+  restInterval=setInterval(()=>{if(restTimer.remaining>0){restTimer.remaining--;updateRestClock()}if(restTimer.remaining===0){stopRestTimer();if(navigator.vibrate)navigator.vibrate([120,80,120]);render()}},1000);
+  render();
+}
+function resetRest(){stopRestTimer();restTimer={remaining:90,total:90,running:false};render()}
+function renderRestTimer(){
+  const label=restTimer.running?'Пауза':'Старт отдыха';
+  const status=restTimer.remaining===0?'Отдых закончен':'Выбери длительность или продолжи текущий отсчёт';
+  return `<section class="card rest-timer" aria-label="Таймер отдыха между подходами"><div class="treadhead"><div><div class="treadtitle">Отдых между подходами</div><div class="treadhint">${status}</div></div><span class="treadmeta">ТАЙМЕР</span></div><div class="timer-ring" id="restRing" style="background:${ringBackground(restTimer.remaining,restTimer.total,'var(--accent)')}"><span id="restClock">${timeLabel(restTimer.remaining)}</span></div><div class="treadcontrols"><button class="btn sm" onclick="startRest()">${label}</button><button class="btn sm ghost" onclick="startRest(60)">60 сек</button><button class="btn sm ghost" onclick="startRest(90)">90 сек</button><button class="btn sm ghost" onclick="startRest(120)">120 сек</button><button class="btn sm ghost" onclick="resetRest()">Сброс</button></div></section>`;
 }
 function toggleTechnique(id){openTechniqueId=openTechniqueId===id?null:id;render()}
 function techniqueHTML(ex){
@@ -505,6 +530,7 @@ function renderToday(){
   const s=getSession(cur);
   prepareTreadmill();
   h+=renderTreadmill();
+  h+=renderRestTimer();
   h+=`<div class="row between" style="margin-bottom:10px">
       <h2 class="title" style="margin:0">${p.name}</h2>
       <span class="focus ${p.focus==='Hypertrophy'?'hyp':''}">${p.focus}</span></div>`;
