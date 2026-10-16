@@ -10,6 +10,9 @@ for (const label of ['Недели 1-4', 'Недели 5-8', 'Недели 9-12'
 for (const exercise of ['Жим гантелей сидя', 'Жим ногами', 'Альтернативный подъем гантелей']) {
   assert.match(source, new RegExp(exercise), `missing exercise: ${exercise}`);
 }
+assert.match(source, /Жим в грудном тренажёре/, 'the chest press machine must replace the reverse close-grip bench press');
+assert.match(source, /machine-chest-press/, 'the chest press machine must have an exercise animation');
+assert.doesNotMatch(source, /Жим лежа узким хватом в обратном наклоне/, 'the replaced exercise must no longer appear');
 assert.match(source, /phaseIndex\(s\)/, 'the app must choose the phase from the start date');
 
 for (const label of ['Сегодня', 'Серия тренировок', 'Прогресс', 'Программа и данные', 'Экспортировать копию']) {
