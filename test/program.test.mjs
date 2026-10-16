@@ -35,6 +35,11 @@ for (const label of ['Итог тренировки', 'Общий объём', '
 }
 assert.match(source, /function workoutSummaryHTML\(/, 'the app must render a workout summary');
 assert.match(source, /function sessionVolume\(/, 'the app must calculate workout volume');
+for (const label of ['SYNCRA', 'Добро пожаловать на тренировку', 'Пропустить']) {
+  assert.match(source, new RegExp(label), `missing welcome screen content: ${label}`);
+}
+assert.match(source, /function closeWelcome\(/, 'the welcome screen must dismiss automatically');
+assert.match(source, /welcome-screen/, 'the app must render an animated welcome screen');
 assert.match(source, /Выполнено упражнений/, 'the workout header must show exercise completion progress');
 assert.match(source, /workout-progress/, 'the workout header must render a compact progress indicator');
 assert.match(source, /Режим тренировки/, 'the app must offer distraction-free workout mode');

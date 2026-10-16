@@ -21,6 +21,15 @@
   html,body{margin:0;background:var(--bg);color:var(--txt);
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
   body{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  .welcome-screen{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;background:radial-gradient(circle at 50% 42%,#17313a 0,var(--bg) 52%);transition:opacity .32s ease,transform .32s ease}
+  .welcome-screen.leaving{opacity:0;transform:scale(1.03);pointer-events:none}
+  .welcome-skip{position:absolute;right:20px;top:calc(18px + env(safe-area-inset-top));border:0;background:none;color:var(--muted);font-size:13px;font-weight:700}
+  .welcome-orbit{width:132px;height:132px;border:2px solid rgba(34,211,238,.25);border-radius:50%;display:grid;place-items:center;position:relative;animation:welcomeSpin 4s linear infinite}
+  .welcome-orbit:before,.welcome-orbit:after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--accent2);box-shadow:0 0 22px rgba(34,211,238,.8)}.welcome-orbit:before{top:-8px}.welcome-orbit:after{bottom:-8px;background:var(--accent);box-shadow:0 0 22px rgba(52,211,153,.8)}
+  .welcome-core{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:1px solid var(--line);font-size:23px;font-weight:900;letter-spacing:1px;animation:welcomePulse 1.7s ease-in-out infinite}
+  .welcome-brand{margin-top:26px;font-size:29px;font-weight:900;letter-spacing:4px}.welcome-brand span{color:var(--accent2)}.welcome-title{margin-top:8px;font-size:17px;font-weight:800;text-align:center}.welcome-sub{margin-top:7px;color:var(--muted);font-size:13px;text-align:center}
+  @keyframes welcomeSpin{to{transform:rotate(360deg)}}@keyframes welcomePulse{50%{transform:scale(1.06);box-shadow:0 0 28px rgba(52,211,153,.28)}}
+  @media (prefers-reduced-motion:reduce){.welcome-orbit,.welcome-core{animation:none}.welcome-screen{transition:none}}
   .wrap{max-width:520px;margin:0 auto;padding:0 16px}
   header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg) 70%,transparent);
     padding:calc(12px + env(safe-area-inset-top)) 16px 10px}
@@ -174,6 +183,13 @@
 </style>
 </head>
 <body>
+<section class="welcome-screen" id="welcomeScreen" role="dialog" aria-label="Приветствие SYNCRA">
+  <button class="welcome-skip" type="button" onclick="closeWelcome()">Пропустить</button>
+  <div class="welcome-orbit"><div class="welcome-core">S</div></div>
+  <div class="welcome-brand">SYNC<span>RA</span></div>
+  <div class="welcome-title">Добро пожаловать на тренировку</div>
+  <div class="welcome-sub">Твой темп. Твой прогресс.</div>
+</section>
 <header><div class="hdr">
   <div class="brand">Тренировки</div>
   <div class="streakpill"><span class="n" id="streakHdr">0</span></div>
@@ -949,6 +965,7 @@ function resetData(){if(confirm('Удалить все записанные тр
 
 /* ---------- Nav ---------- */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;if(tab==='today')cur=todayStr();window.scrollTo(0,0);render()});
+function closeWelcome(){const screen=document.getElementById('welcomeScreen');if(!screen||screen.classList.contains('leaving'))return;screen.classList.add('leaving');setTimeout(()=>screen.remove(),340)}
 function enableRestSwipe(){
   let startX=0,startY=0;
   document.addEventListener('touchstart',event=>{const touch=event.changedTouches[0];startX=touch.clientX;startY=touch.clientY},{passive:true});
@@ -962,6 +979,7 @@ function enableRestSwipe(){
 }
 enableRestSwipe();
 render();
+setTimeout(closeWelcome,1800);
 </script>
 </body>
 </html>
