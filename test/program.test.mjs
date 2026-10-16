@@ -44,6 +44,8 @@ assert.match(source, /restLauncherClock/, 'the compact launcher must update whil
 assert.match(source, /endsAt/, 'the rest timer must track a real end time while hidden');
 assert.match(source, /function ringBackground\(/, 'the timers must calculate a progress ring');
 assert.match(source, /id="treadmillRing"/, 'the treadmill must render a progress ring');
+assert.match(source, /Тренировка сегодня/, 'the workout picker must have a readable heading');
+assert.match(source, /workout-picker/, 'the workout picker must use the compact card layout');
 for (const label of ['START_WEIGHTS', 'incline_barbell_press']) {
   assert.match(source, new RegExp(label), `missing load recommendation: ${label}`);
 }

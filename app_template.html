@@ -153,6 +153,11 @@
     border-radius:12px;padding:12px;font-size:15px;font-weight:600;-webkit-appearance:none;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%238696A7'><path d='M2 4l5 6 5-6z'/></svg>");
     background-repeat:no-repeat;background-position:right 14px center}
+  .workout-picker{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:-2px 0 12px}
+  .workout-picker-label{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.45px;text-transform:uppercase}
+  .workout-picker-title{font-size:15px;font-weight:800;line-height:1.3;margin:4px 0 2px;overflow-wrap:anywhere}
+  .workout-picker-note{color:var(--accent2);font-size:12px;margin-bottom:9px}
+  .workout-picker select{font-size:13px;padding:10px 38px 10px 12px}
   canvas{width:100%;display:block}
   .histrow{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
   .histrow:first-child{border-top:0}
@@ -673,11 +678,8 @@ function swapHTML(){
     const lbl=p.name+(p.focus?' · '+p.focus:(tag(p.type)?' · '+tag(p.type):''));
     const sel=(ov||shifted)&&eff.id===p.id?'selected':'';
     opts+=`<option value="${p.id}" ${sel}>${lbl}</option>`;});
-  const note=ov?'↪ Только сегодня':shifted?'↪ План сдвинут':'Тренировка';
-  return `<div class="row between" style="margin:-2px 0 12px;gap:10px">
-    <span class="muted small" style="white-space:nowrap">${note}</span>
-    <div style="flex:1;max-width:230px"><select onchange="onSwap(this.value)">${opts}</select></div>
-  </div>`;
+  const note=ov?'Только сегодня':shifted?'План сдвинут':'По расписанию';
+  return `<section class="workout-picker" aria-label="Выбор тренировки"><div class="workout-picker-label">Тренировка сегодня</div><div class="workout-picker-title">${eff.name}</div><div class="workout-picker-note">${note}</div><select aria-label="Изменить тренировку" onchange="onSwap(this.value)">${opts}</select></section>`;
 }
 function onSwap(id){
   const eff=prog(cur).id, target=id||defaultProg(cur).id;
