@@ -24,6 +24,12 @@ for (const label of ['Отдых между подходами', '60 сек', '9
   assert.match(source, new RegExp(label), `missing rest timer control: ${label}`);
 }
 assert.match(source, /function renderRestTimer\(/, 'the app must render a rest timer between sets');
+for (const label of ['Начать упражнение', 'Завершить упражнение', 'Польза упражнения', 'Подходы и повторы']) {
+  assert.match(source, new RegExp(label), `missing exercise workflow label: ${label}`);
+}
+assert.match(source, /function startExercise\(/, 'each exercise must be startable');
+assert.match(source, /function finishExercise\(/, 'each exercise must be finishable');
+assert.match(source, /function exerciseBenefit\(/, 'each exercise must explain its benefit');
 assert.match(source, /function toggleRestWidget\(/, 'the rest timer must be toggleable as a widget');
 assert.match(source, /function enableRestSwipe\(/, 'the rest timer must support a swipe gesture');
 assert.match(source, /rest-widget/, 'the rest timer must use a hidden widget container');
