@@ -35,6 +35,10 @@ for (const label of ['Итог тренировки', 'Общий объём', '
 }
 assert.match(source, /function workoutSummaryHTML\(/, 'the app must render a workout summary');
 assert.match(source, /function sessionVolume\(/, 'the app must calculate workout volume');
+for (const label of ['Пресс в конце тренировки', 'Скручивания в верхнем блоке', 'Подъем ног к перекладине или лежа', 'Скручивания на фитболе']) {
+  assert.match(source, new RegExp(label), `missing daily abs exercise: ${label}`);
+}
+assert.match(source, /function workoutExercises\(/, 'the app must append abs exercises to every strength workout');
 for (const label of ['SYNCRA', 'Добро пожаловать на тренировку', 'Пропустить']) {
   assert.match(source, new RegExp(label), `missing welcome screen content: ${label}`);
 }

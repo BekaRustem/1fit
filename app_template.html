@@ -59,6 +59,7 @@
   .focus.hyp{background:rgba(34,211,238,.12);color:var(--accent2);border-color:rgba(34,211,238,.25)}
   .ex{padding:12px 0;border-top:1px solid var(--line)}
   .ex:first-child{border-top:0}
+  .abs-heading{margin:16px 0 2px;padding-top:12px;border-top:1px solid var(--line);color:var(--accent2);font-size:12px;font-weight:800;letter-spacing:.35px;text-transform:uppercase}
   .exhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
   .exmeta{display:flex;align-items:center;gap:7px;flex:0 0 auto}
   .exname{font-weight:700;font-size:15px}
@@ -227,7 +228,7 @@ const PHASES = [
     6:{id:'day4',name:'День 4 · Грудь / плечи',focus:'Недели 9-12',type:'lift',ex:[e('decline_db_press','Жим гантелей в обратном наклоне',3,'8-10'),e('dips','Отжимания на брусьях',3,'Max'),e('cable_fly','Сведение рук в кроссовере',3,'12-15'),e('seated_db_press','Жим гантелей сидя',4,'8-10'),e('lateral_raise','Разведение гантелей через стороны стоя',4,'10-12'),e('front_raise','Подъем гантелей перед собой',4,'12-15')]}
   }}
 ];
-const ABS=[e('cable_crunch','Скручивания в верхнем блоке',3,'12-15'),e('hanging_leg_raise','Подъем ног к перекладине или лежа',3,'Max'),e('fitball_crunch','Скручивания на фитболе',3,'Max')];
+const ABS=[e('cable_crunch','Скручивания в верхнем блоке', '3-5','12-15'),e('hanging_leg_raise','Подъем ног к перекладине или лежа',3,'Макс','reps'),e('fitball_crunch','Скручивания на фитболе',3,'Макс','reps')];
 // Стартовые веса в кг: консервативный ориентир от жима 40×10 и приседа 50×10.
 // Вес штанги указан вместе с грифом; на тренажёрах шкалы различаются — начинай легче при сомнении.
 const START_WEIGHTS={
@@ -572,6 +573,7 @@ function techniqueHTML(ex){
   const frames=slug==='shrug'?[2,3,2]:[1,2,3];
   return `<div class="technique"><h3>Техника выполнения</h3><div class="technique-frames">${frames.map((n,i)=>`<img src="${base}/frame-${n}.png" alt="${ex.name}: ${['исходное положение','движение','конечное положение'][i]}">`).join('')}</div><p>Анимация - визуальный ориентир. Делай движение контролируемо и остановись при боли.</p></div>`;
 }
+function workoutExercises(plan){return [...plan.ex,...ABS]}
 function exerciseBenefit(ex){
   if(/squat|leg_press|leg_extension|leg_curl|calf_raise|cable_abduction/.test(ex.id))return 'Укрепляет ноги и помогает развивать устойчивость в базовых движениях.';
   if(/curl/.test(ex.id))return 'Нагружает бицепс и помогает укрепить сгибатели рук.';
@@ -591,7 +593,7 @@ function workoutSummaryHTML(plan,session){
 }
 function finishExercise(exId){
   const s=ensureSession(cur),plan=prog(cur);s.exerciseDone[exId]=true;if(s.activeExerciseId===exId)s.activeExerciseId=null;save();
-  if(!plan.ex.every(ex=>s.exerciseDone[ex.id])){startRest(90,true);return}render();
+  if(!workoutExercises(plan).every(ex=>s.exerciseDone[ex.id])){startRest(90,true);return}render();
 }
 
 function renderToday(){
@@ -622,16 +624,18 @@ function renderToday(){
 
   // lift day
   const s=getSession(cur);
-  const completedExercises=p.ex.filter(ex=>s&&s.exerciseDone&&s.exerciseDone[ex.id]).length;
+  const exercises=workoutExercises(p);
+  const completedExercises=exercises.filter(ex=>s&&s.exerciseDone&&s.exerciseDone[ex.id]).length;
   prepareTreadmill();
   if(!workoutMode)h+=renderTreadmill();
   h+=renderRestTimer();
   h+=`<div class="row between" style="margin-bottom:10px">
       <h2 class="title" style="margin:0">${p.name}</h2>
-      <div class="row" style="gap:7px"><span class="workout-progress" aria-label="Выполнено упражнений">${completedExercises}/${p.ex.length}</span><button class="mode-toggle" type="button" onclick="toggleWorkoutMode()">${workoutMode?'Обычный вид':'Режим тренировки'}</button></div></div>`;
+      <div class="row" style="gap:7px"><span class="workout-progress" aria-label="Выполнено упражнений">${completedExercises}/${exercises.length}</span><button class="mode-toggle" type="button" onclick="toggleWorkoutMode()">${workoutMode?'Обычный вид':'Режим тренировки'}</button></div></div>`;
   h+=workoutMode?`<div class="mode-note">Показано текущее упражнение. Чтобы выбрать другое — выйди в обычный вид.</div>`:'';
   h+=`<div class="card ${workoutMode&&s.activeExerciseId?'workout-mode':''}">`;
-  p.ex.forEach(ex=>{
+  exercises.forEach((ex,index)=>{
+    if(index===p.ex.length)h+=`<div class="abs-heading">Пресс в конце тренировки</div>`;
     const sets = (s&&s.sets[ex.id]) || null;
     const active=s&&s.activeExerciseId===ex.id;
     const finished=s&&s.exerciseDone&&s.exerciseDone[ex.id];
@@ -673,7 +677,7 @@ function renderToday(){
     h+=`</div>`;
   });
   h+=`</div>`;
-  if(completedExercises===p.ex.length)h+=workoutSummaryHTML(p,s);
+  if(completedExercises===exercises.length)h+=workoutSummaryHTML({...p,ex:exercises},s);
   const dn=s&&s.completed;
   h+=`<button class="btn ${dn?'done':''}" onclick="toggleComplete()">${dn?'✓ Тренировка записана — нажми, чтобы отменить':'Завершить тренировку'}</button>`;
   done(h);
@@ -729,7 +733,7 @@ function setCompact(exId,kind,val){
   const mine=parseList(val);
   const theirs=other?setCells(prev,other,ex):[];                 // sibling values, untouched
   let n=Math.max(mine.length,theirs.length);
-  if(n<=1)n=ex.sets;                                             // single value → the planned set count
+  if(n<=1)n=plannedSetCount(ex);                                 // single value → the planned set count
   const pick=(l,i)=>l.length===0?null:(l.length===1?l[0]:(l[i]!==undefined?l[i]:null));
   const out=[];
   for(let i=0;i<n;i++){
@@ -748,6 +752,7 @@ function setCompact(exId,kind,val){
   save();
   document.getElementById('streakHdr').textContent=currentStreak();
 }
+function plannedSetCount(ex){const match=String(ex.sets).match(/\d+/);return match?Number(match[0]):1}
 function addSep(btn){                                            // "," key: keeps the numeric pad up
   const inp=btn.parentNode.querySelector('input'); if(!inp)return;
   const v=inp.value.replace(/[,\s]+$/,'');
