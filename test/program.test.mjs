@@ -24,6 +24,10 @@ for (const label of ['Отдых между подходами', '60 сек', '9
   assert.match(source, new RegExp(label), `missing rest timer control: ${label}`);
 }
 assert.match(source, /function renderRestTimer\(/, 'the app must render a rest timer between sets');
+assert.match(source, /function toggleRestWidget\(/, 'the rest timer must be toggleable as a widget');
+assert.match(source, /function enableRestSwipe\(/, 'the rest timer must support a swipe gesture');
+assert.match(source, /rest-widget/, 'the rest timer must use a hidden widget container');
+assert.match(source, /Открыть таймер отдыха/, 'the compact rest timer launcher needs an accessible name');
 assert.match(source, /function ringBackground\(/, 'the timers must calculate a progress ring');
 assert.match(source, /id="treadmillRing"/, 'the treadmill must render a progress ring');
 for (const label of ['START_WEIGHTS', 'incline_barbell_press']) {
