@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#0a0e17">
-  <title>Фитнес Тренер Pro — GitHub Ultimate</title>
+  <meta name="theme-color" content="#050811">
+  <title>Фитнес Тренер Pro</title>
   <style>
     :root {
-      --bg: #0a0e17;
-      --card: #131b2e;
-      --card-active: #1a2540;
+      --bg: #050811;
+      --card: #0d1527;
+      --card-active: #15203b;
       --primary: #0284c7;
       --primary-light: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.25);
       --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.25);
-      --danger: #ef4444;
+      --accent-glow: rgba(16, 185, 129, 0.3);
+      --danger: #f43f5e;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.07);
+      --border-focus: rgba(56, 189, 248, 0.5);
       --safe-bottom: env(safe-area-inset-bottom, 20px);
     }
 
@@ -25,23 +27,26 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
 
     body {
       background-color: var(--bg);
+      background-image: radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.08), transparent 70%);
       color: var(--text);
-      padding-bottom: calc(95px + var(--safe-bottom));
+      padding-bottom: calc(100px + var(--safe-bottom));
       min-height: 100vh;
       user-select: none;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* Top Glass App Bar */
     header {
-      background: rgba(19, 27, 46, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(13, 21, 39, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       padding: 14px 18px;
       border-bottom: 1px solid var(--border);
       position: sticky;
@@ -55,34 +60,37 @@
     .header-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .logo-badge {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      color: #0a0e17;
-      font-size: 18px;
+      color: #050811;
+      font-size: 19px;
+      box-shadow: 0 4px 14px var(--primary-glow);
     }
 
     .logo-text h1 {
       font-size: 16px;
-      font-weight: 800;
+      font-weight: 900;
       color: #fff;
+      letter-spacing: -0.3px;
       line-height: 1.1;
     }
 
     .logo-text p {
       font-size: 10px;
       color: var(--primary-light);
-      font-weight: 700;
-      letter-spacing: 0.5px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
     }
 
     .header-actions {
@@ -92,17 +100,22 @@
     }
 
     .status-pill {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
-      padding: 6px 10px;
+      padding: 7px 12px;
       border-radius: 20px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       color: #e2e8f0;
       display: flex;
       align-items: center;
       gap: 6px;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .status-pill:active {
+      transform: scale(0.96);
     }
 
     .status-dot {
@@ -118,6 +131,24 @@
       box-shadow: none;
     }
 
+    /* Session Progress Track */
+    .session-progress-bar {
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.05);
+      position: sticky;
+      top: 67px;
+      z-index: 49;
+    }
+
+    .session-progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px var(--primary-light);
+    }
+
     .container {
       max-width: 520px;
       margin: 0 auto;
@@ -125,12 +156,12 @@
     }
 
     .section-label {
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 12px;
+      font-weight: 900;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 10px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -154,21 +185,22 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 10px 14px;
+      padding: 10px 16px;
       color: #fff;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .goal-btn.active {
-      background: var(--primary);
+      background: linear-gradient(135deg, #0284c7, #0369a1);
       border-color: var(--primary-light);
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 6px 20px var(--primary-glow);
+      transform: translateY(-1px);
     }
 
     .day-tabs {
@@ -176,7 +208,7 @@
       gap: 8px;
       overflow-x: auto;
       padding-bottom: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       scrollbar-width: none;
     }
 
@@ -186,116 +218,121 @@
 
     .day-tab {
       flex: 0 0 auto;
-      padding: 8px 14px;
-      background: rgba(255, 255, 255, 0.04);
+      padding: 9px 16px;
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-muted);
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .day-tab.active {
-      background: #fff;
-      color: #0a0e17;
-      border-color: #fff;
-      font-weight: 800;
+      background: #ffffff;
+      color: #050811;
+      border-color: #ffffff;
+      font-weight: 900;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
     }
 
     /* Muscle Heatmap Card */
     .heatmap-card {
-      background: var(--card);
+      background: linear-gradient(145deg, #0d1527 0%, #0a1020 100%);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 12px 14px;
-      margin-bottom: 16px;
+      border-radius: 20px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
 
     .heatmap-info h4 {
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 14px;
+      font-weight: 900;
       color: #fff;
     }
 
     .heatmap-info p {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .heatmap-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin-top: 6px;
+      gap: 5px;
+      margin-top: 8px;
     }
 
     .heat-tag {
       font-size: 10px;
       font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: rgba(56, 189, 248, 0.15);
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
       color: var(--primary-light);
     }
 
     /* Exercise Cards */
     .exercise-card {
-      background: var(--card);
+      background: linear-gradient(180deg, #0e172c 0%, #0a1120 100%);
       border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      border-radius: 24px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      transition: border-color 0.2s;
     }
 
     .ex-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .ex-title-wrap {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .ex-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: rgba(56, 189, 248, 0.15);
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--primary-light);
     }
 
     .ex-name {
       font-size: 15px;
-      font-weight: 800;
+      font-weight: 900;
       color: #fff;
       line-height: 1.25;
+      letter-spacing: -0.2px;
     }
 
     .ex-target-badge {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--primary-light);
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.2);
-      padding: 4px 10px;
+      padding: 5px 10px;
       border-radius: 10px;
       white-space: nowrap;
     }
@@ -304,8 +341,8 @@
       font-size: 11px;
       font-weight: 800;
       color: #fca5a5;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.25);
       padding: 6px 12px;
       border-radius: 12px;
       display: inline-flex;
@@ -317,43 +354,44 @@
     .ex-desc {
       font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.45;
-      margin-bottom: 12px;
+      line-height: 1.5;
+      margin-bottom: 14px;
     }
 
     .ex-tip-box {
       background: rgba(16, 185, 129, 0.08);
       border-left: 3px solid var(--accent);
-      border-radius: 4px 10px 10px 4px;
-      padding: 10px 12px;
+      border-radius: 6px 12px 12px 6px;
+      padding: 10px 14px;
       font-size: 12px;
       color: #a7f3d0;
-      line-height: 1.4;
-      margin-bottom: 14px;
+      line-height: 1.45;
+      margin-bottom: 16px;
     }
 
+    /* Sets Block */
     .sets-block {
-      background: rgba(10, 14, 23, 0.6);
+      background: rgba(5, 8, 17, 0.7);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 6px 12px;
-      margin-bottom: 12px;
+      border-radius: 18px;
+      padding: 6px 14px;
+      margin-bottom: 14px;
     }
 
     .set-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 9px 0;
+      padding: 10px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
 
     .set-row.active-stage {
       background: rgba(56, 189, 248, 0.08);
-      border-radius: 8px;
-      padding-left: 6px;
-      padding-right: 6px;
+      border-radius: 10px;
+      padding-left: 8px;
+      padding-right: 8px;
     }
 
     .set-row:last-child {
@@ -362,64 +400,74 @@
 
     .set-label {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-muted);
-      line-height: 1.2;
+      line-height: 1.25;
     }
 
     .weight-input {
-      background: var(--card-active);
+      background: #111a33;
       border: 1px solid var(--border);
       color: #fff;
       font-size: 13px;
-      font-weight: 700;
-      width: 60px;
+      font-weight: 800;
+      width: 62px;
       text-align: center;
-      padding: 6px;
-      border-radius: 8px;
+      padding: 7px 4px;
+      border-radius: 10px;
       outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .weight-input:focus, .reps-input:focus {
+      border-color: var(--primary-light);
     }
 
     .reps-input {
-      background: var(--card-active);
+      background: #111a33;
       border: 1px solid var(--border);
       color: var(--primary-light);
       font-size: 13px;
-      font-weight: 800;
-      width: 48px;
+      font-weight: 900;
+      width: 50px;
       text-align: center;
-      padding: 6px;
-      border-radius: 8px;
+      padding: 7px 4px;
+      border-radius: 10px;
       outline: none;
+      transition: border-color 0.2s;
     }
 
     .orm-label {
       font-size: 10px;
       font-weight: 800;
       color: var(--accent);
-      min-width: 50px;
+      min-width: 52px;
       text-align: center;
     }
 
     .btn-set {
-      background: var(--card-active);
+      background: #152244;
       border: 1px solid var(--border);
       color: #e2e8f0;
       font-size: 12px;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 10px;
+      font-weight: 800;
+      padding: 9px 14px;
+      border-radius: 12px;
       cursor: pointer;
-      min-width: 85px;
+      min-width: 88px;
       text-align: center;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-set:active {
+      transform: scale(0.95);
     }
 
     .btn-set.done {
       background: var(--accent);
-      color: #0a0e17;
+      color: #050811;
       border-color: transparent;
-      box-shadow: 0 2px 10px var(--accent-glow);
+      box-shadow: 0 4px 14px var(--accent-glow);
     }
 
     .btn-set.running {
@@ -430,8 +478,8 @@
     }
 
     @keyframes pulseBtn {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(0.98); }
     }
 
     .ex-footer {
@@ -439,8 +487,8 @@
       justify-content: space-between;
       align-items: center;
       background: rgba(255, 255, 255, 0.02);
-      padding: 8px 12px;
-      border-radius: 12px;
+      padding: 10px 14px;
+      border-radius: 14px;
     }
 
     .timer-buttons {
@@ -449,20 +497,25 @@
     }
 
     .btn-timer-chip {
-      background: var(--card-active);
+      background: #111a33;
       border: 1px solid var(--border);
       color: #fff;
       font-size: 11px;
-      font-weight: 700;
-      padding: 6px 10px;
-      border-radius: 8px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 10px;
       cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-timer-chip:active {
+      background: var(--primary);
     }
 
     /* Finish Workout Bar */
     .finish-bar {
-      margin-top: 14px;
-      margin-bottom: 24px;
+      margin-top: 18px;
+      margin-bottom: 28px;
     }
 
     .btn-finish-workout {
@@ -471,16 +524,21 @@
       color: #fff;
       border: none;
       padding: 16px;
-      border-radius: 18px;
+      border-radius: 20px;
       font-size: 15px;
       font-weight: 900;
       letter-spacing: 0.5px;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-finish-workout:active {
+      transform: scale(0.98);
     }
 
     /* Floating Dock Timer */
@@ -491,11 +549,13 @@
       right: 14px;
       max-width: 492px;
       margin: 0 auto;
-      background: linear-gradient(135deg, #131b2e 0%, #0a0e17 100%);
+      background: rgba(13, 21, 39, 0.95);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       border: 1px solid var(--primary-light);
-      border-radius: 20px;
-      padding: 12px 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.2);
+      border-radius: 24px;
+      padding: 12px 18px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 25px var(--primary-glow);
       z-index: 100;
       display: none;
       align-items: center;
@@ -507,7 +567,7 @@
     }
 
     .rest-timer-display {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 900;
       color: var(--primary-light);
       letter-spacing: -0.5px;
@@ -516,7 +576,7 @@
     .rest-label {
       font-size: 12px;
       color: #e2e8f0;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .rest-controls {
@@ -529,24 +589,24 @@
       background: var(--card-active);
       border: 1px solid var(--border);
       color: #fff;
-      border-radius: 10px;
-      padding: 6px 10px;
+      border-radius: 12px;
+      padding: 7px 12px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
     }
 
-    /* Bottom Navbar */
+    /* Bottom Glass Navbar */
     .navbar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(19, 27, 46, 0.95);
+      background: rgba(13, 21, 39, 0.9);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       border-top: 1px solid var(--border);
-      padding: 8px 10px calc(8px + var(--safe-bottom));
+      padding: 10px 10px calc(10px + var(--safe-bottom));
       display: flex;
       justify-content: space-around;
       z-index: 60;
@@ -557,13 +617,14 @@
       border: none;
       color: var(--text-muted);
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 4px;
       cursor: pointer;
       flex: 1;
+      transition: color 0.15s;
     }
 
     .nav-btn svg {
@@ -581,16 +642,16 @@
     .library-item {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
+      border-radius: 18px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .lib-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       color: #fff;
     }
@@ -598,7 +659,7 @@
     .lib-cat {
       font-size: 11px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .hidden {
@@ -609,8 +670,8 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(8px);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
       z-index: 200;
       display: none;
       align-items: center;
@@ -625,50 +686,47 @@
     .modal-box {
       background: var(--card);
       border: 1px solid var(--primary-light);
-      border-radius: 24px;
-      padding: 20px;
+      border-radius: 26px;
+      padding: 24px;
       width: 100%;
       max-width: 440px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.85);
     }
 
     .modal-title {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 900;
       color: #fff;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .stat-tile {
-      background: rgba(10, 14, 23, 0.7);
+      background: rgba(5, 8, 17, 0.7);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 16px;
+      padding: 14px;
       text-align: center;
     }
 
     .stat-val {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 900;
       color: var(--primary-light);
     }
 
     .stat-lbl {
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-top: 3px;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -694,6 +752,11 @@
       </div>
     </div>
   </header>
+
+  <!-- Progress Bar of Active Workout -->
+  <div class="session-progress-bar">
+    <div class="session-progress-fill" id="session-progress-fill"></div>
+  </div>
 
   <!-- ==================== VIEW 1: WORKOUT ==================== -->
   <div id="view-workout" class="container">
@@ -728,16 +791,12 @@
       </div>
       <!-- SVG Muscle Silhouette -->
       <svg width="60" height="90" viewBox="0 0 60 90" id="body-heatmap-svg">
-        <circle cx="30" cy="10" r="7" fill="#334155"/>
-        <!-- Shoulders / Chest -->
-        <path id="heat-shoulders" d="M18,18 Q30,16 42,18 L46,26 L14,26 Z" fill="#334155"/>
-        <path id="heat-chest" d="M20,26 L40,26 L38,40 L22,40 Z" fill="#334155"/>
-        <!-- Arms -->
-        <path id="heat-arms" d="M12,25 L16,45 L11,46 Z M48,25 L44,45 L49,46 Z" fill="#334155"/>
-        <!-- Core / Abs -->
-        <rect id="heat-abs" x="23" y="41" width="14" height="15" rx="3" fill="#334155"/>
-        <!-- Legs -->
-        <path id="heat-legs" d="M22,57 L19,85 L26,85 L28,57 Z M32,57 L34,85 L41,85 L38,57 Z" fill="#334155"/>
+        <circle cx="30" cy="10" r="7" fill="#1e293b"/>
+        <path id="heat-shoulders" d="M18,18 Q30,16 42,18 L46,26 L14,26 Z" fill="#1e293b"/>
+        <path id="heat-chest" d="M20,26 L40,26 L38,40 L22,40 Z" fill="#1e293b"/>
+        <path id="heat-arms" d="M12,25 L16,45 L11,46 Z M48,25 L44,45 L49,46 Z" fill="#1e293b"/>
+        <rect id="heat-abs" x="23" y="41" width="14" height="15" rx="3" fill="#1e293b"/>
+        <path id="heat-legs" d="M22,57 L19,85 L26,85 L28,57 Z M32,57 L34,85 L41,85 L38,57 Z" fill="#1e293b"/>
       </svg>
     </div>
 
@@ -760,7 +819,7 @@
       <span id="lib-count" style="color: var(--primary-light);"></span>
     </div>
     <input type="text" id="lib-search" placeholder="Поиск упражнения..." 
-      style="width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: #fff; font-size: 13px; font-weight: 600; outline: none; margin-bottom: 12px;"
+      style="width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; color: #fff; font-size: 13px; font-weight: 700; outline: none; margin-bottom: 14px;"
       oninput="searchLibrary()">
     <div id="library-list"></div>
   </div>
@@ -772,12 +831,12 @@
       <span id="log-total-count" style="color: var(--accent);">0 сессий</span>
     </div>
 
-    <div style="display: flex; gap: 8px; margin-bottom: 14px;">
-      <button onclick="exportDataBackup()" style="flex: 1; background: var(--card); border: 1px solid var(--primary); color: #fff; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer;">
-        📥 Экспорт бэкапа (JSON)
+    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+      <button onclick="exportDataBackup()" style="flex: 1; background: var(--card); border: 1px solid var(--primary); color: #fff; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 12px; cursor: pointer;">
+        📥 Экспорт (JSON)
       </button>
-      <label style="flex: 1; background: var(--card); border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; text-align: center; cursor: pointer;">
-        📤 Импорт бэкапа
+      <label style="flex: 1; background: var(--card); border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 12px; text-align: center; cursor: pointer;">
+        📤 Импорт
         <input type="file" id="import-file-input" style="display: none;" onchange="importDataBackup(event)">
       </label>
     </div>
@@ -794,11 +853,11 @@
     <div class="rest-controls">
       <button class="btn-dock-action" onclick="adjustRest(-30)">-30с</button>
       <button class="btn-dock-action" onclick="adjustRest(30)">+30с</button>
-      <button class="btn-dock-action" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5;" onclick="closeRestTimer()">✕</button>
+      <button class="btn-dock-action" style="background: rgba(244, 63, 94, 0.2); color: #fca5a5;" onclick="closeRestTimer()">✕</button>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Bottom Navbar -->
   <div class="navbar">
     <button class="nav-btn active" onclick="switchNav('workout', this)">
       <svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4M6 12h12"/></svg>
@@ -809,7 +868,7 @@
       <span>База</span>
     </button>
     <button class="nav-btn" onclick="switchNav('calendar', this)">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       <span>Журнал</span>
     </button>
   </div>
@@ -818,7 +877,7 @@
   <div class="modal-backdrop" id="summary-modal">
     <div class="modal-box">
       <div class="modal-title">🔥 Отличная тренировка!</div>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">
         Все данные подсчитаны и сохранены в ваш дневник.
       </p>
 
@@ -841,14 +900,14 @@
         </div>
       </div>
 
-      <button onclick="closeSummaryModal()" style="width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer;">
+      <button onclick="closeSummaryModal()" style="width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; border-radius: 16px; font-weight: 900; cursor: pointer;">
         Отлично, в журнал
       </button>
     </div>
   </div>
 
   <script>
-    /* ==================== 1. WAKE LOCK API (ЭКРАН НЕ ГАСНЕТ) ==================== */
+    /* ==================== 1. WAKE LOCK API ==================== */
     let wakeLockInstance = null;
     async function requestWakeLock() {
       try {
@@ -868,7 +927,7 @@
     });
     requestWakeLock();
 
-    /* ==================== 2. ГОЛОСОВОЙ ТРЕНЕР (WEB SPEECH API) ==================== */
+    /* ==================== 2. ГОЛОСОВОЙ ТРЕНЕР ==================== */
     let voiceCoachEnabled = true;
     function speakText(text) {
       if (!voiceCoachEnabled || !('speechSynthesis' in window)) return;
@@ -1032,6 +1091,7 @@
       persistData();
       renderDayTabs();
       renderWorkoutExercises();
+      updateProgressBar();
     }
 
     function renderDayTabs() {
@@ -1049,6 +1109,7 @@
           persistData();
           renderDayTabs();
           renderWorkoutExercises();
+          updateProgressBar();
         };
         row.appendChild(b);
       });
@@ -1061,10 +1122,9 @@
       const tagsBox = document.getElementById('heat-tags-box');
       tagsBox.innerHTML = '';
 
-      // Reset SVG parts
       ['shoulders', 'chest', 'arms', 'abs', 'legs'].forEach(m => {
         const el = document.getElementById(`heat-${m}`);
-        if (el) el.setAttribute('fill', '#334155');
+        if (el) el.setAttribute('fill', '#1e293b');
       });
 
       const muscleNames = {
@@ -1086,11 +1146,21 @@
         tagsBox.appendChild(tag);
 
         const svgPart = document.getElementById(`heat-${m}`);
-        if (svgPart) svgPart.setAttribute('fill', '#0284c7');
+        if (svgPart) svgPart.setAttribute('fill', '#38bdf8');
       });
     }
 
-    /* Расчет 1ПМ по формуле Эпли: 1RM = Weight * (1 + Reps/30) */
+    function updateProgressBar() {
+      const allButtons = document.querySelectorAll('.btn-set');
+      if (allButtons.length === 0) {
+        document.getElementById('session-progress-fill').style.width = '0%';
+        return;
+      }
+      const doneButtons = document.querySelectorAll('.btn-set.done');
+      const pct = Math.round((doneButtons.length / allButtons.length) * 100);
+      document.getElementById('session-progress-fill').style.width = `${pct}%`;
+    }
+
     function calcEpley1RM(weight, reps) {
       if (!weight || !reps || reps <= 0) return 0;
       if (reps === 1) return weight;
@@ -1108,7 +1178,6 @@
         const orm = calcEpley1RM(w, r);
         ormEl.textContent = orm > 0 ? `1ПМ: ${orm}к` : '';
 
-        // Save last used weight
         appState.savedWeights[`${exId}_s${setIdx}`] = w;
         persistData();
       }
@@ -1134,10 +1203,10 @@
               <div class="set-row" id="cardio-stage-row-${sIdx}">
                 <div style="display: flex; gap: 8px; align-items: center;">
                   <span class="set-label">${st.num}<br>${st.name}</span>
-                  <span class="cardio-stage-title" style="margin-left: 6px;">${st.param}</span>
+                  <span style="font-size: 13px; font-weight: 800; color: #fff; margin-left: 6px;">${st.param}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
-                  <span class="reps-label" id="cardio-time-label-${sIdx}">${st.minutes} мин</span>
+                  <span class="reps-label" id="cardio-time-label-${sIdx}" style="font-size: 12px; font-weight: 700; color: var(--primary-light); min-width: 55px; text-align: center;">${st.minutes} мин</span>
                   <button class="btn-set" id="cardio-btn-${sIdx}" onclick="startCardioStage(${sIdx}, ${st.minutes}, '${st.name}', '${st.param}')">Старт</button>
                 </div>
               </div>
@@ -1163,7 +1232,7 @@
             <div class="sets-block">${stagesHtml}</div>
 
             <div class="ex-footer">
-              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Быстрый таймер:</span>
+              <span style="font-size: 11px; font-weight: 800; color: var(--text-muted);">Быстрый таймер:</span>
               <div class="timer-buttons">
                 <button class="btn-timer-chip" onclick="startCountdown(300, '5 мин')">5 мин</button>
                 <button class="btn-timer-chip" onclick="startCountdown(600, '10 мин')">10 мин</button>
@@ -1276,12 +1345,15 @@
         speakText('Этап завершен. Переходите к следующему уровню нагрузки.');
       }
       activeCardioIdx = null;
+      updateProgressBar();
     }
 
     function checkSet(btn, exName, exId, setNum) {
       btn.classList.toggle('done');
       const isDone = btn.classList.contains('done');
       btn.textContent = isDone ? '✓ Готово' : 'Выполнить';
+
+      updateProgressBar();
 
       if (isDone) {
         const rEl = document.getElementById(`r-inp-${exId}-${setNum}`);
@@ -1293,7 +1365,6 @@
       }
     }
 
-    /* Плавающий таймер */
     let mainTimerId = null;
     let mainSeconds = 0;
     let onTimerComplete = null;
@@ -1367,13 +1438,12 @@
       } catch (e) {}
     }
 
-    /* ==================== 8. ЗАВЕРШЕНИЕ ТРЕНИРОВКИ И ТОННАЖ ==================== */
+    /* ==================== 8. ЗАВЕРШЕНИЕ ТРЕНИРОВКИ ==================== */
     function finishCurrentWorkout() {
       const elapsedMins = Math.max(1, Math.round((Date.now() - appState.sessionStartTime) / 60000));
       let totalTonnage = 0;
       let completedSets = 0;
 
-      // Scan all done sets
       document.querySelectorAll('.exercise-card').forEach(card => {
         const sets = card.querySelectorAll('.set-row');
         sets.forEach(row => {
@@ -1391,7 +1461,6 @@
         });
       });
 
-      // Calories estimation: walking on incline burns ~350 kcal + strength ~150-250 kcal
       const burnedCals = Math.round(elapsedMins * 8.5 + completedSets * 7);
 
       document.getElementById('res-time-val').textContent = `${elapsedMins} мин`;
@@ -1399,7 +1468,6 @@
       document.getElementById('res-sets-val').textContent = completedSets;
       document.getElementById('res-cals-val').textContent = `${burnedCals} ккал`;
 
-      // Log to history
       const prog = PROGRAMS[appState.goal];
       const day = prog.days[appState.dayIdx] || prog.days[0];
       const newEntry = {
@@ -1477,7 +1545,7 @@
       reader.readAsText(file);
     }
 
-    /* ==================== 10. КАТАЛОГ БАЗЫ УПРАЖНЕНИЙ ==================== */
+    /* ==================== 10. БАЗА УПРАЖНЕНИЙ ==================== */
     function renderLibrary() {
       const list = document.getElementById('library-list');
       list.innerHTML = '';
@@ -1528,6 +1596,7 @@
       loadSavedData();
       renderDayTabs();
       renderWorkoutExercises();
+      updateProgressBar();
     };
   </script>
 </body>
