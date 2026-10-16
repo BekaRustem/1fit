@@ -403,6 +403,33 @@
       font-weight: 800;
       color: var(--text-muted);
       line-height: 1.25;
+      width: 44px;
+    }
+
+    .weight-ctrl-box {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-step {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .btn-step:active {
+      background: var(--primary);
     }
 
     .weight-input {
@@ -411,9 +438,9 @@
       color: #fff;
       font-size: 13px;
       font-weight: 800;
-      width: 62px;
+      width: 54px;
       text-align: center;
-      padding: 7px 4px;
+      padding: 6px 2px;
       border-radius: 10px;
       outline: none;
       transition: border-color 0.2s;
@@ -429,9 +456,9 @@
       color: var(--primary-light);
       font-size: 13px;
       font-weight: 900;
-      width: 50px;
+      width: 44px;
       text-align: center;
-      padding: 7px 4px;
+      padding: 6px 2px;
       border-radius: 10px;
       outline: none;
       transition: border-color 0.2s;
@@ -441,7 +468,7 @@
       font-size: 10px;
       font-weight: 800;
       color: var(--accent);
-      min-width: 52px;
+      min-width: 46px;
       text-align: center;
     }
 
@@ -451,10 +478,10 @@
       color: #e2e8f0;
       font-size: 12px;
       font-weight: 800;
-      padding: 9px 14px;
+      padding: 9px 12px;
       border-radius: 12px;
       cursor: pointer;
-      min-width: 88px;
+      min-width: 84px;
       text-align: center;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -900,9 +927,14 @@
         </div>
       </div>
 
-      <button onclick="closeSummaryModal()" style="width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; border-radius: 16px; font-weight: 900; cursor: pointer;">
-        Отлично, в журнал
-      </button>
+      <div style="display: flex; gap: 8px;">
+        <button onclick="copyWorkoutReport()" style="flex: 1; background: #152244; border: 1px solid var(--border); color: #fff; padding: 14px; border-radius: 16px; font-weight: 800; font-size: 12px; cursor: pointer;">
+          📋 Скопировать отчет
+        </button>
+        <button onclick="closeSummaryModal()" style="flex: 1; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 16px; font-weight: 900; font-size: 12px; cursor: pointer;">
+          В журнал ➔
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1167,6 +1199,16 @@
       return Math.round(weight * (1 + reps / 30));
     }
 
+    function adjustWeight(exId, setIdx, delta) {
+      const wEl = document.getElementById(`w-inp-${exId}-${setIdx}`);
+      if (wEl) {
+        let val = parseFloat(wEl.value) || 0;
+        val = Math.max(0, val + delta);
+        wEl.value = Number.isInteger(val) ? val : val.toFixed(1);
+        onWeightOrRepsChange(exId, setIdx);
+      }
+    }
+
     function onWeightOrRepsChange(exId, setIdx) {
       const wEl = document.getElementById(`w-inp-${exId}-${setIdx}`);
       const rEl = document.getElementById(`r-inp-${exId}-${setIdx}`);
@@ -1255,10 +1297,11 @@
             setsRows += `
               <div class="set-row">
                 <span class="set-label">Сет ${s}</span>
-                <div style="display: flex; align-items: center; gap: 4px;">
+                <div class="weight-ctrl-box">
+                  <button class="btn-step" onclick="adjustWeight('${ex.id}', ${s}, -2.5)">-</button>
                   <input type="number" class="weight-input" id="w-inp-${ex.id}-${s}" value="${savedW}" 
                     oninput="onWeightOrRepsChange('${ex.id}', ${s})">
-                  <span style="font-size: 11px; color: var(--text-muted);">кг</span>
+                  <button class="btn-step" onclick="adjustWeight('${ex.id}', ${s}, 2.5)">+</button>
                 </div>
                 <div style="display: flex; align-items: center; gap: 4px;">
                   <input type="number" class="reps-input" id="r-inp-${ex.id}-${s}" value="${defReps}" 
@@ -1439,6 +1482,8 @@
     }
 
     /* ==================== 8. ЗАВЕРШЕНИЕ ТРЕНИРОВКИ ==================== */
+    let lastSummaryText = '';
+
     function finishCurrentWorkout() {
       const elapsedMins = Math.max(1, Math.round((Date.now() - appState.sessionStartTime) / 60000));
       let totalTonnage = 0;
@@ -1470,8 +1515,10 @@
 
       const prog = PROGRAMS[appState.goal];
       const day = prog.days[appState.dayIdx] || prog.days[0];
+      const nowStr = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      
       const newEntry = {
-        date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }),
+        date: nowStr,
         title: `${prog.title} • ${day.title}`,
         tonnage: totalTonnage,
         sets: completedSets,
@@ -1481,8 +1528,18 @@
       persistData();
       renderLogs();
 
+      lastSummaryText = `⚡ Тренировка завершена (${nowStr})\n📋 ${newEntry.title}\n⏱️ Время: ${elapsedMins} мин\n🏋️ Тоннаж: ${totalTonnage} кг\n🔥 Сожжено: ${burnedCals} ккал\n✅ Выполнено сетов: ${completedSets}`;
+
       speakText(`Тренировка завершена! Поднятый тоннаж: ${totalTonnage} килограмм. Сожжено ${burnedCals} калорий.`);
       document.getElementById('summary-modal').classList.add('active');
+    }
+
+    function copyWorkoutReport() {
+      if (navigator.clipboard && lastSummaryText) {
+        navigator.clipboard.writeText(lastSummaryText).then(() => {
+          alert('📋 Отчет скопирован в буфер обмена!');
+        });
+      }
     }
 
     function closeSummaryModal() {
