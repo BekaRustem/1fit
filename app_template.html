@@ -57,10 +57,10 @@
   .exnamebutton::after{content:'⌄';color:var(--accent2);font-size:13px;margin-left:6px}.exnamebutton.open::after{content:'⌃'}
   .technique{margin:2px 0 10px;padding:10px;background:var(--card2);border:1px solid var(--line);border-radius:12px}
   .technique h3{font-size:13px;margin:0 0 6px}.technique p{font-size:12px;color:var(--muted);line-height:1.4;margin:6px 0 0}
-  .technique-frames{position:relative;height:176px;max-width:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#fff}
+  .technique-frames{position:relative;height:176px;max-width:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#52747c}
   .technique-frames img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;animation:techFrames 2.1s infinite}
-  .technique-frames img:nth-child(2){animation-delay:-1.4s}.technique-frames img:nth-child(3){animation-delay:-.7s}
-  @keyframes techFrames{0%,30%{opacity:1}33%,100%{opacity:0}}
+  .technique-frames img:nth-child(2){animation-delay:-.7s}.technique-frames img:nth-child(3){animation-delay:-1.4s}
+  @keyframes techFrames{0%,33.3%{opacity:1}33.34%,100%{opacity:0}}
   .scheme{color:var(--muted);font-size:12px;white-space:nowrap}
   .last{color:var(--accent2);font-size:12px;margin-top:1px}
   .pr{color:var(--warn);font-size:11px;font-weight:700}
@@ -470,7 +470,8 @@ function techniqueHTML(ex){
   const slug=ANIMATION_SLUGS[ex.id];
   if(!slug)return '';
   const base=`exercise-media/${slug}`;
-  return `<div class="technique"><h3>Техника выполнения</h3><div class="technique-frames"><img src="${base}/frame-1.png" alt="${ex.name}: исходное положение"><img src="${base}/frame-2.png" alt="${ex.name}: движение"><img src="${base}/frame-3.png" alt="${ex.name}: конечное положение"></div><p>Анимация - визуальный ориентир. Делай движение контролируемо и остановись при боли.</p></div>`;
+  const frames=slug==='shrug'?[2,3,2]:[1,2,3];
+  return `<div class="technique"><h3>Техника выполнения</h3><div class="technique-frames">${frames.map((n,i)=>`<img src="${base}/frame-${n}.png" alt="${ex.name}: ${['исходное положение','движение','конечное положение'][i]}">`).join('')}</div><p>Анимация - визуальный ориентир. Делай движение контролируемо и остановись при боли.</p></div>`;
 }
 
 function renderToday(){
