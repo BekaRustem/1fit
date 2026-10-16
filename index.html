@@ -175,6 +175,15 @@ const PHASES = [
   }}
 ];
 const ABS=[e('cable_crunch','Скручивания в верхнем блоке',3,'12-15'),e('hanging_leg_raise','Подъем ног к перекладине или лежа',3,'Max'),e('fitball_crunch','Скручивания на фитболе',3,'Max')];
+// Стартовые веса в кг: консервативный ориентир от жима 40×10 и приседа 50×10.
+// Вес штанги указан вместе с грифом; на тренажёрах шкалы различаются — начинай легче при сомнении.
+const START_WEIGHTS={
+  seated_db_press:[10],upright_row:[20],rear_delt_fly:[4],arnold_press:[8],lateral_raise:[4],barbell_shrug:[50],
+  back_squat:[30,35,45,30],rdl:[30,35,40,30],barbell_curl:[15],reverse_close_grip_bench:[25],preacher_curl:[15],db_french_press:[8],hammer_curl:[8],tricep_pushdown:[20],
+  smith_shrug:[40],calf_raise:[30],military_press:[25],incline_barbell_press:[35],barbell_row:[30],flat_db_press:[12],lat_pulldown:[35],decline_barbell_press:[30],seated_cable_row:[30],
+  incline_db_press:[10],incline_cable_fly:[10],bench_press:[20],leg_press:[80],elevated_leg_curl:[20],leg_curl:[25],reverse_barbell_curl:[12.5],machine_curl:[20],weighted_pull_up:[0],french_press:[15],
+  leg_extension:[25],cable_abduction:[5],alternate_db_curl:[8],close_grip_bench:[25],decline_db_press:[10],cable_fly:[10],front_raise:[4]
+};
 const TREADMILL=[
   {name:'Разогрев',minutes:5,incline:'2%',speed:'4.5 км/ч'},
   {name:'Темп',minutes:10,incline:'4%',speed:'5.0 км/ч'},
@@ -229,6 +238,22 @@ function toKg(w,u){return (u==='lb')?(+w)/LB:+w;}
 function fromKg(kg,u){return (u==='lb')?kg*LB:kg;}
 function rnd(x){return Math.round(x*10)/10;}
 function fmtN(x){return String(rnd(x));}
+function targetTop(ex){
+  const nums=String(ex.target).match(/\d+/g)||[];
+  return String(ex.target).includes('/')?null:Math.max(...nums.map(Number));
+}
+function recommendedWeight(ex,sets,u){
+  if(ex.m!=='load')return '';
+  const stored=(sets||[]).filter(s=>s&&s.w!=null);
+  const top=targetTop(ex);
+  if(stored.length&&top&&stored.every(s=>+s.r>=top)){
+    const add=/db|raise|curl|fly/.test(ex.id)?1:2.5;
+    return stored.map(s=>fmtN(fromKg(toKg(s.w,s.u||'kg')+add,u))).join(', ');
+  }
+  if(stored.length)return setsToList(sets,'w',ex,u);
+  const start=START_WEIGHTS[ex.id];
+  return start?start.map(v=>fmtN(fromKg(v,u))).join(', '):'';
+}
 function segUnit(active,fn){return `<div class="seg">
   <button class="${active==='kg'?'on':''}" onclick="${fn}('kg')">kg</button>
   <button class="${active==='lb'?'on':''}" onclick="${fn}('lb')">lb</button></div>`;}
@@ -460,6 +485,7 @@ function renderToday(){
       <span class="focus ${p.focus==='Hypertrophy'?'hyp':''}">${p.focus}</span></div>`;
   h+=`<div class="hint" style="margin:-2px 0 10px">Вес · повторы: по одной строке на упражнение. Одно число = одинаковый вес во всех подходах;
       нажми <b>,</b>, если подходы отличаются (например, <b>60, 60, 55</b>).</div>`;
+  h+=`<div class="banner small"><b>Стартовый вес:</b> заполнен по твоим результатам (жим 40×10, присед 50×10). Для тренажёров сделай первый подход легче, если шкала отличается. <b>Автоприбавка:</b> когда все подходы достигли верхней границы повторений, следующий вес предлагается больше на 1-2,5 кг.</div>`;
   h+=`<div class="card">`;
   p.ex.forEach(ex=>{
     const sets = (s&&s.sets[ex.id]) || null;
@@ -468,6 +494,7 @@ function renderToday(){
     const eu=exUnit(ex.id);
     const bits=[];
     if(ls)bits.push(`Прошлый раз: ${setLabel(ex,ls.sets,eu)}`);
+    else if(ex.m==='load'&&recommendedWeight(ex,null,eu))bits.push(`Старт: ${recommendedWeight(ex,null,eu)} ${eu}`);
     if(pr!=null)bits.push(`<span class="pr">Рекорд ${prLabel(ex,pr,eu)}</span>`);
     h+=`<div class="ex"><div class="exhead">
         <div style="min-width:0"><div class="exname">${ex.name}</div>
@@ -486,7 +513,7 @@ function renderToday(){
           oninput="setCompact('${ex.id}','t',this.value)"><span class="u">сек</span>${sep}</div></div>`;
     } else {
       const wv=setsToList(sets,'w',ex,eu), rv=setsToList(sets,'r',ex,eu);
-      const phW=setsToList(lsets,'w',ex,eu)||eu;
+      const phW=recommendedWeight(ex,lsets,eu)||eu;
       const phR=setsToList(lsets,'r',ex,eu)||String(ex.target);
       h+=`<div class="setrow">
         <div class="field ${wv!==''?'filled':''}"><input inputmode="decimal" placeholder="${phW}" value="${wv}"
