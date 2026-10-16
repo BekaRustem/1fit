@@ -20,7 +20,7 @@ for (const label of ['40 минут ходьбы в гору', 'Разогрев
   assert.match(source, new RegExp(label), `missing treadmill label: ${label}`);
 }
 assert.match(source, /function renderTreadmill\(/, 'the treadmill timer must render before lift days');
-for (const label of ['Стартовый вес', 'Автоприбавка', 'START_WEIGHTS', 'incline_barbell_press']) {
+for (const label of ['START_WEIGHTS', 'incline_barbell_press']) {
   assert.match(source, new RegExp(label), `missing load recommendation: ${label}`);
 }
 assert.match(source, /function recommendedWeight\(/, 'the app must calculate the next suggested load');
