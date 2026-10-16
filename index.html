@@ -246,6 +246,20 @@
       white-space: nowrap;
     }
 
+    .cardio-pulse-badge-inline {
+      font-size: 11px;
+      font-weight: 800;
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 6px 12px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
     .ex-desc {
       font-size: 13px;
       color: var(--text-muted);
@@ -378,59 +392,6 @@
       cursor: pointer;
     }
 
-    /* Cardio Box Specific */
-    .cardio-visual-box {
-      width: 100%;
-      height: 170px;
-      background: #091122;
-      border-radius: 16px;
-      margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(56, 189, 248, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cardio-badge-tag {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 10px;
-      font-weight: 800;
-      color: #34d399;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 4px 8px;
-      border-radius: 6px;
-      letter-spacing: 0.5px;
-    }
-
-    .cardio-pulse-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 10px;
-      font-weight: 800;
-      color: #fca5a5;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 4px 10px;
-      border-radius: 14px;
-    }
-
-    @keyframes walkStrideF {
-      0% { transform: rotate(0deg); }
-      50% { transform: rotate(20deg); }
-      100% { transform: rotate(0deg); }
-    }
-    @keyframes walkStrideB {
-      0% { transform: rotate(0deg); }
-      50% { transform: rotate(-20deg); }
-      100% { transform: rotate(0deg); }
-    }
-
     .cardio-stage-title {
       font-size: 13px;
       font-weight: 800;
@@ -561,7 +522,6 @@
 </head>
 <body>
 
-  <!-- Top App Bar -->
   <header>
     <div class="header-logo">
       <div class="logo-badge">⚡</div>
@@ -842,22 +802,8 @@
               <div class="ex-target-badge">${ex.target}</div>
             </div>
 
-            <div class="cardio-visual-box">
-              <div class="cardio-badge-tag">АНИМАЦИЯ ТЕХНИКИ</div>
-              <div class="cardio-pulse-badge">❤️ ПУЛЬС: 115–130 УД/МИН</div>
-              <svg viewBox="0 0 260 140" style="width: 100%; height: 100%;">
-                <line x1="45" y1="125" x2="215" y2="85" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
-                <line x1="215" y1="85" x2="228" y2="40" stroke="#64748b" stroke-width="4"/>
-                <circle cx="155" cy="40" r="8" fill="#ffffff"/>
-                <line x1="155" y1="48" x2="152" y2="78" stroke="#ffffff" stroke-width="4"/>
-                <line x1="155" y1="56" x2="168" y2="72" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-                <g style="transform-origin: 152px 78px; animation: walkStrideF 1.2s ease-in-out infinite;">
-                  <line x1="152" y1="78" x2="148" y2="104" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
-                </g>
-                <g style="transform-origin: 152px 78px; animation: walkStrideB 1.2s ease-in-out infinite;">
-                  <line x1="152" y1="78" x2="160" y2="100" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
-                </g>
-              </svg>
+            <div>
+              <div class="cardio-pulse-badge-inline">❤️ ПУЛЬС: 115–130 УД/МИН (Zone 2)</div>
             </div>
 
             <div class="ex-desc">${ex.desc}</div>
@@ -920,20 +866,17 @@
       });
     }
 
-    /* Интерактивный таймер кардио-этапов */
     let activeCardioIdx = null;
 
     function startCardioStage(stageIdx, minutes, stageName) {
       const btn = document.getElementById(`cardio-btn-${stageIdx}`);
       const row = document.getElementById(`cardio-stage-row-${stageIdx}`);
 
-      // Если уже идет этот этап - завершаем досрочно
       if (btn.classList.contains('running')) {
         finishStage(stageIdx, true);
         return;
       }
 
-      // Снимаем активность со всех строк
       document.querySelectorAll('.set-row').forEach(r => r.classList.remove('active-stage'));
       document.querySelectorAll('.btn-set').forEach(b => {
         if (b.classList.contains('running')) {
@@ -964,14 +907,12 @@
       if (row) row.classList.remove('active-stage');
 
       if (!manual && stageIdx < 4) {
-        // Подсвечиваем следующий этап
         const nextRow = document.getElementById(`cardio-stage-row-${stageIdx + 1}`);
         if (nextRow) nextRow.classList.add('active-stage');
       }
       activeCardioIdx = null;
     }
 
-    /* Обычные силовые сеты */
     function checkSet(btn, exName) {
       btn.classList.toggle('done');
       const isDone = btn.classList.contains('done');
@@ -979,7 +920,6 @@
       if (isDone) startCountdown(60, `Отдых: ${exName}`);
     }
 
-    /* Общий таймер обратного отсчета (Плавучий док) */
     let mainTimerId = null;
     let mainSeconds = 0;
     let onTimerComplete = null;
