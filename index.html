@@ -18,8 +18,8 @@
       --danger: #f43f5e;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.07);
-      --border-focus: rgba(56, 189, 248, 0.5);
+      --border: rgba(255, 255, 255, 0.08);
+      --safe-top: env(safe-area-inset-top, 20px);
       --safe-bottom: env(safe-area-inset-bottom, 20px);
     }
 
@@ -36,18 +36,20 @@
       background-color: var(--bg);
       background-image: radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.08), transparent 70%);
       color: var(--text);
-      padding-bottom: calc(100px + var(--safe-bottom));
+      padding-top: var(--safe-top);
+      padding-bottom: calc(90px + var(--safe-bottom));
       min-height: 100vh;
       user-select: none;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* Top Glass App Bar */
     header {
-      background: rgba(13, 21, 39, 0.85);
+      background: rgba(13, 21, 39, 0.88);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -60,25 +62,25 @@
     .header-logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .logo-badge {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
       color: #050811;
-      font-size: 19px;
+      font-size: 18px;
       box-shadow: 0 4px 14px var(--primary-glow);
     }
 
     .logo-text h1 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 900;
       color: #fff;
       letter-spacing: -0.3px;
@@ -86,41 +88,36 @@
     }
 
     .logo-text p {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--primary-light);
       font-weight: 800;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .status-pill {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
-      padding: 7px 12px;
+      padding: 6px 10px;
       border-radius: 20px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: #e2e8f0;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .status-pill:active {
-      transform: scale(0.96);
     }
 
     .status-dot {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 8px var(--accent);
@@ -131,13 +128,12 @@
       box-shadow: none;
     }
 
-    /* Session Progress Track */
     .session-progress-bar {
       width: 100%;
       height: 3px;
       background: rgba(255, 255, 255, 0.05);
       position: sticky;
-      top: 67px;
+      top: 61px;
       z-index: 49;
     }
 
@@ -152,16 +148,16 @@
     .container {
       max-width: 520px;
       margin: 0 auto;
-      padding: 16px;
+      padding: 14px 12px;
     }
 
     .section-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -169,10 +165,10 @@
 
     .goal-scroll {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 14px;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
       scrollbar-width: none;
     }
 
@@ -184,31 +180,30 @@
       flex: 0 0 auto;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 10px 16px;
+      border-radius: 14px;
+      padding: 8px 14px;
       color: #fff;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      gap: 6px;
+      transition: all 0.2s;
     }
 
     .goal-btn.active {
       background: linear-gradient(135deg, #0284c7, #0369a1);
       border-color: var(--primary-light);
-      box-shadow: 0 6px 20px var(--primary-glow);
-      transform: translateY(-1px);
+      box-shadow: 0 4px 16px var(--primary-glow);
     }
 
     .day-tabs {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
       padding-bottom: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       scrollbar-width: none;
     }
 
@@ -218,10 +213,10 @@
 
     .day-tab {
       flex: 0 0 auto;
-      padding: 9px 16px;
+      padding: 8px 14px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       font-size: 12px;
       font-weight: 800;
       color: var(--text-muted);
@@ -234,47 +229,46 @@
       color: #050811;
       border-color: #ffffff;
       font-weight: 900;
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
     }
 
     /* Muscle Heatmap Card */
     .heatmap-card {
       background: linear-gradient(145deg, #0d1527 0%, #0a1020 100%);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
+      border-radius: 18px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      gap: 12px;
     }
 
     .heatmap-info h4 {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 900;
       color: #fff;
     }
 
     .heatmap-info p {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .heatmap-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 8px;
+      gap: 4px;
+      margin-top: 6px;
     }
 
     .heat-tag {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 8px;
+      padding: 2px 7px;
+      border-radius: 6px;
       background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.25);
       color: var(--primary-light);
@@ -284,114 +278,116 @@
     .exercise-card {
       background: linear-gradient(180deg, #0e172c 0%, #0a1120 100%);
       border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-      transition: border-color 0.2s;
+      border-radius: 20px;
+      padding: 14px 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
 
     .ex-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
+      gap: 8px;
     }
 
     .ex-title-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex: 1;
     }
 
     .ex-num {
-      width: 30px;
-      height: 30px;
-      border-radius: 10px;
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border-radius: 8px;
       background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 900;
       color: var(--primary-light);
     }
 
     .ex-name {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
       color: #fff;
-      line-height: 1.25;
-      letter-spacing: -0.2px;
+      line-height: 1.2;
     }
 
     .ex-target-badge {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: var(--primary-light);
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.2);
-      padding: 5px 10px;
-      border-radius: 10px;
+      padding: 4px 8px;
+      border-radius: 8px;
       white-space: nowrap;
     }
 
     .cardio-pulse-badge-inline {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: #fca5a5;
       background: rgba(244, 63, 94, 0.12);
       border: 1px solid rgba(244, 63, 94, 0.25);
-      padding: 6px 12px;
-      border-radius: 12px;
+      padding: 5px 10px;
+      border-radius: 10px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .ex-desc {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 14px;
+      line-height: 1.4;
+      margin-bottom: 12px;
     }
 
     .ex-tip-box {
       background: rgba(16, 185, 129, 0.08);
       border-left: 3px solid var(--accent);
-      border-radius: 6px 12px 12px 6px;
-      padding: 10px 14px;
-      font-size: 12px;
+      border-radius: 4px 10px 10px 4px;
+      padding: 8px 12px;
+      font-size: 11px;
       color: #a7f3d0;
-      line-height: 1.45;
-      margin-bottom: 16px;
+      line-height: 1.4;
+      margin-bottom: 14px;
     }
 
-    /* Sets Block */
+    /* Sets Block & Rows — Responsive & No Overflow */
     .sets-block {
       background: rgba(5, 8, 17, 0.7);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 6px 14px;
-      margin-bottom: 14px;
+      border-radius: 16px;
+      padding: 4px 8px;
+      margin-bottom: 12px;
     }
 
     .set-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 0;
+      gap: 4px;
+      padding: 8px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      transition: all 0.2s;
+      width: 100%;
     }
 
     .set-row.active-stage {
       background: rgba(56, 189, 248, 0.08);
-      border-radius: 10px;
-      padding-left: 8px;
-      padding-right: 8px;
+      border-radius: 8px;
+      padding-left: 6px;
+      padding-right: 6px;
     }
 
     .set-row:last-child {
@@ -399,24 +395,24 @@
     }
 
     .set-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       color: var(--text-muted);
-      line-height: 1.25;
-      width: 44px;
+      width: 32px;
+      min-width: 32px;
     }
 
     .weight-ctrl-box {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
     }
 
     .btn-step {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.06);
+      width: 24px;
+      height: 28px;
+      border-radius: 6px;
+      background: #111a33;
       border: 1px solid var(--border);
       color: #fff;
       font-size: 12px;
@@ -425,7 +421,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s;
     }
 
     .btn-step:active {
@@ -436,65 +431,63 @@
       background: #111a33;
       border: 1px solid var(--border);
       color: #fff;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
-      width: 54px;
+      width: 44px;
       text-align: center;
-      padding: 6px 2px;
-      border-radius: 10px;
+      padding: 5px 2px;
+      border-radius: 6px;
       outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .weight-input:focus, .reps-input:focus {
-      border-color: var(--primary-light);
     }
 
     .reps-input {
       background: #111a33;
       border: 1px solid var(--border);
       color: var(--primary-light);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 900;
-      width: 44px;
+      width: 36px;
       text-align: center;
-      padding: 6px 2px;
-      border-radius: 10px;
+      padding: 5px 2px;
+      border-radius: 6px;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     .orm-label {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
       color: var(--accent);
-      min-width: 46px;
+      min-width: 40px;
       text-align: center;
+      line-height: 1;
     }
 
     .btn-set {
       background: #152244;
       border: 1px solid var(--border);
       color: #e2e8f0;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 9px 12px;
-      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 900;
+      width: 36px;
+      height: 32px;
+      min-width: 36px;
+      border-radius: 8px;
       cursor: pointer;
-      min-width: 84px;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .btn-set:active {
-      transform: scale(0.95);
+      transform: scale(0.92);
     }
 
     .btn-set.done {
       background: var(--accent);
       color: #050811;
       border-color: transparent;
-      box-shadow: 0 4px 14px var(--accent-glow);
+      box-shadow: 0 2px 10px var(--accent-glow);
     }
 
     .btn-set.running {
@@ -504,9 +497,16 @@
       animation: pulseBtn 1.5s infinite;
     }
 
+    .btn-cardio-stage {
+      width: auto !important;
+      padding: 6px 12px !important;
+      font-size: 11px !important;
+      min-width: 64px !important;
+    }
+
     @keyframes pulseBtn {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(0.98); }
+      50% { opacity: 0.8; transform: scale(0.96); }
     }
 
     .ex-footer {
@@ -514,35 +514,30 @@
       justify-content: space-between;
       align-items: center;
       background: rgba(255, 255, 255, 0.02);
-      padding: 10px 14px;
-      border-radius: 14px;
+      padding: 8px 10px;
+      border-radius: 12px;
     }
 
     .timer-buttons {
       display: flex;
-      gap: 6px;
+      gap: 5px;
     }
 
     .btn-timer-chip {
       background: #111a33;
       border: 1px solid var(--border);
       color: #fff;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
-      padding: 6px 12px;
-      border-radius: 10px;
+      padding: 5px 10px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .btn-timer-chip:active {
-      background: var(--primary);
     }
 
     /* Finish Workout Bar */
     .finish-bar {
-      margin-top: 18px;
-      margin-bottom: 28px;
+      margin-top: 14px;
+      margin-bottom: 24px;
     }
 
     .btn-finish-workout {
@@ -550,39 +545,34 @@
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #fff;
       border: none;
-      padding: 16px;
-      border-radius: 20px;
-      font-size: 15px;
+      padding: 15px;
+      border-radius: 16px;
+      font-size: 14px;
       font-weight: 900;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      transition: all 0.2s;
-    }
-
-    .btn-finish-workout:active {
-      transform: scale(0.98);
+      gap: 8px;
     }
 
     /* Floating Dock Timer */
     .rest-dock {
       position: fixed;
-      bottom: calc(76px + var(--safe-bottom));
-      left: 14px;
-      right: 14px;
-      max-width: 492px;
+      bottom: calc(72px + var(--safe-bottom));
+      left: 12px;
+      right: 12px;
+      max-width: 496px;
       margin: 0 auto;
       background: rgba(13, 21, 39, 0.95);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       border: 1px solid var(--primary-light);
-      border-radius: 24px;
-      padding: 12px 18px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 25px var(--primary-glow);
+      border-radius: 20px;
+      padding: 10px 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-glow);
       z-index: 100;
       display: none;
       align-items: center;
@@ -594,14 +584,14 @@
     }
 
     .rest-timer-display {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 900;
       color: var(--primary-light);
       letter-spacing: -0.5px;
     }
 
     .rest-label {
-      font-size: 12px;
+      font-size: 11px;
       color: #e2e8f0;
       font-weight: 800;
     }
@@ -609,31 +599,31 @@
     .rest-controls {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .btn-dock-action {
       background: var(--card-active);
       border: 1px solid var(--border);
       color: #fff;
-      border-radius: 12px;
-      padding: 7px 12px;
-      font-size: 12px;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 11px;
       font-weight: 800;
       cursor: pointer;
     }
 
-    /* Bottom Glass Navbar */
+    /* Bottom Navbar */
     .navbar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(13, 21, 39, 0.9);
+      background: rgba(13, 21, 39, 0.92);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       border-top: 1px solid var(--border);
-      padding: 10px 10px calc(10px + var(--safe-bottom));
+      padding: 8px 10px calc(8px + var(--safe-bottom));
       display: flex;
       justify-content: space-around;
       z-index: 60;
@@ -648,15 +638,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       cursor: pointer;
       flex: 1;
-      transition: color 0.15s;
     }
 
     .nav-btn svg {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       stroke: currentColor;
       fill: none;
       stroke-width: 2.2;
@@ -669,16 +658,16 @@
     .library-item {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .lib-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: #fff;
     }
@@ -686,14 +675,14 @@
     .lib-cat {
       font-size: 11px;
       color: var(--text-muted);
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* Modal Result Dialog */
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -713,37 +702,36 @@
     .modal-box {
       background: var(--card);
       border: 1px solid var(--primary-light);
-      border-radius: 26px;
-      padding: 24px;
+      border-radius: 22px;
+      padding: 20px;
       width: 100%;
-      max-width: 440px;
-      box-shadow: 0 16px 50px rgba(0,0,0,0.85);
+      max-width: 420px;
     }
 
     .modal-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 900;
       color: #fff;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
     .stat-tile {
       background: rgba(5, 8, 17, 0.7);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
+      border-radius: 14px;
+      padding: 12px;
       text-align: center;
     }
 
     .stat-val {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
       color: var(--primary-light);
     }
@@ -753,13 +741,13 @@
       font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-top: 4px;
+      margin-top: 3px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top App Bar -->
+  <!-- Top App Bar with Safe Area -->
   <header>
     <div class="header-logo">
       <div class="logo-badge">⚡</div>
@@ -771,7 +759,7 @@
     <div class="header-actions">
       <div class="status-pill" id="voice-toggle-btn" onclick="toggleVoiceCoach()">
         <span id="voice-icon">🔊</span>
-        <span id="voice-text">Голос: ВКЛ</span>
+        <span id="voice-text">ВКЛ</span>
       </div>
       <div class="status-pill" id="wakelock-pill">
         <div class="status-dot" id="wakelock-dot"></div>
@@ -802,7 +790,7 @@
         <span>💥</span> Недели 9–12[cite: 5]
       </button>
       <button class="goal-btn" onclick="switchGoal('abs_program', this)">
-        <span>🍫</span> Пресс из PDF[cite: 3, 5]
+        <span>🍫</span> Пресс[cite: 5]
       </button>
     </div>
 
@@ -816,8 +804,7 @@
         <p id="heat-muscles-text">Плечи, Трапеции, Икры</p>
         <div class="heatmap-tags" id="heat-tags-box"></div>
       </div>
-      <!-- SVG Muscle Silhouette -->
-      <svg width="60" height="90" viewBox="0 0 60 90" id="body-heatmap-svg">
+      <svg width="55" height="85" viewBox="0 0 60 90" id="body-heatmap-svg">
         <circle cx="30" cy="10" r="7" fill="#1e293b"/>
         <path id="heat-shoulders" d="M18,18 Q30,16 42,18 L46,26 L14,26 Z" fill="#1e293b"/>
         <path id="heat-chest" d="M20,26 L40,26 L38,40 L22,40 Z" fill="#1e293b"/>
@@ -833,7 +820,7 @@
     <!-- Finish Workout Button -->
     <div class="finish-bar">
       <button class="btn-finish-workout" onclick="finishCurrentWorkout()">
-        <span>🏁</span> Завершить тренировку и рассчитать итоги
+        <span>🏁</span> Завершить тренировку
       </button>
     </div>
 
@@ -846,7 +833,7 @@
       <span id="lib-count" style="color: var(--primary-light);"></span>
     </div>
     <input type="text" id="lib-search" placeholder="Поиск упражнения..." 
-      style="width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; color: #fff; font-size: 13px; font-weight: 700; outline: none; margin-bottom: 14px;"
+      style="width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: #fff; font-size: 13px; font-weight: 700; outline: none; margin-bottom: 12px;"
       oninput="searchLibrary()">
     <div id="library-list"></div>
   </div>
@@ -858,11 +845,11 @@
       <span id="log-total-count" style="color: var(--accent);">0 сессий</span>
     </div>
 
-    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-      <button onclick="exportDataBackup()" style="flex: 1; background: var(--card); border: 1px solid var(--primary); color: #fff; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 12px; cursor: pointer;">
+    <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+      <button onclick="exportDataBackup()" style="flex: 1; background: var(--card); border: 1px solid var(--primary); color: #fff; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer;">
         📥 Экспорт (JSON)
       </button>
-      <label style="flex: 1; background: var(--card); border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 12px; text-align: center; cursor: pointer;">
+      <label style="flex: 1; background: var(--card); border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; text-align: center; cursor: pointer;">
         📤 Импорт
         <input type="file" id="import-file-input" style="display: none;" onchange="importDataBackup(event)">
       </label>
@@ -895,7 +882,7 @@
       <span>База</span>
     </button>
     <button class="nav-btn" onclick="switchNav('calendar', this)">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       <span>Журнал</span>
     </button>
   </div>
@@ -904,7 +891,7 @@
   <div class="modal-backdrop" id="summary-modal">
     <div class="modal-box">
       <div class="modal-title">🔥 Отличная тренировка!</div>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
         Все данные подсчитаны и сохранены в ваш дневник.
       </p>
 
@@ -928,10 +915,10 @@
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button onclick="copyWorkoutReport()" style="flex: 1; background: #152244; border: 1px solid var(--border); color: #fff; padding: 14px; border-radius: 16px; font-weight: 800; font-size: 12px; cursor: pointer;">
-          📋 Скопировать отчет
+        <button onclick="copyWorkoutReport()" style="flex: 1; background: #152244; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 11px; cursor: pointer;">
+          📋 Отчет
         </button>
-        <button onclick="closeSummaryModal()" style="flex: 1; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 16px; font-weight: 900; font-size: 12px; cursor: pointer;">
+        <button onclick="closeSummaryModal()" style="flex: 1; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 14px; font-weight: 900; font-size: 11px; cursor: pointer;">
           В журнал ➔
         </button>
       </div>
@@ -939,7 +926,7 @@
   </div>
 
   <script>
-    /* ==================== 1. WAKE LOCK API ==================== */
+    /* 1. WAKE LOCK */
     let wakeLockInstance = null;
     async function requestWakeLock() {
       try {
@@ -953,13 +940,11 @@
       } catch (err) {}
     }
     document.addEventListener('visibilitychange', () => {
-      if (wakeLockInstance !== null && document.visibilityState === 'visible') {
-        requestWakeLock();
-      }
+      if (wakeLockInstance !== null && document.visibilityState === 'visible') requestWakeLock();
     });
     requestWakeLock();
 
-    /* ==================== 2. ГОЛОСОВОЙ ТРЕНЕР ==================== */
+    /* 2. ГОЛОСОВОЙ ТРЕНЕР */
     let voiceCoachEnabled = true;
     function speakText(text) {
       if (!voiceCoachEnabled || !('speechSynthesis' in window)) return;
@@ -972,11 +957,11 @@
     function toggleVoiceCoach() {
       voiceCoachEnabled = !voiceCoachEnabled;
       document.getElementById('voice-icon').textContent = voiceCoachEnabled ? '🔊' : '🔇';
-      document.getElementById('voice-text').textContent = voiceCoachEnabled ? 'Голос: ВКЛ' : 'Голос: ВЫКЛ';
+      document.getElementById('voice-text').textContent = voiceCoachEnabled ? 'ВКЛ' : 'ВЫКЛ';
       if (voiceCoachEnabled) speakText('Голосовой тренер включен');
     }
 
-    /* ==================== 3. БАЗА УПРАЖНЕНИЙ ==================== */
+    /* 3. БАЗА УПРАЖНЕНИЙ */
     const DB = [
       {
         id: 'incline_walk_40',
@@ -984,8 +969,8 @@
         cat: 'cardio',
         target: 'Zone 2 Fat Burn',
         isCardioBox: true,
-        desc: '<strong>Почему ходьба, а не бег:</strong> при весе 92 кг бег создает свыше 300 кг ударной нагрузки на каждый шаг. Быстрая ходьба в гору сжигает столько же калорий без вреда для суставов[cite: 1, 11].',
-        tip: '💡 <strong>ПРАВИЛО:</strong> Не держитесь за поручни! Двигайте руками вдоль корпуса — это увеличивает расход калорий на 25%[cite: 11].',
+        desc: 'Быстрая ходьба в гору сжигает максимум калорий без вреда для коленных суставов и позвоночника[cite: 1, 11].',
+        tip: '💡 Не держитесь за поручни! Двигайте руками вдоль корпуса — это увеличивает расход энергии на 25%[cite: 11].',
         stages: [
           { num: '1.', name: 'Разгон', param: 'Уклон 2% • 4.5 км/ч', minutes: 5 },
           { num: '2.', name: 'Темп', param: 'Уклон 4% • 5.0 км/ч', minutes: 10 },
@@ -995,62 +980,62 @@
         ]
       },
       { id: 'db_seated_press', name: 'Жим гантелей сидя', cat: 'shoulders', target: 'Дельты', sets: 4, repsDef: 8, tip: 'Спина плотно прижата к спинке, мощный выжим вверх[cite: 3].' },
-      { id: 'upright_row', name: 'Тяга штанги к подбородку', cat: 'shoulders', target: 'Дельты и Трапеции', sets: 3, repsDef: 10, tip: 'Тяните локтями вверх, гриф скользит вдоль корпуса[cite: 3].' },
+      { id: 'upright_row', name: 'Тяга штанги к подбородку', cat: 'shoulders', target: 'Дельты/Трапеции', sets: 3, repsDef: 10, tip: 'Тяните локтями вверх, гриф скользит вдоль корпуса[cite: 3].' },
       { id: 'bent_lateral_raise', name: 'Разведение гантелей в наклоне', cat: 'shoulders', target: 'Задняя дельта', sets: 3, repsDef: 12, tip: 'Корпус наклонен, разведение за счет задней дельты[cite: 3].' },
-      { id: 'bent_lateral_100', name: 'Разведение гантелей в наклоне (100 повт.)', cat: 'shoulders', target: 'Задняя дельта', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений. Допускаются короткие паузы[cite: 3].' },
-      { id: 'arnold_press', name: 'Жим Арнольда', cat: 'shoulders', target: 'Дельты', sets: 3, repsDef: 10, tip: 'Разворот ладоней наружу при выжимании гантелей вверх[cite: 3].' },
-      { id: 'lateral_raise_100', name: 'Разведение гантелей через стороны (100 повт.)', cat: 'shoulders', target: 'Средняя дельта', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений. Пампинг с микро-паузами[cite: 3].' },
-      { id: 'standing_lateral_raise', name: 'Разведение гантелей через стороны стоя', cat: 'shoulders', target: 'Средняя дельта', sets: 4, repsDef: 12, tip: 'Локти слегка согнуты, подъем строго в стороны[cite: 5].' },
+      { id: 'bent_lateral_100', name: 'Разведение в наклоне (100 повт.)', cat: 'shoulders', target: 'Задняя дельта', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений с микро-паузами[cite: 3].' },
+      { id: 'arnold_press', name: 'Жим Арнольда', cat: 'shoulders', target: 'Дельты', sets: 3, repsDef: 10, tip: 'Разворот ладоней наружу при выжимании вверх[cite: 3].' },
+      { id: 'lateral_raise_100', name: 'Разведение через стороны (100 повт.)', cat: 'shoulders', target: 'Средняя дельта', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений[cite: 3].' },
+      { id: 'standing_lateral_raise', name: 'Разведение через стороны стоя', cat: 'shoulders', target: 'Средняя дельта', sets: 4, repsDef: 12, tip: 'Локти слегка согнуты, подъем строго в стороны[cite: 5].' },
       { id: 'front_raise', name: 'Подъем гантелей перед собой', cat: 'shoulders', target: 'Передняя дельта', sets: 4, repsDef: 12, tip: 'Подконтрольный подъем без раскачки тела[cite: 5].' },
-      { id: 'cable_lateral_raise', name: 'Отведение руки в блоке', cat: 'shoulders', target: 'Средняя дельта', sets: 3, repsDef: 15, tip: 'Постоянное натяжение троса, максимальная изоляция[cite: 5].' },
-      { id: 'military_press', name: 'Армейский жим', cat: 'shoulders', target: 'Плечи и кор', sets: 5, repsDef: 5, tip: 'Тяжелый жим штанги стоя. Пресс и ягодицы напряжены[cite: 3].' },
-      { id: 'shrugs_barbell_heavy', name: 'Шраги со штангой (большой вес)', cat: 'back', target: 'Трапеции', sets: 5, repsDef: 5, tip: 'Большой вес. Подъем плеч вверх к ушам[cite: 3].' },
+      { id: 'cable_lateral_raise', name: 'Отведение руки в блоке', cat: 'shoulders', target: 'Средняя дельта', sets: 3, repsDef: 15, tip: 'Постоянное натяжение троса, изоляция[cite: 5].' },
+      { id: 'military_press', name: 'Армейский жим', cat: 'shoulders', target: 'Плечи/Кор', sets: 5, repsDef: 5, tip: 'Тяжелый жим штанги стоя. Пресс и ягодицы напряжены[cite: 3].' },
+      { id: 'shrugs_barbell_heavy', name: 'Шраги со штангой (тяжелые)', cat: 'back', target: 'Трапеции', sets: 5, repsDef: 5, tip: 'Большой вес. Подъем плеч вверх к ушам[cite: 3].' },
       { id: 'shrugs_barbell', name: 'Шраги со штангой', cat: 'back', target: 'Трапеции', sets: 4, repsDef: 8, tip: 'Пауза в верхней точке на 1 секунду[cite: 3].' },
-      { id: 'shrugs_smith_behind', name: 'Шраги в Смите (гриф за спиной)', cat: 'back', target: 'Трапеции', sets: 3, repsDef: 12, tip: 'Гриф за спиной, лопатки сведены[cite: 3].' },
+      { id: 'shrugs_smith_behind', name: 'Шраги в Смите (гриф сзади)', cat: 'back', target: 'Трапеции', sets: 3, repsDef: 12, tip: 'Гриф за спиной, лопатки сведены[cite: 3].' },
 
-      { id: 'barbell_squats', name: 'Приседания со штангой', cat: 'legs', target: 'Квадрицепс / Ягодицы', sets: 4, repsDef: [15, 12, 8, 20], tip: 'Пирамида по схеме: 1x15, 1x12, 1x8, 1x20[cite: 3].' },
-      { id: 'romanian_deadlift', name: 'Румынская тяга', cat: 'legs', target: 'Бицепс бедра', sets: 4, repsDef: [12, 10, 8, 15], tip: 'Схема: 1x12, 1x10, 1x8, 1x15. Отводите таз назад[cite: 3].' },
-      { id: 'romanian_deadlift_5', name: 'Румынская тяга (5 подходов)', cat: 'legs', target: 'Бицепс бедра', sets: 5, repsDef: [10, 8, 6, 8, 10], tip: 'Пирамида: 10, 8, 6, 8, 10 повторений[cite: 5].' },
-      { id: 'leg_press', name: 'Жим ногами', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: 12, tip: 'Толкайте платформу пятками, не вставляйте колени в замок[cite: 4].' },
-      { id: 'calf_raises', name: 'Подъем на носки (в тренажере/со штангой)', cat: 'legs', target: 'Икры', sets: 3, repsDef: 10, tip: 'Полная амплитуда с растяжением в нижней точке[cite: 3].' },
-      { id: 'leg_curl_elevated', name: 'Сгибание ног с приподнятым торсом', cat: 'legs', target: 'Бицепс бедра', sets: 3, repsDef: 12, tip: 'Торс приподнят (как при отжиманиях)[cite: 4].' },
-      { id: 'leg_curl_100', name: 'Сгибание ног в тренажере (100 повт.)', cat: 'legs', target: 'Бицепс бедра', sets: 1, repsDef: 100, tip: 'Один подход на 100 повторений для максимального пампа[cite: 4].' },
-      { id: 'leg_extension', name: 'Разгибание ног в тренажере', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: 12, tip: 'Пиковое напряжение квадрицепса в верхней точке[cite: 5].' },
+      { id: 'barbell_squats', name: 'Приседания со штангой', cat: 'legs', target: 'Ноги', sets: 4, repsDef: [15, 12, 8, 20], tip: 'Пирамида: 1x15, 1x12, 1x8, 1x20[cite: 3].' },
+      { id: 'romanian_deadlift', name: 'Румынская тяга', cat: 'legs', target: 'Бицепс бедра', sets: 4, repsDef: [12, 10, 8, 15], tip: 'Схема: 1x12, 1x10, 1x8, 1x15[cite: 3].' },
+      { id: 'romanian_deadlift_5', name: 'Румынская тяга (5 сетов)', cat: 'legs', target: 'Бицепс бедра', sets: 5, repsDef: [10, 8, 6, 8, 10], tip: 'Пирамида: 10, 8, 6, 8, 10 повторений[cite: 5].' },
+      { id: 'leg_press', name: 'Жим ногами', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: 12, tip: 'Толкайте платформу пятками, не защелкивайте колени[cite: 4].' },
+      { id: 'calf_raises', name: 'Подъем на носки', cat: 'legs', target: 'Икры', sets: 3, repsDef: 10, tip: 'Полная амплитуда с растяжением внизу[cite: 3].' },
+      { id: 'leg_curl_elevated', name: 'Сгибание ног (торс приподнят)', cat: 'legs', target: 'Бицепс бедра', sets: 3, repsDef: 12, tip: 'Торс приподнят на локтях[cite: 4].' },
+      { id: 'leg_curl_100', name: 'Сгибание ног (100 повт.)', cat: 'legs', target: 'Бицепс бедра', sets: 1, repsDef: 100, tip: 'Один памп-подход на 100 повторений[cite: 4].' },
+      { id: 'leg_extension', name: 'Разгибание ног в тренажере', cat: 'legs', target: 'Квадрицепс', sets: 3, repsDef: 12, tip: 'Пиковое напряжение квадрицепса вверху[cite: 5].' },
 
-      { id: 'barbell_curl', name: 'Подъем штанги на бицепс', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: 8, tip: 'Локти прижаты к бокам, читинг исключен[cite: 3].' },
-      { id: 'barbell_curl_5x5', name: 'Подъем штанги на бицепс (5х5)', cat: 'arms', target: 'Бицепс', sets: 5, repsDef: 5, tip: 'Тяжелая силовая работа на 5 повторений[cite: 4].' },
-      { id: 'barbell_curl_reverse', name: 'Подъем штанги прямым хватом', cat: 'arms', target: 'Брахиалис / Предплечья', sets: 3, repsDef: 12, tip: 'Хват сверху (пронированный)[cite: 4].' },
-      { id: 'scott_curl', name: 'Подъем штанги на скамье Скотта', cat: 'arms', target: 'Низ бицепса', sets: 3, repsDef: 10, tip: 'Локти на подушке, изолированное сгибание[cite: 3].' },
-      { id: 'scott_curl_100', name: 'Подъем на скамье Скотта (100 повт.)', cat: 'arms', target: 'Бицепс', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений с микро-паузами[cite: 4].' },
-      { id: 'hammer_curl', name: 'Сгибание рук с гантелями («молот»)', cat: 'arms', target: 'Брахиалис / Бицепс', sets: 3, repsDef: 12, tip: 'Нейтральный хват гантелей[cite: 3].' },
-      { id: 'alternate_db_curl', name: 'Альтернативный подъем гантелей', cat: 'arms', target: 'Бицепс', sets: 4, repsDef: 10, tip: 'Поочередный подъем с разворотом ладони кверху[cite: 5].' },
+      { id: 'barbell_curl', name: 'Подъем штанги на бицепс', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: 8, tip: 'Локти прижаты, читинг исключен[cite: 3].' },
+      { id: 'barbell_curl_5x5', name: 'Подъем на бицепс (5х5)', cat: 'arms', target: 'Бицепс', sets: 5, repsDef: 5, tip: 'Тяжелая силовая работа на 5 повторений[cite: 4].' },
+      { id: 'barbell_curl_reverse', name: 'Подъем прямым хватом', cat: 'arms', target: 'Брахиалис', sets: 3, repsDef: 12, tip: 'Хват сверху (пронированный)[cite: 4].' },
+      { id: 'scott_curl', name: 'Подъем на скамье Скотта', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: 10, tip: 'Локти на подушке, изолированное сгибание[cite: 3].' },
+      { id: 'scott_curl_100', name: 'Скамья Скотта (100 повт.)', cat: 'arms', target: 'Бицепс', sets: 1, repsDef: 100, tip: '1 подход на 100 повторений с паузами[cite: 4].' },
+      { id: 'hammer_curl', name: 'Сгибание «молот»', cat: 'arms', target: 'Брахиалис', sets: 3, repsDef: 12, tip: 'Нейтральный хват гантелей[cite: 3].' },
+      { id: 'alternate_db_curl', name: 'Альтернативный подъем гантелей', cat: 'arms', target: 'Бицепс', sets: 4, repsDef: 10, tip: 'Поочередный подъем с супинацией кисти[cite: 5].' },
       { id: 'machine_arm_curl', name: 'Сгибание рук в тренажере', cat: 'arms', target: 'Бицепс', sets: 3, repsDef: 6, tip: 'Тяжелый изолированный подход[cite: 4].' },
       { id: 'french_press_db', name: 'Французский жим с гантелями', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 10, tip: 'Локти зафиксированы строго вверх[cite: 3].' },
       { id: 'french_press', name: 'Французский жим со штангой', cat: 'arms', target: 'Трицепс', sets: 5, repsDef: 8, tip: 'Опускание ко лбу или за голову[cite: 4].' },
-      { id: 'close_grip_bench_incline_rev', name: 'Жим узким хватом в обратном наклоне', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 8, tip: 'Отрицательный наклон скамьи, акцент на трицепс[cite: 3].' },
-      { id: 'close_grip_bench', name: 'Жим штанги узким хватом', cat: 'arms', target: 'Трицепс', sets: 4, repsDef: 10, tip: 'Хват на ширине плеч, локти ближе к корпусу[cite: 5].' },
-      { id: 'tricep_pushdown', name: 'Разгибание рук в вертикальном блоке', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 12, tip: 'Полное выпрямление рук внизу с фиксацией[cite: 3].' },
-      { id: 'dips', name: 'Отжимания на брусьях', cat: 'chest', target: 'Грудь / Трицепс', sets: 3, repsDef: 12, tip: 'Работа в каждом подходе до отказа[cite: 5].' },
+      { id: 'close_grip_bench_incline_rev', name: 'Жим узким хватом (обратный наклон)', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 8, tip: 'Скамья с отрицательным наклоном[cite: 3].' },
+      { id: 'close_grip_bench', name: 'Жим штанги узким хватом', cat: 'arms', target: 'Трицепс', sets: 4, repsDef: 10, tip: 'Хват на ширине плеч, локти ближе к телу[cite: 5].' },
+      { id: 'tricep_pushdown', name: 'Разгибание рук в блоке', cat: 'arms', target: 'Трицепс', sets: 3, repsDef: 12, tip: 'Полное выпрямление рук вниз[cite: 3].' },
+      { id: 'dips', name: 'Отжимания на брусьях', cat: 'chest', target: 'Грудь/Трицепс', sets: 3, repsDef: 12, tip: 'Работа в каждом подходе до отказа[cite: 5].' },
 
       { id: 'incline_barbell_press', name: 'Жим штанги на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: 8, tip: 'Наклон скамьи 30–45 градусов[cite: 3].' },
       { id: 'incline_db_press', name: 'Жим гантелей на наклонной скамье', cat: 'chest', target: 'Верх груди', sets: 3, repsDef: 10, tip: 'Глубокая растяжка мышц груди внизу[cite: 4].' },
-      { id: 'flat_db_press', name: 'Жим гантелей лежа', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 10, tip: 'Классический жим гантелей на горизонтальной скамье[cite: 3].' },
+      { id: 'flat_db_press', name: 'Жим гантелей лежа', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 10, tip: 'Классический жим гантелей лежа[cite: 3].' },
       { id: 'decline_barbell_press', name: 'Жим штанги в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: 12, tip: 'Скамья с отрицательным наклоном[cite: 3].' },
-      { id: 'decline_db_press', name: 'Жим гантелей в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: 10, tip: 'Мощная прокачка нижней линии грудных[cite: 5].' },
-      { id: 'crossover_incline', name: 'Сведение в кроссовере на наклонной скамье', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 12, tip: 'Сведение тросов перед собой на наклонной скамье[cite: 4].' },
+      { id: 'decline_db_press', name: 'Жим гантелей в обратном наклоне', cat: 'chest', target: 'Низ груди', sets: 3, repsDef: 10, tip: 'Прокачка нижней линии грудных[cite: 5].' },
+      { id: 'crossover_incline', name: 'Сведение в кроссовере на наклонной', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 12, tip: 'Сведение тросов на наклонной скамье[cite: 4].' },
       { id: 'crossover_standing', name: 'Сведение рук в кроссовере стоя', cat: 'chest', target: 'Грудь', sets: 3, repsDef: 12, tip: 'Пиковое сжатие груди в конечной точке[cite: 5].' },
-      { id: 'bench_press_100', name: 'Жим лежа (100 повторений)', cat: 'chest', target: 'Грудь', sets: 1, repsDef: 100, tip: '1 памп-подход на 100 повторений с паузами[cite: 4].' },
-      { id: 'bent_over_row', name: 'Тяга штанги в наклоне', cat: 'back', target: 'Широчайшие и середина спины', sets: 3, repsDef: 8, tip: 'Тяга к поясу за счет сведения лопаток[cite: 3].' },
+      { id: 'bench_press_100', name: 'Жим лежа (100 повторений)', cat: 'chest', target: 'Грудь', sets: 1, repsDef: 100, tip: '1 памп-подход на 100 повторений[cite: 4].' },
+      { id: 'bent_over_row', name: 'Тяга штанги в наклоне', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: 8, tip: 'Тяга к поясу за счет сведения лопаток[cite: 3].' },
       { id: 'lat_pulldown', name: 'Верхняя тяга к груди', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: 10, tip: 'Тяните локти вниз и назад к грудине[cite: 3].' },
       { id: 'seated_cable_row', name: 'Тяга горизонтального блока', cat: 'back', target: 'Толщина спины', sets: 3, repsDef: 12, tip: 'Тяга рукояти к низу живота[cite: 3].' },
       { id: 'pullups_weighted', name: 'Подтягивания широким хватом с весом', cat: 'back', target: 'Широчайшие', sets: 3, repsDef: 8, tip: 'С дополнительным отягощением на поясе[cite: 4].' },
 
-      { id: 'cable_crunch', name: 'Скручивания в верхнем блоке (стоя/на коленях)', cat: 'abs', target: 'Пресс', sets: 4, repsDef: 12, tip: 'Тяните блок за счет округления спины и пресса[cite: 5].' },
-      { id: 'hanging_leg_raise', name: 'Подъем ног к перекладине (или лежа)', cat: 'abs', target: 'Низ живота', sets: 3, repsDef: 15, tip: 'Подъем ног до касания турника либо до максимума[cite: 5].' },
-      { id: 'fitball_crunch', name: 'Скручивания на фитболе', cat: 'abs', target: 'Пресс', sets: 3, repsDef: 15, tip: 'Большая амплитуда растяжения пресса на мяче[cite: 5].' }
+      { id: 'cable_crunch', name: 'Скручивания в блоке (молитва)', cat: 'abs', target: 'Пресс', sets: 4, repsDef: 12, tip: 'Скручивайтесь за счет сокращения пресса[cite: 5].' },
+      { id: 'hanging_leg_raise', name: 'Подъем ног к перекладине', cat: 'abs', target: 'Низ живота', sets: 3, repsDef: 15, tip: 'Подъем ног до касания перекладины или до отказа[cite: 5].' },
+      { id: 'fitball_crunch', name: 'Скручивания на фитболе', cat: 'abs', target: 'Пресс', sets: 3, repsDef: 15, tip: 'Большая амплитуда растяжения на мяче[cite: 5].' }
     ];
 
-    /* ==================== 4. ПРОГРАММЫ ==================== */
+    /* 4. ПРОГРАММЫ */
     const PROGRAMS = {
       phase1: {
         title: 'Недели 1–4',
@@ -1087,7 +1072,7 @@
       }
     };
 
-    /* ==================== 5. ХРАНИЛИЩЕ И СОСТОЯНИЕ ==================== */
+    /* 5. ХРАНИЛИЩЕ */
     let appState = {
       goal: 'phase1',
       dayIdx: 0,
@@ -1113,7 +1098,7 @@
       } catch (e) {}
     }
 
-    /* ==================== 6. РЕНДЕРИНГ ==================== */
+    /* 6. РЕНДЕРИНГ */
     function switchGoal(goalKey, btn) {
       appState.goal = goalKey;
       appState.dayIdx = 0;
@@ -1162,10 +1147,10 @@
       const muscleNames = {
         shoulders: 'Дельты',
         chest: 'Грудные',
-        arms: 'Руки (Бицепс/Трицепс)',
-        back: 'Спина / Трапеции',
-        abs: 'Пресс и кор',
-        legs: 'Бедра и икры'
+        arms: 'Руки',
+        back: 'Спина/Трапеции',
+        abs: 'Пресс',
+        legs: 'Ноги'
       };
 
       const activeMuscles = day.muscles || ['chest'];
@@ -1218,7 +1203,7 @@
         const w = parseFloat(wEl.value) || 0;
         const r = parseInt(rEl.value) || 0;
         const orm = calcEpley1RM(w, r);
-        ormEl.textContent = orm > 0 ? `1ПМ: ${orm}к` : '';
+        ormEl.textContent = orm > 0 ? `${orm}к` : '';
 
         appState.savedWeights[`${exId}_s${setIdx}`] = w;
         persistData();
@@ -1243,13 +1228,13 @@
           ex.stages.forEach((st, sIdx) => {
             stagesHtml += `
               <div class="set-row" id="cardio-stage-row-${sIdx}">
-                <div style="display: flex; gap: 8px; align-items: center;">
+                <div style="display: flex; gap: 6px; align-items: center;">
                   <span class="set-label">${st.num}<br>${st.name}</span>
-                  <span style="font-size: 13px; font-weight: 800; color: #fff; margin-left: 6px;">${st.param}</span>
+                  <span style="font-size: 12px; font-weight: 800; color: #fff;">${st.param}</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <span class="reps-label" id="cardio-time-label-${sIdx}" style="font-size: 12px; font-weight: 700; color: var(--primary-light); min-width: 55px; text-align: center;">${st.minutes} мин</span>
-                  <button class="btn-set" id="cardio-btn-${sIdx}" onclick="startCardioStage(${sIdx}, ${st.minutes}, '${st.name}', '${st.param}')">Старт</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 11px; font-weight: 800; color: var(--primary-light);">${st.minutes}м</span>
+                  <button class="btn-set btn-cardio-stage" id="cardio-btn-${sIdx}" onclick="startCardioStage(${sIdx}, ${st.minutes}, '${st.name}', '${st.param}')">Старт</button>
                 </div>
               </div>
             `;
@@ -1258,7 +1243,7 @@
           card.innerHTML = `
             <div class="ex-header">
               <div class="ex-title-wrap">
-                <span style="font-size: 20px;">🚶</span>
+                <span style="font-size: 18px;">🚶</span>
                 <div class="ex-name">${ex.name}</div>
               </div>
               <div class="ex-target-badge">${ex.target}</div>
@@ -1274,11 +1259,11 @@
             <div class="sets-block">${stagesHtml}</div>
 
             <div class="ex-footer">
-              <span style="font-size: 11px; font-weight: 800; color: var(--text-muted);">Быстрый таймер:</span>
+              <span style="font-size: 10px; font-weight: 800; color: var(--text-muted);">Быстрый таймер:</span>
               <div class="timer-buttons">
-                <button class="btn-timer-chip" onclick="startCountdown(300, '5 мин')">5 мин</button>
-                <button class="btn-timer-chip" onclick="startCountdown(600, '10 мин')">10 мин</button>
-                <button class="btn-timer-chip" onclick="startCountdown(900, '15 мин')">15 мин</button>
+                <button class="btn-timer-chip" onclick="startCountdown(300, '5 мин')">5м</button>
+                <button class="btn-timer-chip" onclick="startCountdown(600, '10 мин')">10м</button>
+                <button class="btn-timer-chip" onclick="startCountdown(900, '15 мин')">15м</button>
               </div>
             </div>
           `;
@@ -1303,13 +1288,12 @@
                     oninput="onWeightOrRepsChange('${ex.id}', ${s})">
                   <button class="btn-step" onclick="adjustWeight('${ex.id}', ${s}, 2.5)">+</button>
                 </div>
-                <div style="display: flex; align-items: center; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 2px;">
                   <input type="number" class="reps-input" id="r-inp-${ex.id}-${s}" value="${defReps}" 
                     oninput="onWeightOrRepsChange('${ex.id}', ${s})">
-                  <span style="font-size: 11px; color: var(--text-muted);">повт</span>
                 </div>
-                <span class="orm-label" id="orm-${ex.id}-${s}">1ПМ: ${init1RM}к</span>
-                <button class="btn-set" onclick="checkSet(this, '${ex.name}', '${ex.id}', ${s})">Выполнить</button>
+                <span class="orm-label" id="orm-${ex.id}-${s}">${init1RM}к</span>
+                <button class="btn-set" onclick="checkSet(this, '${ex.name}', '${ex.id}', ${s})">✓</button>
               </div>
             `;
           }
@@ -1339,7 +1323,7 @@
       updateHeatmapVisuals();
     }
 
-    /* ==================== 7. ИНТЕРАКТИВНЫЙ ТАЙМЕР И ЭТАПЫ ==================== */
+    /* 7. ТАЙМЕРЫ И ЭТАПЫ */
     let activeCardioIdx = null;
 
     function startCardioStage(stageIdx, minutes, stageName, stageParam) {
@@ -1352,7 +1336,7 @@
       }
 
       document.querySelectorAll('.set-row').forEach(r => r.classList.remove('active-stage'));
-      document.querySelectorAll('.btn-set').forEach(b => {
+      document.querySelectorAll('.btn-cardio-stage').forEach(b => {
         if (b.classList.contains('running')) {
           b.classList.remove('running');
           b.textContent = 'Старт';
@@ -1378,14 +1362,14 @@
       if (btn) {
         btn.classList.remove('running');
         btn.classList.add('done');
-        btn.textContent = '✓ Готово';
+        btn.textContent = '✓';
       }
       if (row) row.classList.remove('active-stage');
 
       if (!manual && stageIdx < 4) {
         const nextRow = document.getElementById(`cardio-stage-row-${stageIdx + 1}`);
         if (nextRow) nextRow.classList.add('active-stage');
-        speakText('Этап завершен. Переходите к следующему уровню нагрузки.');
+        speakText('Этап завершен. Переходите к следующему уровню.');
       }
       activeCardioIdx = null;
       updateProgressBar();
@@ -1393,12 +1377,9 @@
 
     function checkSet(btn, exName, exId, setNum) {
       btn.classList.toggle('done');
-      const isDone = btn.classList.contains('done');
-      btn.textContent = isDone ? '✓ Готово' : 'Выполнить';
-
       updateProgressBar();
 
-      if (isDone) {
+      if (btn.classList.contains('done')) {
         const rEl = document.getElementById(`r-inp-${exId}-${setNum}`);
         const reps = rEl ? parseInt(rEl.value) : 10;
         if (reps >= 12) {
@@ -1429,232 +1410,9 @@
         mainSeconds--;
         digits.textContent = formatTimer(mainSeconds);
 
-        if (mainSeconds === 3) {
-          speakText('Три, два, один, в бой!');
-        }
+        if (mainSeconds === 3) speakText('Три, два, один, в бой!');
 
         if (mainSeconds <= 0) {
           clearInterval(mainTimerId);
           playSignalGong();
-          if (navigator.vibrate) navigator.vibrate([300, 150, 300]);
-          digits.textContent = 'В БОЙ!';
-
-          if (onTimerComplete) {
-            onTimerComplete();
-            onTimerComplete = null;
-          }
-
-          setTimeout(closeRestTimer, 2200);
-        }
-      }, 1000);
-    }
-
-    function formatTimer(s) {
-      const m = Math.floor(s / 60);
-      const rem = s % 60;
-      return `${m < 10 ? '0' : ''}${m}:${rem < 10 ? '0' : ''}${rem}`;
-    }
-
-    function adjustRest(delta) {
-      mainSeconds = Math.max(5, mainSeconds + delta);
-      document.getElementById('dock-timer-digits').textContent = formatTimer(mainSeconds);
-    }
-
-    function closeRestTimer() {
-      clearInterval(mainTimerId);
-      document.getElementById('rest-dock').classList.remove('active');
-    }
-
-    function playSignalGong() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        if (ctx.state === 'suspended') ctx.resume();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-        gain.gain.setValueAtTime(0.35, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-        osc.start();
-        osc.stop(ctx.currentTime + 1.2);
-      } catch (e) {}
-    }
-
-    /* ==================== 8. ЗАВЕРШЕНИЕ ТРЕНИРОВКИ ==================== */
-    let lastSummaryText = '';
-
-    function finishCurrentWorkout() {
-      const elapsedMins = Math.max(1, Math.round((Date.now() - appState.sessionStartTime) / 60000));
-      let totalTonnage = 0;
-      let completedSets = 0;
-
-      document.querySelectorAll('.exercise-card').forEach(card => {
-        const sets = card.querySelectorAll('.set-row');
-        sets.forEach(row => {
-          const btn = row.querySelector('.btn-set');
-          if (btn && btn.classList.contains('done')) {
-            completedSets++;
-            const wInp = row.querySelector('.weight-input');
-            const rInp = row.querySelector('.reps-input');
-            if (wInp && rInp) {
-              const w = parseFloat(wInp.value) || 0;
-              const r = parseInt(rInp.value) || 0;
-              totalTonnage += (w * r);
-            }
-          }
-        });
-      });
-
-      const burnedCals = Math.round(elapsedMins * 8.5 + completedSets * 7);
-
-      document.getElementById('res-time-val').textContent = `${elapsedMins} мин`;
-      document.getElementById('res-tonnage-val').textContent = `${totalTonnage.toLocaleString()} кг`;
-      document.getElementById('res-sets-val').textContent = completedSets;
-      document.getElementById('res-cals-val').textContent = `${burnedCals} ккал`;
-
-      const prog = PROGRAMS[appState.goal];
-      const day = prog.days[appState.dayIdx] || prog.days[0];
-      const nowStr = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-      
-      const newEntry = {
-        date: nowStr,
-        title: `${prog.title} • ${day.title}`,
-        tonnage: totalTonnage,
-        sets: completedSets,
-        cals: burnedCals
-      };
-      appState.workoutLogs.unshift(newEntry);
-      persistData();
-      renderLogs();
-
-      lastSummaryText = `⚡ Тренировка завершена (${nowStr})\n📋 ${newEntry.title}\n⏱️ Время: ${elapsedMins} мин\n🏋️ Тоннаж: ${totalTonnage} кг\n🔥 Сожжено: ${burnedCals} ккал\n✅ Выполнено сетов: ${completedSets}`;
-
-      speakText(`Тренировка завершена! Поднятый тоннаж: ${totalTonnage} килограмм. Сожжено ${burnedCals} калорий.`);
-      document.getElementById('summary-modal').classList.add('active');
-    }
-
-    function copyWorkoutReport() {
-      if (navigator.clipboard && lastSummaryText) {
-        navigator.clipboard.writeText(lastSummaryText).then(() => {
-          alert('📋 Отчет скопирован в буфер обмена!');
-        });
-      }
-    }
-
-    function closeSummaryModal() {
-      document.getElementById('summary-modal').classList.remove('active');
-      switchNav('calendar', document.querySelectorAll('.nav-btn')[2]);
-    }
-
-    /* ==================== 9. ЖУРНАЛ И БЭКАПЫ ==================== */
-    function renderLogs() {
-      const feed = document.getElementById('workout-log-feed');
-      if (!feed) return;
-      feed.innerHTML = '';
-      document.getElementById('log-total-count').textContent = `${appState.workoutLogs.length} сессий`;
-
-      if (appState.workoutLogs.length === 0) {
-        feed.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 30px 10px; font-size: 13px;">Журнал пуст. Завершите первую тренировку!</div>`;
-        return;
-      }
-
-      appState.workoutLogs.forEach(lg => {
-        const item = document.createElement('div');
-        item.className = 'library-item';
-        item.innerHTML = `
-          <div>
-            <div class="lib-title">${lg.title}</div>
-            <div class="lib-cat">${lg.date} • Тоннаж: <strong>${lg.tonnage.toLocaleString()} кг</strong> • ${lg.sets} сетов • ${lg.cals} ккал</div>
-          </div>
-          <span style="color: var(--accent); font-weight: 800; font-size: 11px;">✓ Сделано</span>
-        `;
-        feed.appendChild(item);
-      });
-    }
-
-    function exportDataBackup() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `trainer_backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function importDataBackup(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          appState = Object.assign(appState, parsed);
-          persistData();
-          renderLogs();
-          renderWorkoutExercises();
-          alert('✅ Данные успешно восстановлены из резервной копии!');
-        } catch (err) {
-          alert('Ошибка чтения файла бэкапа');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    /* ==================== 10. БАЗА УПРАЖНЕНИЙ ==================== */
-    function renderLibrary() {
-      const list = document.getElementById('library-list');
-      list.innerHTML = '';
-      document.getElementById('lib-count').textContent = `${DB.length} упр.`;
-
-      DB.forEach(ex => {
-        const item = document.createElement('div');
-        item.className = 'library-item';
-        item.innerHTML = `
-          <div>
-            <div class="lib-title">${ex.name}</div>
-            <div class="lib-cat">${ex.target}</div>
-          </div>
-        `;
-        list.appendChild(item);
-      });
-    }
-
-    function searchLibrary() {
-      const q = document.getElementById('lib-search').value.toLowerCase().trim();
-      const list = document.getElementById('library-list');
-      list.innerHTML = '';
-
-      const filtered = DB.filter(e => e.name.toLowerCase().includes(q) || e.target.toLowerCase().includes(q));
-      filtered.forEach(ex => {
-        const item = document.createElement('div');
-        item.className = 'library-item';
-        item.innerHTML = `
-          <div>
-            <div class="lib-title">${ex.name}</div>
-            <div class="lib-cat">${ex.target}</div>
-          </div>
-        `;
-        list.appendChild(item);
-      });
-    }
-
-    function switchNav(viewId, btn) {
-      document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('view-' + viewId).classList.remove('hidden');
-      if (btn) btn.classList.add('active');
-      if (viewId === 'library') renderLibrary();
-      if (viewId === 'calendar') renderLogs();
-    }
-
-    window.onload = () => {
-      loadSavedData();
-      renderDayTabs();
-      renderWorkoutExercises();
-      updateProgressBar();
-    };
-  </script>
-</body>
-</html>
+          if (navigator.vibrate) navigator
