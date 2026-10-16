@@ -142,52 +142,33 @@
 
 <script>
 /* ---------- Program ---------- */
-const PROGRAM = {
-  6:{id:'upperA',name:'Upper A',focus:'Strength',type:'lift',ex:[
-    {id:'bench_press',name:'Bench Press',sets:4,target:6,m:'load'},
-    {id:'incline_db_press',name:'Incline Dumbbell Press',sets:3,target:8,m:'load'},
-    {id:'lat_pulldown',name:'Lat Pulldown',sets:4,target:8,m:'load'},
-    {id:'seated_cable_row',name:'Seated Cable Row',sets:3,target:8,m:'load'},
-    {id:'db_lat_raise',name:'Dumbbell Lateral Raise',sets:3,target:12,m:'load'},
-    {id:'tricep_pushdown',name:'Tricep Pushdown',sets:3,target:12,m:'load'},
-    {id:'db_curl',name:'Dumbbell Curl',sets:3,target:12,m:'load'},
-  ]},
-  0:{id:'lowerA',name:'Lower A',focus:'Strength',type:'lift',ex:[
-    {id:'back_squat',name:'Back Squat',sets:4,target:6,m:'load'},
-    {id:'rdl',name:'Romanian Deadlift',sets:4,target:8,m:'load'},
-    {id:'walking_lunges',name:'Walking Lunges',sets:3,target:10,m:'reps',note:'/leg'},
-    {id:'leg_curl',name:'Leg Curl',sets:3,target:12,m:'load'},
-    {id:'standing_calf_raise',name:'Standing Calf Raise',sets:4,target:15,m:'load'},
-    {id:'hanging_knee_raise',name:'Hanging Knee Raise',sets:3,target:12,m:'reps'},
-    {id:'plank',name:'Plank',sets:3,target:45,m:'time'},
-  ]},
-  1:{id:'recoveryA',name:'Recovery Walk',type:'activity',note:'30–45 min walk · 8,000–10,000 steps'},
-  2:{id:'upperB',name:'Upper B',focus:'Hypertrophy',type:'lift',ex:[
-    {id:'incline_db_press',name:'Incline Dumbbell Press',sets:4,target:10,m:'load'},
-    {id:'machine_chest_press',name:'Machine Chest Press',sets:3,target:12,m:'load'},
-    {id:'chest_supported_row',name:'Chest-Supported Row',sets:4,target:10,m:'load'},
-    {id:'wide_lat_pulldown',name:'Wide-Grip Lat Pulldown',sets:3,target:12,m:'load'},
-    {id:'db_lat_raise',name:'Dumbbell Lateral Raise',sets:4,target:15,m:'load'},
-    {id:'rope_tricep_pushdown',name:'Rope Tricep Pushdown',sets:3,target:15,m:'load'},
-    {id:'hammer_curl',name:'Hammer Curl',sets:3,target:15,m:'load'},
-  ]},
-  3:{id:'lowerB',name:'Lower B',focus:'Hypertrophy',type:'lift',ex:[
-    {id:'deadlift',name:'Deadlift',sets:3,target:5,m:'load'},
-    {id:'leg_press',name:'Leg Press',sets:4,target:10,m:'load'},
-    {id:'bulgarian_split_squat',name:'Bulgarian Split Squat',sets:3,target:10,m:'reps',note:'/leg'},
-    {id:'leg_extension',name:'Leg Extension',sets:3,target:15,m:'load'},
-    {id:'seated_calf_raise',name:'Seated Calf Raise',sets:4,target:15,m:'load'},
-    {id:'cable_crunch',name:'Cable Crunch',sets:3,target:15,m:'load'},
-    {id:'ab_wheel',name:'Ab Wheel Rollout',sets:3,target:10,m:'reps'},
-  ]},
-  4:{id:'cardio',name:'Cardio & Recovery',type:'activity',note:'45–60 min brisk walk · cycle · swim (moderate)'},
-  5:{id:'rest',name:'Full Rest',type:'rest',note:'No gym today. Recover.'},
-};
+const e=(id,name,sets,target,m='load',note='')=>({id,name,sets,target,m,note});
+const REST={id:'rest',name:'Отдых',type:'rest',note:'Восстановление. Следующая тренировка - по плану.'};
+const PHASES = [
+  {name:'Недели 1-4',days:{
+    1:{id:'day1',name:'День 1 · Плечи / трапеции',focus:'Недели 1-4',type:'lift',ex:[e('seated_db_press','Жим гантелей сидя',4,'6-8'),e('upright_row','Тяга штанги к подбородку',3,'10-12'),e('rear_delt_fly','Разведение гантелей через стороны в наклоне',3,'10-12'),e('arnold_press','Жим Арнольда',3,'8-10'),e('lateral_raise','Разведение гантелей через стороны',1,100),e('barbell_shrug','Шраги со штангой',5,5)]},
+    2:{id:'day2',name:'День 2 · Ноги / руки',focus:'Недели 1-4',type:'lift',ex:[e('back_squat','Приседания со штангой',4,'15/12/8/20'),e('rdl','Румынская тяга',4,'12/10/8/15'),e('barbell_curl','Подъем штанги на бицепс',3,'6-8'),e('reverse_close_grip_bench','Жим лежа узким хватом в обратном наклоне',3,'6-8'),e('preacher_curl','Подъем штанги на бицепс на скамье Скотта',3,'10-12'),e('db_french_press','Французский жим с гантелями',3,'10-12'),e('hammer_curl','Сгибание рук с гантелями (молот)',3,'12-15'),e('tricep_pushdown','Разгибание рук в вертикальном блоке',3,'12-15')]},
+    4:{id:'day3',name:'День 3 · Трапеции / плечи',focus:'Недели 1-4',type:'lift',ex:[e('barbell_shrug','Шраги со штангой',4,'6-8'),e('smith_shrug','Шраги в машине Смита (гриф за спиной)',3,'10-12'),e('upright_row','Тяга штанги к подбородку',3,'10-12'),e('calf_raise','Подъем на носки',3,'8-10'),e('rear_delt_fly','Разведение гантелей через стороны в наклоне',1,100),e('military_press','Армейский жим',5,5)]},
+    6:{id:'day4',name:'День 4 · Грудь / спина',focus:'Недели 1-4',type:'lift',ex:[e('incline_barbell_press','Жим штанги на наклонной скамье',3,'6-8'),e('barbell_row','Тяга штанги в наклоне',3,'6-8'),e('flat_db_press','Жим гантелей лежа',3,'10-12'),e('lat_pulldown','Верхняя тяга к груди',3,'10-12'),e('decline_barbell_press','Жим штанги в обратном наклоне',3,'12-15'),e('seated_cable_row','Тяга горизонтального блока',3,'12-15')]}
+  }},
+  {name:'Недели 5-8',days:{
+    1:{id:'day1',name:'День 1 · Грудь / бицепс',focus:'Недели 5-8',type:'lift',ex:[e('incline_barbell_press','Жим штанги на наклонной скамье',3,'6-8'),e('incline_db_press','Жим гантелей на наклонной скамье',3,'10-12'),e('incline_cable_fly','Сведение рук в кроссовере на наклонной скамье',3,'10-12'),e('bench_press','Жим лежа',1,100),e('barbell_curl','Подъем штанги на бицепс',5,5)]},
+    2:{id:'day2',name:'День 2 · Бедра',focus:'Недели 5-8',type:'lift',ex:[e('back_squat','Приседания со штангой',4,'15/12/8/20'),e('rdl','Румынская тяга',4,'12/10/8/15'),e('leg_press','Жим ногами',3,'10-12'),e('elevated_leg_curl','Сгибание ног в тренажере с приподнятым торсом',3,'10-12'),e('leg_curl','Сгибание ног в тренажере',1,100)]},
+    4:{id:'day3',name:'День 3 · Бицепс / грудь',focus:'Недели 5-8',type:'lift',ex:[e('barbell_curl','Подъем штанги на бицепс',4,'6-8'),e('reverse_barbell_curl','Подъем штанги на бицепс прямым хватом',3,'10-12'),e('hammer_curl','Сгибание рук с гантелями (молот)',3,'12-15'),e('machine_curl','Сгибание рук в тренажере',3,'5-6'),e('preacher_curl','Подъем штанги на бицепс на скамье Скотта',1,100),e('incline_db_press','Жим гантелей на наклонной скамье',5,5)]},
+    6:{id:'day4',name:'День 4 · Спина / трицепс',focus:'Недели 5-8',type:'lift',ex:[e('barbell_row','Тяга штанги в наклоне',3,'6-8'),e('weighted_pull_up','Подтягивания широким хватом с отягощением',3,'6-8'),e('lat_pulldown','Верхняя тяга к груди',3,'10-12'),e('french_press','Французский жим',5,'6-8'),e('tricep_pushdown','Разгибание рук в вертикальном блоке',5,'12-15')]}
+  }},
+  {name:'Недели 9-12',days:{
+    1:{id:'day1',name:'День 1 · Бедра',focus:'Недели 9-12',type:'lift',ex:[e('back_squat','Приседания со штангой',4,'15/12/8/20'),e('leg_press','Жим ногами',3,'10-12'),e('leg_extension','Разгибание ног в тренажере',3,'10-12'),e('rdl','Румынская тяга',5,'10/8/6/8/10')]},
+    2:{id:'day2',name:'День 2 · Плечи / спина',focus:'Недели 9-12',type:'lift',ex:[e('upright_row','Тяга штанги к подбородку',5,'10/8/6/8/10'),e('rear_delt_fly','Разведение гантелей через стороны в наклоне',3,'10-12'),e('cable_abduction','Отведение руки в блоке',3,'15-20'),e('barbell_row','Тяга штанги в наклоне',5,'10/8/6/8/10'),e('lat_pulldown','Верхняя тяга к груди',5,'10/8/6/8/10'),e('smith_shrug','Шраги в машине Смита (гриф за спиной)',3,'12-15')]},
+    4:{id:'day3',name:'День 3 · Бицепс / трицепс',focus:'Недели 9-12',type:'lift',ex:[e('preacher_curl','Подъем штанги на бицепс на скамье Скотта',4,'8-10'),e('alternate_db_curl','Альтернативный подъем гантелей',4,'10-12'),e('reverse_barbell_curl','Подъем штанги на бицепс прямым хватом',4,'12-15'),e('close_grip_bench','Жим штанги узким хватом',4,'8-10'),e('french_press','Французский жим',4,'10-12'),e('tricep_pushdown','Разгибание рук в вертикальном блоке',4,'12-15')]},
+    6:{id:'day4',name:'День 4 · Грудь / плечи',focus:'Недели 9-12',type:'lift',ex:[e('decline_db_press','Жим гантелей в обратном наклоне',3,'8-10'),e('dips','Отжимания на брусьях',3,'Max'),e('cable_fly','Сведение рук в кроссовере',3,'12-15'),e('seated_db_press','Жим гантелей сидя',4,'8-10'),e('lateral_raise','Разведение гантелей через стороны стоя',4,'10-12'),e('front_raise','Подъем гантелей перед собой',4,'12-15')]}
+  }}
+];
+const ABS=[e('cable_crunch','Скручивания в верхнем блоке',3,'12-15'),e('hanging_leg_raise','Подъем ног к перекладине или лежа',3,'Max'),e('fitball_crunch','Скручивания на фитболе',3,'Max')];
 const exName = {};
-Object.values(PROGRAM).forEach(d=>(d.ex||[]).forEach(e=>{exName[e.id]=exName[e.id]||{name:e.name,m:e.m}}));
-const PROG_BY_ID = {};
-const WEEKDAY_OF_ID = {};
-Object.keys(PROGRAM).forEach(k=>{PROG_BY_ID[PROGRAM[k].id]=PROGRAM[k];WEEKDAY_OF_ID[PROGRAM[k].id]=+k});
+PHASES.forEach(phase=>Object.values(phase.days).forEach(d=>d.ex.forEach(x=>{exName[x.id]=exName[x.id]||{name:x.name,m:x.m}})));
+ABS.forEach(x=>{exName[x.id]={name:x.name,m:x.m}});
+const WEEKDAY_OF_ID={day1:1,day2:2,day3:4,day4:6,rest:0};
 
 /* ---------- State ---------- */
 const KEY='gymtracker.v1';
@@ -244,12 +225,22 @@ function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'
 function parse(s){const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)}
 function addDays(s,n){const d=parse(s);d.setDate(d.getDate()+n);return fmt(d)}
 function dow(s){return parse(s).getDay()}
-function defaultProg(s){return PROGRAM[dow(s)]}              // pure calendar weekday
+function phaseIndex(s){
+  if(!data.meta.startDate)return 0;
+  return Math.min(2,Math.max(0,Math.floor((parse(s)-parse(data.meta.startDate))/864e5/28)));
+}
+function phaseFor(s){return PHASES[phaseIndex(s)]}
+function defaultProg(s){return phaseFor(s).days[dow(s)]||REST}
+function programById(s,id){
+  if(id==='rest')return REST;
+  return Object.values(phaseFor(s).days).find(p=>p.id===id)||null;
+}
 function shiftFor(s){let n=0;if(data.shifts)for(const seg of data.shifts){if(seg.from<=s)n=seg.days}return n}
 function prog(s){
   const o=data.overrides&&data.overrides[s];
-  if(o&&PROG_BY_ID[o])return PROG_BY_ID[o];                  // 1. explicit per-day swap wins
-  return PROGRAM[dow(addDays(s,-shiftFor(s)))];              // 2. shifted weekday, else default (shift 0)
+  const override=o&&programById(s,o);
+  if(override)return override;                               // 1. explicit per-day swap wins
+  return defaultProg(addDays(s,-shiftFor(s)));                // 2. shifted weekday, else default (shift 0)
 }
 function isOverridden(s){const o=data.overrides&&data.overrides[s];return !!(o&&o!==defaultProg(s).id)}
 function shortDow(s){return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dow(s)]}
@@ -382,7 +373,7 @@ function deloadBanner(){
   if(!data.meta.startDate)return '';
   const days=Math.round((parse(cur)-parse(data.meta.startDate))/864e5);
   if(days<0||days>13)return '';
-  return `<div class="banner small"><b>Weeks 1–2 · Ease in.</b> Use 60–70% of your working weight and leave 2–4 reps in reserve. Technique over ego.</div>`;
+  return `<div class="banner small"><b>Первые 2 недели.</b> Начни с умеренного веса и оставляй 2-4 повтора в запасе.</div>`;
 }
 
 function renderToday(){
@@ -483,7 +474,7 @@ function swapHTML(){
   const tag=t=>t==='rest'?'Rest':t==='activity'?'Recovery':'';
   let opts=`<option value="">Calendar default · ${shortDow(cur)} ${cal.name}</option>`;
   const seen=new Set();
-  [6,0,1,2,3,4,5].forEach(k=>{const p=PROGRAM[k];if(seen.has(p.id))return;seen.add(p.id);
+  Object.values(phaseFor(cur).days).forEach(p=>{if(seen.has(p.id))return;seen.add(p.id);
     const lbl=p.name+(p.focus?' · '+p.focus:(tag(p.type)?' · '+tag(p.type):''));
     const sel=(ov||shifted)&&eff.id===p.id?'selected':'';
     opts+=`<option value="${p.id}" ${sel}>${lbl}</option>`;});
@@ -655,11 +646,11 @@ function drawChart(pts,unit){
 /* ---------- More tab ---------- */
 function renderMore(){
   let h=`<h2 class="title">Program & data</h2>`;
-  h+=`<div class="banner small"><b>Weeks 1–2 rule:</b> 60–70% of working weight, 2–4 reps in reserve, technique first.</div>`;
-  h+=`<div class="card"><div class="small muted" style="margin-bottom:8px">12-Week Restart — weekly split</div>`;
-  [6,0,1,2,3,4,5].forEach(k=>{const p=PROGRAM[k];const dn=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][k];
+  h+=`<div class="banner small"><b>Программа на массу - 12 недель.</b> Сейчас: ${phaseFor(cur).name}. Пресс добавляй в конце каждой тренировки.</div>`;
+  h+=`<div class="card"><div class="small muted" style="margin-bottom:8px">${phaseFor(cur).name} - план на неделю</div>`;
+  Object.entries(phaseFor(cur).days).forEach(([k,p])=>{const dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][k];
     h+=`<div class="histrow"><span><b>${dn}</b> · ${p.name}</span>
-      <span class="muted tiny">${p.type==='lift'?p.ex.length+' lifts':p.type==='rest'?'rest':'recovery'}</span></div>`});
+      <span class="muted tiny">${p.ex.length} упражнений</span></div>`});
   h+=`</div>`;
   h+=`<div class="card"><div class="small muted" style="margin-bottom:10px">Your data lives on this phone. Back it up:</div>
     <div class="row" style="gap:10px;margin-bottom:10px">
