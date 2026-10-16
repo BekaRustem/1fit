@@ -598,8 +598,7 @@ function renderToday(){
   h+=`<div class="row between" style="margin-bottom:10px">
       <h2 class="title" style="margin:0">${p.name}</h2>
       <div class="row" style="gap:7px"><span class="workout-progress" aria-label="Выполнено упражнений">${completedExercises}/${p.ex.length}</span><button class="mode-toggle" type="button" onclick="toggleWorkoutMode()">${workoutMode?'Обычный вид':'Режим тренировки'}</button></div></div>`;
-  h+=workoutMode?`<div class="mode-note">Показано текущее упражнение. Чтобы выбрать другое — выйди в обычный вид.</div>`:`<div class="hint" style="margin:-2px 0 10px">Вес · повторы: по одной строке на упражнение. Одно число = одинаковый вес во всех подходах;
-      нажми <b>,</b>, если подходы отличаются (например, <b>60, 60, 55</b>).</div>`;
+  h+=workoutMode?`<div class="mode-note">Показано текущее упражнение. Чтобы выбрать другое — выйди в обычный вид.</div>`:'';
   h+=`<div class="card ${workoutMode&&s.activeExerciseId?'workout-mode':''}">`;
   p.ex.forEach(ex=>{
     const sets = (s&&s.sets[ex.id]) || null;
@@ -847,7 +846,7 @@ function smartProgressHTML(){
 function renderProgress(){
   const ids=Object.keys(exName).filter(id=>Object.keys(data.sessions).some(d=>{const b=bestVal({m:exName[id].m},data.sessions[d].sets[id]);return b!=null}));
   const bodyPts=bodyRows().filter(row=>row.weight!==null).map(row=>({date:row.date,v:row.weight}));
-  if(!ids.length){done(`<h2 class="title">Прогресс</h2>${bodyProgressHTML()}${smartProgressHTML()}<div class="emptyst">Запиши несколько тренировок — и здесь появятся графики прогресса. 📈</div>`);if(bodyPts.length>1)drawChart(bodyPts,'кг','bodyChart');return}
+  if(!ids.length){done(`<h2 class="title">Прогресс</h2>${bodyProgressHTML()}${smartProgressHTML()}`);if(bodyPts.length>1)drawChart(bodyPts,'кг','bodyChart');return}
   if(!progSel||!ids.includes(progSel))progSel=ids[0];
   const m=exName[progSel].m;
   if(!progUnit)progUnit=data.settings.unit;
