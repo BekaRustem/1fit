@@ -48,6 +48,9 @@ for (const label of ['START_WEIGHTS', 'incline_barbell_press']) {
   assert.match(source, new RegExp(label), `missing load recommendation: ${label}`);
 }
 assert.match(source, /function recommendedWeight\(/, 'the app must calculate the next suggested load');
+assert.match(source, /Следующая тренировка/, 'the progress tab must show the next workout plan');
+assert.match(source, /function nextLiftPlan\(/, 'the app must find the next strength workout');
+assert.match(source, /function smartProgressHTML\(/, 'the progress tab must render automatic weight suggestions');
 for (const label of ['Техника выполнения', 'toggleTechnique', 'ANIMATION_SLUGS', 'CC BY-SA 4.0']) {
   assert.match(source, new RegExp(label), `missing exercise animation support: ${label}`);
 }

@@ -779,9 +779,31 @@ function calShift(n){let {y,m}=calMonth;m+=n;if(m<0){m=11;y--}if(m>11){m=0;y++}c
 function jump(ds){if(ds>todayStr())return;cur=ds;tab='today';render();window.scrollTo(0,0)}
 
 /* ---------- Progress tab ---------- */
+function nextLiftPlan(){
+  let date=todayStr();
+  for(let i=0;i<21;i++){
+    const plan=prog(date);
+    if(plan.type==='lift'&&!(date===todayStr()&&isDone(date)))return{date,plan};
+    date=addDays(date,1);
+  }
+  return null;
+}
+function smartProgressHTML(){
+  const next=nextLiftPlan();if(!next)return '';
+  const u=data.settings.unit;
+  const rows=next.plan.ex.map(ex=>{
+    const prev=lastSets(ex.id,addDays(next.date,1));
+    const target=ex.m==='time'?`${ex.target} сек`:ex.target+' повт.';
+    const suggested=recommendedWeight(ex,prev&&prev.sets,u);
+    const recommendation=ex.m==='load'?(suggested?`${suggested} ${u}`:'Введи вес'):target;
+    const previous=prev?setLabel(ex,prev.sets,u):'первая запись';
+    return `<div class="histrow"><span><b>${ex.name}</b><br><span class="muted tiny">Прошлый раз: ${previous} · цель: ${target}</span></span><b style="color:var(--accent)">${recommendation}</b></div>`;
+  }).join('');
+  return `<section class="card"><div class="row between"><div><h3 style="margin:0;font-size:16px">Следующая тренировка</h3><div class="muted small" style="margin-top:3px">${next.plan.name} · ${pretty(next.date)}</div></div><span class="focus">ПЛАН</span></div><div style="margin-top:10px">${rows}</div></section>`;
+}
 function renderProgress(){
   const ids=Object.keys(exName).filter(id=>Object.keys(data.sessions).some(d=>{const b=bestVal({m:exName[id].m},data.sessions[d].sets[id]);return b!=null}));
-  if(!ids.length){return done(`<h2 class="title">Прогресс</h2><div class="emptyst">Запиши несколько тренировок — и здесь появятся графики прогресса. 📈</div>`)}
+  if(!ids.length){return done(`<h2 class="title">Прогресс</h2>${smartProgressHTML()}<div class="emptyst">Запиши несколько тренировок — и здесь появятся графики прогресса. 📈</div>`)}
   if(!progSel||!ids.includes(progSel))progSel=ids[0];
   const m=exName[progSel].m;
   if(!progUnit)progUnit=data.settings.unit;
@@ -790,7 +812,7 @@ function renderProgress(){
   Object.keys(data.sessions).sort().forEach(d=>{const b=bestVal({m},data.sessions[d].sets[progSel]);if(b!=null)ptsK.push({date:d,k:b})});
   const pts=ptsK.map(p=>({date:p.date,v:isLoad?rnd(fromKg(p.k,progUnit)):p.k}));
   const ul=m==='time'?'сек':m==='reps'?'повт.':progUnit;
-  let h=`<h2 class="title">Прогресс</h2><div class="sub">Лучший подход каждой тренировки.</div>
+  let h=`<h2 class="title">Прогресс</h2>${smartProgressHTML()}<div class="sub">Лучший подход каждой тренировки.</div>
     <select onchange="progSel=this.value;render()">${ids.map(id=>`<option value="${id}" ${id===progSel?'selected':''}>${exName[id].name}</option>`).join('')}</select>`;
   if(isLoad)h+=`<div class="row between" style="margin-top:10px"><span class="muted small">Единица измерения</span>${segUnit(progUnit,'setProgUnit')}</div>`;
   const first=pts[0].v,lastp=pts[pts.length-1].v,best=Math.max(...pts.map(p=>p.v));
