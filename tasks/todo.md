@@ -21,17 +21,17 @@
 
 **Estimated scope:** Medium
 
-## Task 2: Добавить дизайн-систему и нижнюю навигацию
+## Task 2: Добавить дизайн-систему и нижнюю навигацию — выполнено
 
 **Описание:** Реализовать чёрно‑зелёную палитру, карточки и tab bar для экранов «Сегодня», «Серия», «Прогресс», «Профиль».
 
 **Acceptance criteria:**
-- [ ] Все четыре вкладки переключаются касанием.
-- [ ] Активная вкладка использует зелёный акцент; фон чёрный, панели графитовые.
-- [ ] Иконки имеют accessibility labels.
+- [x] Все четыре вкладки переключаются касанием.
+- [x] Активная вкладка использует зелёный акцент; фон чёрный, панели графитовые.
+- [x] Иконки имеют accessibility labels.
 
 **Verification:**
-- [ ] Build: команда из Task 1.
+- [x] Build: `xcodebuild -project ios/SYNCRA/SYNCRA.xcodeproj -scheme SYNCRA -destination 'platform=iOS Simulator,name=iPhone 17' -configuration Debug build CODE_SIGNING_ALLOWED=NO`.
 - [ ] Manual: проверить вкладки в iPhone Simulator.
 
 **Dependencies:** Task 1

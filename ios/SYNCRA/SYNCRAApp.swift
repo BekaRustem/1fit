@@ -4,7 +4,7 @@ import SwiftUI
 struct SYNCRAApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppShellView()
         }
     }
 }
