@@ -20,7 +20,7 @@ assert.match(source, /leg_press:'leg-press'/, 'the leg press machine must have a
 assert.doesNotMatch(source, /Приседания со штангой/, 'barbell squats must no longer appear in the plan');
 assert.match(source, /phaseIndex\(s\)/, 'the app must choose the phase from the start date');
 
-for (const label of ['Сегодня', 'Серия тренировок', 'Прогресс', 'Программа и данные', 'Экспортировать копию']) {
+for (const label of ['Сегодня', 'Серия тренировок', 'Прогресс', 'Профиль', 'Экспортировать']) {
   assert.match(source, new RegExp(label), `missing Russian UI label: ${label}`);
 }
 
@@ -58,7 +58,12 @@ assert.match(source, /navigator\.serviceWorker\.register/, 'the app must registe
 assert.match(manifest, /"display": "standalone"/, 'the manifest must launch as a standalone app');
 assert.match(manifest, /icon-180\.png/, 'the manifest must declare the app icon');
 assert.match(serviceWorker, /addEventListener\('fetch'/, 'the offline worker must handle app requests');
+assert.match(serviceWorker, /event\.request\.mode === 'navigate'/, 'the offline worker must refresh pages before falling back to cache');
 assert.match(source, /Установить на iPhone/, 'the app must explain how to install itself on iPhone');
+assert.match(source, /--bg:#000/, 'the app must use the requested black background');
+assert.match(source, /Профиль/, 'the app must use the profile-style settings screen');
+assert.match(source, /profile-section-title/, 'the profile screen must use grouped settings sections');
+assert.match(source, /profile-menu-icon/, 'the profile screen must use green icon accents');
 for (const label of ['SYNCRA', 'Добро пожаловать на тренировку', 'Пропустить']) {
   assert.match(source, new RegExp(label), `missing welcome screen content: ${label}`);
 }

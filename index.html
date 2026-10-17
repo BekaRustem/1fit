@@ -7,15 +7,15 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Тренировки">
-<meta name="theme-color" content="#0B0F14">
+<meta name="theme-color" content="#000000">
 <title>Тренировки</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAB20lEQVR42u3dsQ0AEABFQb1CYxTLmstArCARElxxC3yvFEJMucMrghEQNAgaBA2CRtAgaBA0CBoEjaBB0CBoEDQIGkGDoEHQIGgQNIIGQYOgQdAgaAQNggZBg6BB0AgaBA2CBkGDoBE0CBoEDYJG0IZA0CBoEDQIGkGDoEHQIGgQNIIGQYOgQdAgaAQNggZBg6BB0AgaBA2CBkHDZUGXVqc4TDsLGkEbWtCCNrSgBS1oOwsaQRsaQRta0ILeObTw7SdoQQv6luEF/eeugha0oA0vaEEb3q6CFrRdBS1oQRte0II2vKAFbXi7ClrQdhU0Jwla0IIWNIIWNIIWNIIWtKAFLWhBCxpBCxpBCxpBC1rQghaFoAXtcpJdBS1oQRte0II2vF0FLWi7ClrQdhW0oAVteEEL2vB2FbSg7erBc0HbT9CCFrTPbHwaJGhB21nQgrazoBG0oRG0oQUtaEHbWdCCtvM7QYOgETQIGgQNggZBI2gQNAgaBA2CRtAgaBA0CBoEjaBB0CBoEDQIGkGDoEHQIGgQNIIGQYOgQdAgaAQNggZBg6ARNAgaBA2CBkEjaBA0CBoEDYJG0CBoEDQIGgSNoEHQIGgQNAgaQYOgQdAgaBA0ggZBg6BhwQAV2gRcEubEIgAAAABJRU5ErkJggg==">
 <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAB20lEQVR42u3dsQ0AEABFQb1CYxTLmstArCARElxxC3yvFEJMucMrghEQNAgaBA2CRtAgaBA0CBoEjaBB0CBoEDQIGkGDoEHQIGgQNIIGQYOgQdAgaAQNggZBg6BB0AgaBA2CBkGDoBE0CBoEDYJG0IZA0CBoEDQIGkGDoEHQIGgQNIIGQYOgQdAgaAQNggZBg6BB0AgaBA2CBkHDZUGXVqc4TDsLGkEbWtCCNrSgBS1oOwsaQRsaQRta0ILeObTw7SdoQQv6luEF/eeugha0oA0vaEEb3q6CFrRdBS1oQRte0II2vKAFbXi7ClrQdhU0Jwla0IIWNIIWNIIWNIIWtKAFLWhBCxpBCxpBCxpBC1rQghaFoAXtcpJdBS1oQRte0II2vF0FLWi7ClrQdhW0oAVteEEL2vB2FbSg7erBc0HbT9CCFrTPbHwaJGhB21nQgrazoBG0oRG0oQUtaEHbWdCCtvM7QYOgETQIGgQNggZBI2gQNAgaBA2CRtAgaBA0CBoEjaBB0CBoEDQIGkGDoEHQIGgQNIIGQYOgQdAgaAQNggZBg6ARNAgaBA2CBkEjaBA0CBoEDYJG0CBoEDQIGgSNoEHQIGgQNAgaQYOgQdAgaBA0ggZBg6BhwQAV2gRcEubEIgAAAABJRU5ErkJggg==">
 <style>
   :root{
-    --bg:#0B0F14; --card:#141A22; --card2:#1B232E; --line:#26303C;
-    --txt:#E6EDF3; --muted:#8696A7; --accent:#34D399; --accent2:#22D3EE;
+    --bg:#000; --card:#171819; --card2:#202124; --line:#35373A;
+    --txt:#F5F5F5; --muted:#A1A1AA; --accent:#34D399; --accent2:#86EFAC;
     --warn:#F59E0B; --bad:#475569; --radius:16px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -32,7 +32,7 @@
   @keyframes welcomeSpin{to{transform:rotate(360deg)}}@keyframes welcomePulse{50%{transform:scale(1.06);box-shadow:0 0 28px rgba(52,211,153,.28)}}
   @media (prefers-reduced-motion:reduce){.welcome-orbit,.welcome-core,.water-liquid,.water-liquid:before{animation:none}.welcome-screen{transition:none}}
   .wrap{max-width:520px;margin:0 auto;padding:0 16px}
-  header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg) 70%,transparent);
+  header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#000 70%,transparent);
     padding:calc(12px + env(safe-area-inset-top)) 16px 10px}
   .hdr{display:flex;align-items:center;justify-content:space-between;max-width:520px;margin:0 auto}
   .brand{font-weight:700;font-size:18px;letter-spacing:.2px}
@@ -42,7 +42,7 @@
   .streakpill .f{font-size:16px}
   h2.title{font-size:22px;margin:6px 0 2px}
   .sub{color:var(--muted);font-size:14px;margin-bottom:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px}
   .row{display:flex;align-items:center;gap:10px}
   .between{justify-content:space-between}
   .muted{color:var(--muted)}
@@ -140,7 +140,7 @@
   .rest-close{border:0;background:none;color:var(--muted);font-size:24px;line-height:1;padding:0 2px}
   /* nav */
   nav{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 12px calc(10px + env(safe-area-inset-bottom));pointer-events:none}
-  .navinner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:6px;background:rgba(20,26,34,.94);border:1px solid rgba(134,150,167,.3);border-radius:999px;backdrop-filter:blur(16px);box-shadow:0 10px 28px rgba(0,0,0,.35);pointer-events:auto}
+  .navinner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:6px;background:rgba(23,24,25,.96);border:1px solid rgba(161,161,170,.32);border-radius:999px;backdrop-filter:blur(16px);box-shadow:0 10px 28px rgba(0,0,0,.5);pointer-events:auto}
   .tab{background:none;border:0;border-radius:999px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;min-height:58px;justify-content:center;font-size:11px;font-weight:700;padding:6px 4px}
   .tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .tab.active{color:var(--accent);background:rgba(52,211,153,.15);box-shadow:inset 0 0 0 1px rgba(52,211,153,.2)}
@@ -179,6 +179,7 @@
   .body-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.body-form .field input{padding-right:42px}
   .body-form .btn{width:auto;white-space:nowrap}.photo-actions{display:flex;gap:8px;margin-top:8px}.photo-actions .btn{margin:0;flex:1}
   .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.photo-grid figure{margin:0}.photo-grid img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:1px solid var(--line)}.photo-grid figcaption{font-size:10px;color:var(--muted);margin-top:3px;text-align:center}
+  .profile-hero{display:flex;align-items:center;gap:14px;margin:4px 0 26px}.profile-avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2A2C30,#4B4D52);border:3px solid var(--line);color:var(--accent);font-size:22px;font-weight:900}.profile-hero h2{font-size:34px;margin:0;letter-spacing:-.8px}.profile-section-title{color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.7px;margin:24px 12px 9px;text-transform:uppercase}.profile-menu{padding:0 14px;overflow:hidden}.profile-row{display:flex;align-items:flex-start;gap:13px;padding:16px 0;border-top:1px solid var(--line)}.profile-row:first-child{border-top:0}.profile-menu-icon{width:34px;height:34px;flex:0 0 auto;display:grid;place-items:center;color:var(--accent)}.profile-menu-icon svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.profile-row-copy{min-width:0;flex:1}.profile-row-title{font-size:16px;font-weight:750;line-height:1.25}.profile-row-detail{color:var(--muted);font-size:13px;line-height:1.4;margin-top:4px}.profile-row-go{color:#686A6E;font-size:32px;line-height:.8;margin-top:3px}.profile-row.tappable{cursor:pointer}.profile-row.tappable:active{opacity:.72}
   .water-card{border-color:rgba(34,211,238,.32);background:linear-gradient(135deg,rgba(34,211,238,.1),var(--card))}
   .water-layout{display:flex;align-items:center;gap:16px}.water-vessel{width:92px;height:116px;flex:0 0 auto;position:relative;overflow:hidden;border:2px solid rgba(34,211,238,.48);border-radius:16px 16px 24px 24px;background:rgba(11,15,20,.35)}
   .water-liquid{position:absolute;left:-8%;bottom:-8px;width:116%;height:var(--water-level);min-height:0;background:linear-gradient(180deg,rgba(34,211,238,.78),rgba(14,116,144,.9));transition:height .5s ease;animation:waterGlow 2.8s ease-in-out infinite}
@@ -967,24 +968,33 @@ function drawChart(pts,unit,id='chart'){
 }
 
 /* ---------- More tab ---------- */
+function profileIcon(type){
+  const icons={
+    plan:'<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+    chart:'<path d="M4 20V4M4 20h16"/><path d="m7 15 4-4 3 2 4-6"/>',
+    install:'<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 20h14"/>',
+    backup:'<path d="M5 4h14v16H5z"/><path d="M8 4v6h8V4M8 16h8"/>',
+  };
+  return `<span class="profile-menu-icon"><svg viewBox="0 0 24 24">${icons[type]}</svg></span>`;
+}
+function profileRow(type,title,detail,action=''){
+  return `<div class="profile-row ${action?'tappable':''}" ${action?`onclick="${action}" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${action}}"`:''}>${profileIcon(type)}<div class="profile-row-copy"><div class="profile-row-title">${title}</div>${detail?`<div class="profile-row-detail">${detail}</div>`:''}</div>${action?'<span class="profile-row-go">›</span>':''}</div>`;
+}
 function renderMore(){
-  let h=`<h2 class="title">Программа и данные</h2>`;
-  h+=`<div class="banner small"><b>Программа на массу - 12 недель.</b> Сейчас: ${phaseFor(cur).name}. Пресс добавляй в конце каждой тренировки.</div>`;
-  h+=`<div class="card"><div class="small muted" style="margin-bottom:8px">${phaseFor(cur).name} - план на неделю</div>`;
+  let h=`<section class="profile-hero"><div class="profile-avatar">S</div><h2>Профиль</h2></section>`;
+  h+=`<div class="profile-section-title">Тренировки</div><div class="card profile-menu">`;
+  h+=profileRow('plan','Тренировочный план',`${phaseFor(cur).name} · программа на массу`,'tab=\'today\';cur=todayStr();window.scrollTo(0,0);render()');
+  h+=`</div><div class="profile-section-title">Прогресс</div><div class="card profile-menu">`;
+  h+=profileRow('chart','Отчёты','Вес тела, фотографии и силовые показатели','tab=\'progress\';window.scrollTo(0,0);render()');
+  h+=`</div><div class="profile-section-title">План на неделю</div><div class="card profile-menu">`;
   Object.entries(phaseFor(cur).days).forEach(([k,p])=>{const dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][k];
-    h+=`<div class="histrow"><span><b>${dn}</b> · ${p.name}</span>
-      <span class="muted tiny">${p.ex.length} упражнений</span></div>`});
-  h+=`</div>`;
+    h+=`<div class="profile-row"><div class="profile-menu-icon" style="font-size:12px;font-weight:900">${dn}</div><div class="profile-row-copy"><div class="profile-row-title">${p.name}</div><div class="profile-row-detail">${p.ex.length} упражнений</div></div></div>`});
+  h+=`</div><div class="profile-section-title">Приложение</div><div class="card profile-menu">`;
+  h+=profileRow('install','Установить на iPhone','Safari → Поделиться → На экран «Домой»');
+  h+=profileRow('backup','Резервная копия','Экспортировать или восстановить свои данные');
+  h+=`<div class="row" style="gap:10px;padding:0 0 14px"><button class="btn sm ghost" onclick="exportData()">Экспортировать</button><button class="btn sm ghost" onclick="document.getElementById('imp').click()">Импортировать</button></div><input id="imp" type="file" accept="application/json" class="hide" onchange="importData(this)"></div>`;
+  h+=`<button class="btn sm ghost" style="color:#ef4444;border-color:rgba(239,68,68,.3);margin-bottom:12px" onclick="resetData()">Сбросить все данные</button>`;
   h+=`<div class="center muted tiny" style="margin:4px 0 10px">Анимации упражнений: <a href="https://github.com/bryllim/workout-guide" target="_blank" rel="noopener" style="color:var(--accent2)">Workout Guide</a>, CC BY-SA 4.0.</div>`;
-  h+=`<div class="card"><h3 style="margin:0 0 7px;font-size:16px">Установить на iPhone</h3><div class="small muted">Открой приложение в Safari, нажми «Поделиться» и выбери «На экран «Домой»». После установки SYNCRA запускается как отдельное приложение и работает без сети.</div></div>`;
-  h+=`<div class="card"><div class="small muted" style="margin-bottom:10px">Твои данные хранятся на этом устройстве. Создай резервную копию:</div>
-    <div class="row" style="gap:10px;margin-bottom:10px">
-      <button class="btn sm ghost" onclick="exportData()">⬇︎ Экспортировать копию</button>
-      <button class="btn sm ghost" onclick="document.getElementById('imp').click()">⬆︎ Импортировать</button>
-    </div>
-    <input id="imp" type="file" accept="application/json" class="hide" onchange="importData(this)">
-    <button class="btn sm ghost" style="color:#ef4444;border-color:rgba(239,68,68,.3)" onclick="resetData()">Сбросить все данные</button>
-  </div>`;
   const n=Object.values(data.sessions).filter(s=>s.completed).length;
   h+=`<div class="center muted tiny" style="margin:10px 0 4px">Тренировок записано: ${n} · с ${data.meta.startDate?pretty(data.meta.startDate):'—'}</div>`;
   done(h);
