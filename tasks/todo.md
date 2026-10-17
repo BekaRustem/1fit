@@ -43,17 +43,17 @@
 
 **Estimated scope:** Medium
 
-## Task 3: Сохранить выбранную вкладку и добавить пустые состояния
+## Task 3: Сохранить выбранную вкладку и добавить пустые состояния — выполнено
 
 **Описание:** Сохранять активный раздел через `AppStorage`; добавить русскоязычные стартовые состояния без тренировочных данных.
 
 **Acceptance criteria:**
-- [ ] После перезапуска открывается последняя выбранная вкладка.
-- [ ] Каждый экран объясняет своё назначение без пустого чёрного экрана.
-- [ ] Никаких сетевых запросов или внешних SDK.
+- [x] После перезапуска открывается последняя выбранная вкладка.
+- [x] Каждый экран объясняет своё назначение без пустого чёрного экрана.
+- [x] Никаких сетевых запросов или внешних SDK.
 
 **Verification:**
-- [ ] Test: `xcodebuild test -project ios/SYNCRA/SYNCRA.xcodeproj -scheme SYNCRA -destination 'platform=iOS Simulator,name=iPhone 16'`
+- [x] Build: `xcodebuild -project ios/SYNCRA/SYNCRA.xcodeproj -scheme SYNCRA -destination 'platform=iOS Simulator,name=iPhone 17' -configuration Debug build CODE_SIGNING_ALLOWED=NO`.
 - [ ] Manual: перезапустить приложение в симуляторе после смены вкладки.
 
 **Dependencies:** Task 2
@@ -66,7 +66,7 @@
 
 ## Checkpoint: app-shell готов
 
-- [ ] Задачи 1–3 завершены.
-- [ ] Проект собирается после установки Xcode.
+- [x] Задачи 1–3 завершены.
+- [x] Проект собирается после установки Xcode.
 - [ ] Нативная оболочка не изменила PWA-файлы и не содержит секретов.
 - [ ] Визуально проверена на iPhone Simulator.

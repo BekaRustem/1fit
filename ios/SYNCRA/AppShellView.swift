@@ -28,7 +28,11 @@ enum SynCraTab: String, CaseIterable, Identifiable {
 }
 
 struct AppShellView: View {
-    @State private var selectedTab: SynCraTab = .today
+    @AppStorage("selectedTab") private var selectedTabRawValue = SynCraTab.today.rawValue
+
+    private var selectedTab: SynCraTab {
+        SynCraTab(rawValue: selectedTabRawValue) ?? .today
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -68,7 +72,7 @@ struct AppShellView: View {
     @ViewBuilder private var screenContent: some View {
         switch selectedTab {
         case .today:
-            DashboardPlaceholder(title: "Тренировка сегодня", detail: "Нативный дневник тренировок появится здесь.", symbol: "figure.strengthtraining.traditional")
+            TodayWorkoutView()
         case .streak:
             DashboardPlaceholder(title: "Серия", detail: "Здесь будет календарь выполненных тренировок.", symbol: "calendar")
         case .progress:
@@ -82,7 +86,7 @@ struct AppShellView: View {
         HStack(spacing: 4) {
             ForEach(SynCraTab.allCases) { tab in
                 Button {
-                    selectedTab = tab
+                    selectedTabRawValue = tab.rawValue
                 } label: {
                     VStack(spacing: 5) {
                         Image(systemName: tab.symbol)
