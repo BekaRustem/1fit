@@ -1,26 +1,33 @@
 import SwiftUI
+import SwiftData
 
 private struct PlannedExercise: Identifiable {
     let id: String
     let name: String
     let prescription: String
     let startingWeight: String
+    let workingWeightKilograms: Double
+    let sets: Int
+    let repetitions: Int
     let cue: String
     let symbol: String
 }
 
 struct TodayWorkoutView: View {
     private let exercises = [
-        PlannedExercise(id: "chest-press", name: "Жим в грудном тренажёре", prescription: "3 × 10", startingWeight: "35 кг", cue: "Лопатки прижаты, жми плавно без рывка.", symbol: "figure.strengthtraining.traditional"),
-        PlannedExercise(id: "leg-press", name: "Жим ногами в тренажёре", prescription: "3 × 10", startingWeight: "70 кг", cue: "Колени идут по линии носков, поясница не отрывается.", symbol: "figure.strengthtraining.functional"),
-        PlannedExercise(id: "row", name: "Тяга горизонтального блока", prescription: "3 × 12", startingWeight: "30 кг", cue: "Тяни локтями назад и не округляй спину.", symbol: "arrow.left.and.right"),
-        PlannedExercise(id: "abs", name: "Пресс", prescription: "3 × 12–15", startingWeight: "Свой вес", cue: "Двигайся контролируемо, не тяни шею руками.", symbol: "figure.core.training")
+        PlannedExercise(id: "chest-press", name: "Жим в грудном тренажёре", prescription: "3 × 10", startingWeight: "35 кг", workingWeightKilograms: 35, sets: 3, repetitions: 10, cue: "Лопатки прижаты, жми плавно без рывка.", symbol: "figure.strengthtraining.traditional"),
+        PlannedExercise(id: "leg-press", name: "Жим ногами в тренажёре", prescription: "3 × 10", startingWeight: "70 кг", workingWeightKilograms: 70, sets: 3, repetitions: 10, cue: "Колени идут по линии носков, поясница не отрывается.", symbol: "figure.strengthtraining.functional"),
+        PlannedExercise(id: "row", name: "Тяга горизонтального блока", prescription: "3 × 12", startingWeight: "30 кг", workingWeightKilograms: 30, sets: 3, repetitions: 12, cue: "Тяни локтями назад и не округляй спину.", symbol: "arrow.left.and.right"),
+        PlannedExercise(id: "abs", name: "Пресс", prescription: "3 × 12–15", startingWeight: "Свой вес", workingWeightKilograms: 0, sets: 3, repetitions: 15, cue: "Двигайся контролируемо, не тяни шею руками.", symbol: "figure.core.training")
     ]
 
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \WorkoutRecord.completedAt, order: .reverse) private var workoutHistory: [WorkoutRecord]
     @State private var startedAt: Date?
     @State private var completedExerciseIDs = Set<String>()
     @State private var restEndsAt: Date?
     @State private var restSeconds = 90
+    @State private var summary: WorkoutSummary?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -44,6 +51,11 @@ struct TodayWorkoutView: View {
                     onComplete: { toggleCompletion(for: exercise.id) }
                 )
             }
+        }
+        .sheet(item: $summary) { summary in
+            WorkoutSummarySheet(summary: summary)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
         }
     }
 
@@ -119,8 +131,42 @@ struct TodayWorkoutView: View {
     }
 
     private func toggleSession() {
+        if let startedAt {
+            finishSession(startedAt: startedAt)
+        } else {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                completedExerciseIDs.removeAll()
+                restEndsAt = nil
+                self.startedAt = Date()
+            }
+        }
+    }
+
+    private func finishSession(startedAt: Date) {
+        let completedAt = Date()
+        let duration = max(1, Int(completedAt.timeIntervalSince(startedAt)))
+        let volume = exercises
+            .filter { completedExerciseIDs.contains($0.id) }
+            .reduce(0) { $0 + $1.workingWeightKilograms * Double($1.sets * $1.repetitions) }
+        let previousVolume = workoutHistory.first?.volumeKilograms
+        let record = WorkoutRecord(
+            startedAt: startedAt,
+            completedAt: completedAt,
+            durationSeconds: duration,
+            completedExercises: completedExerciseIDs.count,
+            volumeKilograms: volume
+        )
+        modelContext.insert(record)
+
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-            startedAt = startedAt == nil ? Date() : nil
+            self.startedAt = nil
+            restEndsAt = nil
+            summary = WorkoutSummary(
+                durationSeconds: duration,
+                completedExercises: completedExerciseIDs.count,
+                volumeKilograms: volume,
+                differenceFromPrevious: previousVolume.map { volume - $0 }
+            )
         }
     }
 
@@ -133,6 +179,83 @@ struct TodayWorkoutView: View {
                 restEndsAt = Date().addingTimeInterval(TimeInterval(restSeconds))
             }
         }
+    }
+}
+
+private struct WorkoutSummary: Identifiable {
+    let id = UUID()
+    let durationSeconds: Int
+    let completedExercises: Int
+    let volumeKilograms: Double
+    let differenceFromPrevious: Double?
+}
+
+private struct WorkoutSummarySheet: View {
+    let summary: WorkoutSummary
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        ZStack {
+            SynCraTheme.background.ignoresSafeArea()
+            VStack(spacing: 18) {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(SynCraTheme.accent)
+                Text("Тренировка сохранена")
+                    .font(.title2.weight(.bold))
+                    .foregroundStyle(SynCraTheme.text)
+                HStack(spacing: 10) {
+                    SummaryMetric(title: "Время", value: formattedDuration)
+                    SummaryMetric(title: "Упражнения", value: "\(summary.completedExercises)")
+                    SummaryMetric(title: "Объём", value: "\(Int(summary.volumeKilograms)) кг")
+                }
+                if let difference = summary.differenceFromPrevious {
+                    Text(comparisonText(for: difference))
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(difference >= 0 ? SynCraTheme.accent : SynCraTheme.secondaryText)
+                } else {
+                    Text("Это твоя первая сохранённая тренировка.")
+                        .font(.subheadline)
+                        .foregroundStyle(SynCraTheme.secondaryText)
+                }
+                Button("Готово") { dismiss() }
+                    .font(.subheadline.weight(.bold))
+                    .foregroundStyle(.black)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(SynCraTheme.accent)
+                    .clipShape(Capsule())
+            }
+            .padding(24)
+        }
+    }
+
+    private var formattedDuration: String {
+        String(format: "%d:%02d", summary.durationSeconds / 60, summary.durationSeconds % 60)
+    }
+
+    private func comparisonText(for difference: Double) -> String {
+        if difference == 0 { return "Объём как в прошлой тренировке." }
+        let direction = difference > 0 ? "больше" : "меньше"
+        return "На \(Int(abs(difference))) кг \(direction), чем в прошлый раз."
+    }
+}
+
+private struct SummaryMetric: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        VStack(spacing: 4) {
+            Text(value)
+                .font(.subheadline.monospacedDigit().weight(.bold))
+                .foregroundStyle(SynCraTheme.text)
+            Text(title)
+                .font(.caption2)
+                .foregroundStyle(SynCraTheme.secondaryText)
+        }
+        .frame(maxWidth: .infinity, minHeight: 66)
+        .background(SynCraTheme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 

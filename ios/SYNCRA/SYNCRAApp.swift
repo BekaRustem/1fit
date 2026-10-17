@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct SYNCRAApp: App {
@@ -6,5 +7,6 @@ struct SYNCRAApp: App {
         WindowGroup {
             AppShellView()
         }
+        .modelContainer(for: WorkoutRecord.self)
     }
 }
