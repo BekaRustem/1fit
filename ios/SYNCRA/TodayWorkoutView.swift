@@ -19,6 +19,8 @@ struct TodayWorkoutView: View {
 
     @State private var startedAt: Date?
     @State private var completedExerciseIDs = Set<String>()
+    @State private var restEndsAt: Date?
+    @State private var restSeconds = 90
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -28,6 +30,7 @@ struct TodayWorkoutView: View {
 
             sessionCard
             treadmillCard
+            RestTimerCard(endDate: $restEndsAt, selectedSeconds: $restSeconds)
 
             Text("Силовой блок")
                 .font(.headline)
@@ -127,7 +130,79 @@ struct TodayWorkoutView: View {
                 completedExerciseIDs.remove(exerciseID)
             } else {
                 completedExerciseIDs.insert(exerciseID)
+                restEndsAt = Date().addingTimeInterval(TimeInterval(restSeconds))
             }
+        }
+    }
+}
+
+private struct RestTimerCard: View {
+    @Binding var endDate: Date?
+    @Binding var selectedSeconds: Int
+    @State private var isExpanded = false
+
+    var body: some View {
+        SynCraCard {
+            VStack(alignment: .leading, spacing: 14) {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isExpanded.toggle()
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "timer")
+                            .foregroundStyle(SynCraTheme.accent)
+                        Text("Отдых между подходами")
+                            .font(.subheadline.weight(.bold))
+                            .foregroundStyle(SynCraTheme.text)
+                        Spacer()
+                        restTimeLabel
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(SynCraTheme.secondaryText)
+                    }
+                }
+                .accessibilityLabel("Таймер отдыха")
+
+                if isExpanded {
+                    HStack(spacing: 8) {
+                        ForEach([(60, "1 мин"), (90, "1:30"), (120, "2 мин")], id: \.0) { option in
+                            Button(option.1) {
+                                selectedSeconds = option.0
+                                endDate = Date().addingTimeInterval(TimeInterval(option.0))
+                            }
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(selectedSeconds == option.0 ? .black : SynCraTheme.text)
+                            .padding(.horizontal, 13)
+                            .frame(minHeight: 34)
+                            .background(selectedSeconds == option.0 ? SynCraTheme.accent : SynCraTheme.elevatedSurface)
+                            .clipShape(Capsule())
+                        }
+                        Spacer()
+                        Button("Стоп") {
+                            endDate = nil
+                        }
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(SynCraTheme.secondaryText)
+                    }
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+            }
+        }
+    }
+
+    @ViewBuilder private var restTimeLabel: some View {
+        if let endDate {
+            TimelineView(.periodic(from: .now, by: 1)) { context in
+                let seconds = max(0, Int(endDate.timeIntervalSince(context.date)))
+                Text(String(format: "%d:%02d", seconds / 60, seconds % 60))
+                    .font(.subheadline.monospacedDigit().weight(.bold))
+                    .foregroundStyle(SynCraTheme.accent)
+            }
+        } else {
+            Text("Готов")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(SynCraTheme.secondaryText)
         }
     }
 }
