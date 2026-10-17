@@ -76,7 +76,7 @@ struct AppShellView: View {
         case .streak:
             DashboardPlaceholder(title: "Серия", detail: "Здесь будет календарь выполненных тренировок.", symbol: "calendar")
         case .progress:
-            DashboardPlaceholder(title: "Прогресс", detail: "Графики силы и изменения веса будут здесь.", symbol: "chart.line.uptrend.xyaxis")
+            ProgressDashboardView()
         case .profile:
             DashboardPlaceholder(title: "Профиль", detail: "Настройки, программа и данные SYNCRA.", symbol: "person")
         }
