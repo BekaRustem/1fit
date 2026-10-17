@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const source = readFileSync(new URL('../app_template.html', import.meta.url), 'utf8');
+const manifest = readFileSync(new URL('../manifest.webmanifest', import.meta.url), 'utf8');
+const serviceWorker = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 assert.match(source, /const PHASES = \[/, 'the 12-week mass program must define phases');
 for (const label of ['Недели 1-4', 'Недели 5-8', 'Недели 9-12']) {
@@ -51,6 +53,12 @@ for (const label of ['Вода', 'Цель на день', '+250 мл', '+500 м
 assert.match(source, /function addWater\(/, 'the water tracker must add intake');
 assert.match(source, /function setWaterGoal\(/, 'the water tracker must adjust its daily goal');
 assert.match(source, /water-liquid/, 'the water tracker must render an animated water fill');
+assert.match(source, /manifest\.webmanifest/, 'the app must link its install manifest');
+assert.match(source, /navigator\.serviceWorker\.register/, 'the app must register its offline worker');
+assert.match(manifest, /"display": "standalone"/, 'the manifest must launch as a standalone app');
+assert.match(manifest, /icon-180\.png/, 'the manifest must declare the app icon');
+assert.match(serviceWorker, /addEventListener\('fetch'/, 'the offline worker must handle app requests');
+assert.match(source, /Установить на iPhone/, 'the app must explain how to install itself on iPhone');
 for (const label of ['SYNCRA', 'Добро пожаловать на тренировку', 'Пропустить']) {
   assert.match(source, new RegExp(label), `missing welcome screen content: ${label}`);
 }

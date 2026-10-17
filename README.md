@@ -2,7 +2,7 @@
 
 A tiny, fast workout tracker that lives on your iPhone home screen. Tick off your gym streak, log the weight you use on every exercise, and watch your strength climb over days, weeks, and months.
 
-**Live app → [amjadhajireen.github.io/gym-tracker](https://amjadhajireen.github.io/gym-tracker/)**
+**Live app → [bekarustem.github.io/1fit](https://bekarustem.github.io/1fit/)**
 
 No app store, no account, no backend. One self-contained HTML file that installs as a Progressive Web App and works fully offline.
 
@@ -19,7 +19,7 @@ No app store, no account, no backend. One self-contained HTML file that installs
 
 ## Install on iPhone
 
-1. Open the [live app](https://amjadhajireen.github.io/gym-tracker/) in **Safari**.
+1. Open the [live app](https://bekarustem.github.io/1fit/) in **Safari**.
 2. Tap **Share** → **Add to Home Screen** → **Add**.
 3. Launch it from the new icon — it opens fullscreen and works offline.
 

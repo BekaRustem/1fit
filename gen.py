@@ -42,6 +42,8 @@ png += chunk(b"IEND", b"")
 datauri = "data:image/png;base64," + base64.b64encode(png).decode()
 
 here = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(here, "icon-180.png"), "wb") as f:
+    f.write(png)
 with open(os.path.join(here, "app_template.html")) as f:
     html = f.read()
 html = html.replace("__ICON__", datauri)
