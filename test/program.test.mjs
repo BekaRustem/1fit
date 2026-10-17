@@ -45,6 +45,12 @@ for (const label of ['Пресс в конце тренировки', 'Скру�
   assert.match(source, new RegExp(label), `missing daily abs exercise: ${label}`);
 }
 assert.match(source, /function workoutExercises\(/, 'the app must append abs exercises to every strength workout');
+for (const label of ['Вода', 'Цель на день', '+250 мл', '+500 мл']) {
+  assert.ok(source.includes(label), `missing water tracker label: ${label}`);
+}
+assert.match(source, /function addWater\(/, 'the water tracker must add intake');
+assert.match(source, /function setWaterGoal\(/, 'the water tracker must adjust its daily goal');
+assert.match(source, /water-liquid/, 'the water tracker must render an animated water fill');
 for (const label of ['SYNCRA', 'Добро пожаловать на тренировку', 'Пропустить']) {
   assert.match(source, new RegExp(label), `missing welcome screen content: ${label}`);
 }

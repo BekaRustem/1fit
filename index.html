@@ -29,7 +29,7 @@
   .welcome-core{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:1px solid var(--line);font-size:23px;font-weight:900;letter-spacing:1px;animation:welcomePulse 1.7s ease-in-out infinite}
   .welcome-brand{margin-top:26px;font-size:29px;font-weight:900;letter-spacing:4px}.welcome-brand span{color:var(--accent2)}.welcome-title{margin-top:8px;font-size:17px;font-weight:800;text-align:center}.welcome-sub{margin-top:7px;color:var(--muted);font-size:13px;text-align:center}
   @keyframes welcomeSpin{to{transform:rotate(360deg)}}@keyframes welcomePulse{50%{transform:scale(1.06);box-shadow:0 0 28px rgba(52,211,153,.28)}}
-  @media (prefers-reduced-motion:reduce){.welcome-orbit,.welcome-core{animation:none}.welcome-screen{transition:none}}
+  @media (prefers-reduced-motion:reduce){.welcome-orbit,.welcome-core,.water-liquid,.water-liquid:before{animation:none}.welcome-screen{transition:none}}
   .wrap{max-width:520px;margin:0 auto;padding:0 16px}
   header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg) 70%,transparent);
     padding:calc(12px + env(safe-area-inset-top)) 16px 10px}
@@ -178,6 +178,13 @@
   .body-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.body-form .field input{padding-right:42px}
   .body-form .btn{width:auto;white-space:nowrap}.photo-actions{display:flex;gap:8px;margin-top:8px}.photo-actions .btn{margin:0;flex:1}
   .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.photo-grid figure{margin:0}.photo-grid img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:1px solid var(--line)}.photo-grid figcaption{font-size:10px;color:var(--muted);margin-top:3px;text-align:center}
+  .water-card{border-color:rgba(34,211,238,.32);background:linear-gradient(135deg,rgba(34,211,238,.1),var(--card))}
+  .water-layout{display:flex;align-items:center;gap:16px}.water-vessel{width:92px;height:116px;flex:0 0 auto;position:relative;overflow:hidden;border:2px solid rgba(34,211,238,.48);border-radius:16px 16px 24px 24px;background:rgba(11,15,20,.35)}
+  .water-liquid{position:absolute;left:-8%;bottom:-8px;width:116%;height:var(--water-level);min-height:0;background:linear-gradient(180deg,rgba(34,211,238,.78),rgba(14,116,144,.9));transition:height .5s ease;animation:waterGlow 2.8s ease-in-out infinite}
+  .water-liquid:before{content:'';position:absolute;left:-25%;top:-14px;width:150%;height:28px;border-radius:50%;background:rgba(165,243,252,.58);animation:waterWave 2.6s ease-in-out infinite}
+  .water-measure{position:absolute;inset:0;z-index:1;display:grid;place-items:center;font-size:17px;font-weight:900;text-shadow:0 1px 4px #0b0f14;font-variant-numeric:tabular-nums}.water-copy{min-width:0;flex:1}.water-label{font-size:16px;font-weight:800}.water-hint{color:var(--muted);font-size:12px;margin-top:3px}.water-goal{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--muted)}
+  .water-goal b{color:var(--txt);font-variant-numeric:tabular-nums}.water-goal button{width:28px;height:28px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--card2);color:var(--accent2);font-size:18px;font-weight:800}.water-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}.water-controls button{border:1px solid rgba(34,211,238,.34);border-radius:11px;padding:10px 6px;background:rgba(34,211,238,.1);color:var(--accent2);font-size:12px;font-weight:800}.water-controls button:last-child{border-color:var(--line);background:var(--card2);color:var(--muted)}
+  @keyframes waterWave{50%{transform:translateX(12%) rotate(2deg)}}@keyframes waterGlow{50%{filter:brightness(1.14)}}
 </style>
 </head>
 <body>
@@ -264,6 +271,7 @@ const KEY='gymtracker.v1';
 const BKEY='gymtracker.v1.bak';   // last-good snapshot; only read if the primary record is unreadable
 const MAX_PROGRESS_PHOTOS=12;
 const MAX_PROGRESS_PHOTO_BYTES=10*1024*1024;
+const DEFAULT_WATER_GOAL=3000;
 let data = load();
 let cur = todayStr();   // selected date on Today tab
 let tab = 'today';
@@ -290,6 +298,9 @@ function load(){
   if(!d.settings.exUnit)d.settings.exUnit={};   // per-exercise unit preference
   if(!d.body)d.body={entries:{}};
   if(!d.body.entries||typeof d.body.entries!=='object')d.body.entries={};
+  if(!d.water)d.water={goal:DEFAULT_WATER_GOAL,entries:{}};
+  if(!d.water.entries||typeof d.water.entries!=='object')d.water.entries={};
+  if(!Number.isFinite(+d.water.goal)||+d.water.goal<1500)d.water.goal=DEFAULT_WATER_GOAL;
   if(!d.overrides)d.overrides={};               // per-date workout swap: {date: dayId}
   if(!d.shifts)d.shifts=[];                      // schedule shifts: [{from, days}] append-only
   if(restored){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}  // repair the primary record now
@@ -302,6 +313,23 @@ function save(){
     if(data.sessions&&Object.keys(data.sessions).length)localStorage.setItem(BKEY,j);
     return true;
   }catch(e){return false}
+}
+
+/* ---------- Water ---------- */
+function waterGoal(){return +data.water.goal||DEFAULT_WATER_GOAL}
+function waterAmount(date=cur){return Math.max(0,+data.water.entries[date]||0)}
+function addWater(ml){
+  const previous=waterAmount();
+  const next=Math.max(0,Math.min(15000,previous+ml));
+  data.water.entries[cur]=next;
+  if(!save()){data.water.entries[cur]=previous;alert('Не удалось сохранить воду на этом устройстве.');return}
+  render();
+}
+function setWaterGoal(delta){
+  const previous=waterGoal();
+  data.water.goal=Math.max(1500,Math.min(6000,previous+delta));
+  if(!save()){data.water.goal=previous;alert('Не удалось сохранить цель на этом устройстве.');return}
+  render();
 }
 
 /* ---------- Units ---------- */
@@ -596,6 +624,11 @@ function finishExercise(exId){
   if(!workoutExercises(plan).every(ex=>s.exerciseDone[ex.id])){startRest(90,true);return}render();
 }
 
+function renderWater(){
+  const amount=waterAmount(),goal=waterGoal(),percent=Math.min(100,Math.round(amount/goal*100));
+  return `<section class="card water-card" aria-label="Регулятор воды"><div class="water-layout"><div class="water-vessel" aria-hidden="true"><div class="water-liquid" style="--water-level:${percent}%"></div><div class="water-measure">${percent}%</div></div><div class="water-copy"><div class="water-label">Вода</div><div class="water-hint" aria-live="polite">${amount} из ${goal} мл сегодня</div><div class="water-goal"><span>Цель на день</span><button type="button" onclick="setWaterGoal(-250)" aria-label="Уменьшить цель на 250 миллилитров">−</button><b>${goal} мл</b><button type="button" onclick="setWaterGoal(250)" aria-label="Увеличить цель на 250 миллилитров">+</button></div></div></div><div class="water-controls"><button type="button" onclick="addWater(250)">+250 мл</button><button type="button" onclick="addWater(500)">+500 мл</button><button type="button" onclick="addWater(-waterAmount())">Сбросить</button></div></section>`;
+}
+
 function renderToday(){
   const p=prog(cur);const isToday=cur===todayStr();
   let h=`<div class="datebar">
@@ -605,6 +638,7 @@ function renderToday(){
     <button class="navbtn" onclick="shift(1)" ${cur>=todayStr()?'disabled style=\"opacity:.3\"':''}>›</button>
   </div>`;
   h+=swapHTML();
+  h+=renderWater();
 
   if(p.type==='rest'){
     h+=`<div class="card center"><div style="font-size:34px">🛌</div>
@@ -960,10 +994,10 @@ function exportData(){
 }
 function importData(inp){
   const f=inp.files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);if(d.sessions){if(!d.overrides)d.overrides={};if(!d.shifts)d.shifts=[];if(!d.body||!d.body.entries)d.body={entries:{}};data=d;save();render();alert('Резервная копия восстановлена ✓')}else alert('Неверный файл резервной копии')}catch(e){alert('Не удалось прочитать файл')}};
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(d.sessions){if(!d.overrides)d.overrides={};if(!d.shifts)d.shifts=[];if(!d.body||!d.body.entries)d.body={entries:{}};if(!d.water||!d.water.entries)d.water={goal:DEFAULT_WATER_GOAL,entries:{}};data=d;save();render();alert('Резервная копия восстановлена ✓')}else alert('Неверный файл резервной копии')}catch(e){alert('Не удалось прочитать файл')}};
   r.readAsText(f);
 }
-function resetData(){if(confirm('Удалить все записанные тренировки и серии? Это действие нельзя отменить.')){data={meta:{startDate:null},sessions:{},settings:{unit:'kg',exUnit:{}},overrides:{},shifts:[],body:{entries:{}}};try{localStorage.removeItem(BKEY)}catch(e){}save();cur=todayStr();render()}}
+function resetData(){if(confirm('Удалить все записанные тренировки и серии? Это действие нельзя отменить.')){data={meta:{startDate:null},sessions:{},settings:{unit:'kg',exUnit:{}},overrides:{},shifts:[],body:{entries:{}},water:{goal:DEFAULT_WATER_GOAL,entries:{}}};try{localStorage.removeItem(BKEY)}catch(e){}save();cur=todayStr();render()}}
 
 /* ---------- Nav ---------- */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;if(tab==='today')cur=todayStr();window.scrollTo(0,0);render()});
