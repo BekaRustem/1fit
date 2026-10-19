@@ -35,20 +35,27 @@ struct AppShellView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack {
             SynCraTheme.background.ignoresSafeArea()
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 22) {
+                VStack(alignment: .leading, spacing: 18) {
                     header
                     screenContent
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 112)
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                .padding(.bottom, 20)
             }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             tabBar
+                .padding(.horizontal, 12)
+                .padding(.top, 8)
+                .padding(.bottom, 6)
+                .background(SynCraTheme.background.opacity(0.94))
         }
         .preferredColorScheme(.dark)
+        .dynamicTypeSize(.xSmall ... .large)
     }
 
     private var header: some View {
@@ -88,13 +95,13 @@ struct AppShellView: View {
                 Button {
                     selectedTabRawValue = tab.rawValue
                 } label: {
-                    VStack(spacing: 5) {
+                    VStack(spacing: 3) {
                         Image(systemName: tab.symbol)
-                            .font(.system(size: 19, weight: .semibold))
+                            .font(.system(size: 17, weight: .semibold))
                         Text(tab.title)
                             .font(.caption2.weight(.bold))
                     }
-                    .frame(maxWidth: .infinity, minHeight: 58)
+                    .frame(maxWidth: .infinity, minHeight: 50)
                     .foregroundStyle(selectedTab == tab ? SynCraTheme.accent : SynCraTheme.secondaryText)
                     .background(selectedTab == tab ? SynCraTheme.accent.opacity(0.14) : .clear)
                     .clipShape(Capsule())
@@ -102,12 +109,10 @@ struct AppShellView: View {
                 .accessibilityLabel(tab.title)
             }
         }
-        .padding(6)
+        .padding(4)
         .background(SynCraTheme.surface.opacity(0.97))
         .clipShape(Capsule())
         .overlay(Capsule().stroke(SynCraTheme.border, lineWidth: 1))
-        .padding(.horizontal, 20)
-        .padding(.bottom, 10)
     }
 }
 
@@ -117,9 +122,11 @@ private struct DashboardPlaceholder: View {
     let symbol: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 22) {
+        VStack(alignment: .leading, spacing: 18) {
             Text(title)
-                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .font(.system(size: 30, weight: .bold, design: .rounded))
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
                 .foregroundStyle(SynCraTheme.text)
             SynCraCard {
                 HStack(spacing: 16) {

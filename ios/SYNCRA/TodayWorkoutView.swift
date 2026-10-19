@@ -30,10 +30,12 @@ struct TodayWorkoutView: View {
     @State private var summary: WorkoutSummary?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: 16) {
             Text("Тренировка сегодня")
-                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .font(.system(size: 30, weight: .bold, design: .rounded))
                 .foregroundStyle(SynCraTheme.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.72)
 
             sessionCard
             treadmillCard
@@ -70,6 +72,8 @@ struct TodayWorkoutView: View {
                         Text("Грудь · ноги · спина")
                             .font(.title3.weight(.bold))
                             .foregroundStyle(SynCraTheme.text)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
                     }
                     Spacer()
                     Text("\(completedExerciseIDs.count)/\(exercises.count)")
