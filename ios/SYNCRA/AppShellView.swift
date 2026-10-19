@@ -35,7 +35,7 @@ struct AppShellView: View {
     }
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             SynCraTheme.background.ignoresSafeArea()
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 18) {
@@ -43,17 +43,16 @@ struct AppShellView: View {
                     screenContent
                 }
                 .padding(.horizontal, 16)
-                .padding(.top, 8)
-                .padding(.bottom, 20)
+                .padding(.top, 72)
+                .padding(.bottom, 120)
             }
-        }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+            .ignoresSafeArea(.container, edges: .vertical)
+
             tabBar
                 .padding(.horizontal, 12)
-                .padding(.top, 8)
-                .padding(.bottom, 6)
-                .background(SynCraTheme.background.opacity(0.94))
+                .padding(.bottom, 34)
         }
+        .ignoresSafeArea(.container, edges: .vertical)
         .preferredColorScheme(.dark)
         .dynamicTypeSize(.xSmall ... .large)
     }
